@@ -1,0 +1,44 @@
+// backend/src/main.ts
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import { DataSource } from "typeorm";
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  app.enableShutdownHooks();
+
+  // Pegar a conexão do TypeORM via DataSource
+  const dataSource = app.get(DataSource);
+  let retryCount = 0;
+  const maxRetries = 10;
+  const retryDelay = 3000;
+
+  const checkConnection = async () => {
+    try {
+      if (!dataSource.isInitialized) {
+        await dataSource.initialize();
+      }
+      console.log("Conexão com o banco estabelecida!");
+      retryCount = 0; // Reseta se conectar
+    } catch (error) {
+      console.error(`Tentativa ${retryCount + 1}: ${error.message}`);
+      if (retryCount >= maxRetries) {
+        console.error(
+          `Falha ao conectar após ${maxRetries} tentativas. Encerrando aplicação.`,
+        );
+        await app.close();
+        process.exit(1);
+      }
+      retryCount++;
+      setTimeout(checkConnection, retryDelay);
+    }
+  };
+
+  await checkConnection();
+  await app.listen(3000);
+}
+
+bootstrap().catch((err) => {
+  console.error("Erro no bootstrap:", err);
+  process.exit(1);
+});

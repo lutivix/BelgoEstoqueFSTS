@@ -1,0 +1,23 @@
+{
+  "typescript.suggest.autoImports": true,
+  "autoimport.autoComplete": true,
+  //"editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "eslint.validate": ["javascript", "typescript"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.removeUnusedImports": "explicit"
+  },
+  "eslint.workingDirectories": ["./backend"],
+  "eslint.lintTask.enable": true,
+  "eslint.alwaysShowStatus": true,
+  "prettier.requireConfig": true,
+  "prettier.singleQuote": false, // Força aspas duplas no VS Code
+  "prettier.trailingComma": "all",
+  "prettier.tabWidth": 2,
+  "prettier.useTabs": false,
+  "eslint.format.enable": true
+}

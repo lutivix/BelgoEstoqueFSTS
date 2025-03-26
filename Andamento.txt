@@ -1,0 +1,8 @@
+ANDAMENTO DO PROJETO BELGO ESTOQUE
+
+ATUALMENTE CONVERTENDO DO C#/RAZORPAGES PARA JS NESTJS
+
+Backend rodando já pegando do banco, com botão de teste no frontend também rodando depois de muitas dificuldades de dependências entre pacotes node (common, cli, node, etc).
+
+Atualmente já temos unificado o Produto com o Estoque das chamadas OMies.
+
