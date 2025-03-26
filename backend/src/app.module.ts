@@ -6,9 +6,11 @@ import { DatabaseModule } from "./database/database.module";
 import { ProductsModule } from "./products/products.module";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
+import { ScheduleModule } from "@nestjs/schedule"; // Importe o ScheduleModule
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(), // Registre o ScheduleModule
     ConfigModule.forRoot({
       load: [omieConfig],
       isGlobal: true,

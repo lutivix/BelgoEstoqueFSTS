@@ -19,5 +19,6 @@
   "prettier.trailingComma": "all",
   "prettier.tabWidth": 2,
   "prettier.useTabs": false,
-  "eslint.format.enable": true
+  "eslint.format.enable": true,
+  "files.eol": "\n"
 }

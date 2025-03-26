@@ -1,5 +1,5 @@
 // src/products/products.controller.ts
-import { Controller, Get, Query, Param, Res } from "@nestjs/common";
+import { Controller, Get, Query, Param, Res, Post } from "@nestjs/common";
 import { ProductsService } from "./products.service";
 import { ListProductsRequestDto } from "./dto/list-products-request.dto";
 import { ListStockPositionRequestDto } from "./dto/list-stock-position-request.dto";
@@ -19,11 +19,12 @@ export class ProductsController {
     return this.productsService.listProducts(empresa, dto);
   }
 
-  @Get("load-initial/:empresa")
-  async loadInitialProducts(
-    @Param("empresa") empresa: string | null,
-  ): Promise<{ message: string; products: OmieProductFromDb[] }> {
-    return this.productsService.loadInitialProducts(empresa);
+  @Post("load-initial")
+  async loadInitialProducts(): Promise<{
+    message: string;
+    products: OmieProductFromDb[];
+  }> {
+    return this.productsService.loadInitialProducts(null); // Processa todas as empresas
   }
 
   @Get("stock/:empresa")
@@ -63,5 +64,11 @@ export class ProductsController {
   @Get("last-scan")
   getLastScan(): string {
     return this.productsService.getLastMovementScan();
+  }
+
+  @Get("clear-database")
+  async clearDatabase() {
+    await this.productsService.clearDatabase();
+    return "Tabelas product e stock limpas";
   }
 }

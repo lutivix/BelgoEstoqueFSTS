@@ -1,7 +1,8 @@
 // src/products/products.service.ts
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { Repository, Connection } from "typeorm"; // Adicione Connection aqui
+import { InjectConnection } from "@nestjs/typeorm"; // Adicione isso para injeção
 import axios from "axios";
 import { ConfigService } from "@nestjs/config";
 import { Product } from "./entities/product.entity";
@@ -20,6 +21,7 @@ import {
   ListarEstPosResponse,
 } from "./interfaces/omie-estoque-response.interface";
 import * as ExcelJS from "exceljs";
+import { ListMovementsResponse } from "./interfaces/omie-movement-response.interface";
 
 @Injectable()
 export class ProductsService {
@@ -38,6 +40,7 @@ export class ProductsService {
     @InjectRepository(Stock) private stockRepo: Repository<Stock>,
     private configService: ConfigService,
     private logger: LoggerService, // Injete o logger
+    @InjectConnection() private connection: Connection, // Injete com @InjectConnection
   ) {
     this.logger.log("ProductsService inicializado", "O");
     console.log("productRepo injetado:", !!this.productRepo); // Deve ser true
@@ -62,86 +65,115 @@ export class ProductsService {
       total_de_registros: number;
     }
   > {
-    if (!empresa) {
-      throw new Error("Empresa não especificada");
-    }
+    const empresasParaProcessar = empresa ? [empresa] : this.EMPRESAS;
+
     this.logger.log(
-      `Listando produtos para ${empresa}, página ${dto.pagina}`,
+      `Listando produtos para ${empresasParaProcessar.join(", ")}, página ${dto.pagina}`,
       "L",
     );
-    try {
-      const { appKey, appSecret } = this.getOmieConfig(empresa);
-      const url = "https://app.omie.com.br/api/v1/geral/produtos/";
-      const params = {
-        ...dto,
-        pagina: dto.pagina ?? 1,
-        registros_por_pagina: dto.registros_por_pagina ?? 500,
-      };
-      const requestBody = {
-        call: "ListarProdutos",
-        app_key: appKey,
-        app_secret: appSecret,
-        param: [params],
-      };
-      const response = await axios.post<ProdutoServicoListFullResponse>(
-        url,
-        requestBody,
-        { headers: { "Content-Type": "application/json" } },
-      );
-      const products = response.data.produto_servico_cadastro;
-      await this.saveOrUpdateProducts(products, empresa);
-      const savedProducts = await this.productRepo.find({
-        where: { primeira_loja: empresa },
-      });
-      const result = await Promise.all(
-        savedProducts.map((p) => this.mapToOmieProductFromDb(p)),
-      );
-      this.logger.log(`Produtos retornados para ${empresa}`, "O");
 
-      return Object.assign(result, {
-        total_de_paginas: response.data.total_de_paginas,
-        total_de_registros: response.data.total_de_registros,
-      });
-    } catch (error) {
-      this.logger.error(`Erro na chamada à Omie: ${error.message}`);
-      throw new Error("Falha ao listar produtos da Omie");
+    let allResults: OmieProductFromDb[] = [];
+    let totalPaginas = 0;
+    let totalRegistros = 0;
+
+    for (const emp of empresasParaProcessar) {
+      try {
+        const { appKey, appSecret } = this.getOmieConfig(emp);
+        const url = "https://app.omie.com.br/api/v1/geral/produtos/";
+        const params = {
+          ...dto,
+          pagina: dto.pagina ?? 1,
+          registros_por_pagina: dto.registros_por_pagina ?? 500,
+        };
+
+        const requestBody = {
+          call: "ListarProdutos",
+          app_key: appKey,
+          app_secret: appSecret,
+          param: [params],
+        };
+
+        const response = await axios.post<ProdutoServicoListFullResponse>(
+          url,
+          requestBody,
+          { headers: { "Content-Type": "application/json" } },
+        );
+
+        const products = response.data.produto_servico_cadastro;
+        await this.saveOrUpdateProducts(products, emp);
+        const savedProducts = await this.productRepo.find({
+          where: { primeira_loja: emp },
+        });
+
+        const mappedProducts = await Promise.all(
+          savedProducts.map((p) => this.mapToOmieProductFromDb(p)),
+        );
+
+        allResults = [...allResults, ...mappedProducts];
+        totalPaginas = Math.max(totalPaginas, response.data.total_de_paginas);
+        totalRegistros += response.data.total_de_registros;
+
+        this.logger.log(`Produtos retornados para ${emp}`, "O");
+      } catch (error) {
+        this.logger.error(`Erro na chamada à Omie: ${error.message}`);
+        continue; // Pula para a próxima empresa se a chamada à API falhar
+      }
     }
+
+    return Object.assign(allResults, {
+      total_de_paginas: totalPaginas,
+      total_de_registros: totalRegistros,
+    });
   }
 
   async loadInitialProducts(
     empresa: string | null,
   ): Promise<{ message: string; products: OmieProductFromDb[] }> {
-    if (!empresa) {
-      throw new Error("Empresa não especificada");
-    }
-    let pagina = 1;
+    const empresasParaProcessar = empresa ? [empresa] : this.EMPRESAS; // Usa todas as empresas se null
+    const tenDaysAgo = new Date();
+    tenDaysAgo.setDate(tenDaysAgo.getDate() - 10);
+    const d10 = tenDaysAgo.toLocaleDateString("pt-BR"); // Ex.: "16/03/2025"
     let totalPaginas = 0;
     const startTime = Date.now();
 
-    do {
-      const dto = new ListProductsRequestDto();
-      dto.pagina = pagina;
-      dto.registros_por_pagina = 500;
-      const response = await this.listProducts(empresa, dto);
+    this.logger.log(
+      `Iniciando carga inicial para ${empresasParaProcessar.join(", ")} em ${d10}`,
+      "L",
+    );
 
-      // Define totalPaginas na primeira chamada
-      if (pagina === 1) {
-        totalPaginas = response.total_de_paginas || 1; // Agora TypeScript reconhece
-      }
+    for (const emp of empresasParaProcessar) {
+      let pagina = 1;
+      do {
+        const dto = new ListProductsRequestDto();
+        dto.pagina = pagina;
+        dto.registros_por_pagina = 500;
+        const response = await this.listProducts(emp, dto);
+        if (pagina === 1) {
+          totalPaginas = response.total_de_paginas || 1;
+        }
+        this.logger.log(
+          `Carregando página ${pagina} de ${totalPaginas} para ${emp}`,
+          "L",
+        );
+        pagina++;
+      } while (pagina <= totalPaginas);
 
-      this.logger.log(`Carregando página ${pagina} de ${totalPaginas}`, "L");
-      pagina++;
-    } while (pagina <= totalPaginas);
+      // Carregar estoque inicial para D-10
+      const stockDto = new ListStockPositionRequestDto();
+      stockDto.nPagina = 1;
+      stockDto.nRegPorPagina = 500;
+      await this.listStockPosition(emp, stockDto);
+    }
 
     const allProducts = await this.productRepo.find({
-      where: { primeira_loja: empresa },
+      where: empresasParaProcessar.map((emp) => ({ primeira_loja: emp })),
     });
     const result = await Promise.all(
       allProducts.map((p) => this.mapToOmieProductFromDb(p)),
     );
     const duration = (Date.now() - startTime) / 1000;
     return {
-      message: `Carga inicial concluída para ${empresa}, total de páginas: ${totalPaginas}, tempo: ${duration}s`,
+      message: `Carga inicial concluída para ${empresasParaProcessar.join(", ")} em ${d10}, tempo: ${duration}s`,
       products: result,
     };
   }
@@ -192,168 +224,322 @@ export class ProductsService {
   //   throw new Error("Falha ao listar posição de estoque da Omie");
   // }
   // }
+
   async listStockPosition(
     empresa: string | null,
     dto: ListStockPositionRequestDto,
   ): Promise<OmieProductFromDb[]> {
     this.logger.log("Iniciando listagem da posição de estoque", "L");
-    if (!empresa) {
-      throw new Error("Empresa não especificada");
-    }
-    try {
-      const { appKey, appSecret } = this.getOmieConfig(empresa);
-      const url = "https://app.omie.com.br/api/v1/estoque/consulta/";
+    const empresasParaProcessar = empresa ? [empresa] : this.EMPRESAS;
+    const tenDaysAgo = new Date();
+    tenDaysAgo.setDate(tenDaysAgo.getDate() - 10);
+    const d10 = tenDaysAgo.toLocaleDateString("pt-BR"); // Ex.: "16/03/2025"
 
-      // Mapeamento de lojas para codigo_local_estoque (substitua pelos valores reais)
-      const lojaMap: { [key: string]: number } = {
-        VITORIA: 1, // Ajuste com os códigos reais da Omie
-        TELARAME: 2,
-        SUPERTELAS: 3,
-        UNIAO: 4,
-        LINHARES: 5,
-        ESTRUTURACO: 6,
-      };
-      const empresaUpper = empresa.toUpperCase();
-      const codigoLoja = lojaMap[empresaUpper];
+    let allProductsWithStock: OmieProductFromDb[] = [];
 
-      if (!codigoLoja) {
-        throw new Error(`Loja ${empresa} não reconhecida`);
-      }
+    for (const emp of empresasParaProcessar) {
+      try {
+        const { appKey, appSecret } = this.getOmieConfig(emp);
+        const url = "https://app.omie.com.br/api/v1/estoque/consulta/";
+        const empresaUpper = emp.toUpperCase();
+        const lojaMap: { [key: string]: number } = {
+          VITORIA: 1,
+          TELARAME: 2,
+          SUPERTELAS: 3,
+          UNIAO: 4,
+          LINHARES: 5,
+          ESTRUTURACO: 6,
+        };
+        const codigoLoja = lojaMap[empresaUpper];
 
-      const requestBody: ListarEstPosRequest = {
-        call: "ListarPosEstoque",
-        app_key: appKey,
-        app_secret: appSecret,
-        param: [
-          {
-            nPagina: dto.nPagina ?? 1,
-            nRegPorPagina: dto.nRegPorPagina ?? 500,
-            dDataPosicao: new Date().toLocaleDateString("pt-BR"), // Hoje: DD/MM/YYYY
-            cExibeTodos: "N",
-            codigo_local_estoque: 0,
-          },
-        ],
-      };
-
-      this.logger.log(`Chamando Omie para estoque de ${empresa}`, "L");
-      const response = await axios.post<ListarEstPosResponse>(
-        url,
-        requestBody,
-        {
-          headers: { "Content-Type": "application/json" },
-        },
-      );
-
-      const stockData = response.data.produtos;
-      this.logger.log(`Recebidos ${stockData.length} itens de estoque`, "L");
-
-      // Salva ou atualiza estoques
-      await this.saveStock(stockData, empresa);
-
-      // Retorna produtos com estoques associados
-      const produtosDb = await this.productRepo.find();
-      const produtosComEstoque = await Promise.all(
-        produtosDb.map((p) => this.mapToOmieProductFromDb(p)),
-      );
-
-      this.logger.log(
-        `Listagem concluída com ${produtosComEstoque.length} produtos`,
-        "L",
-      );
-      return produtosComEstoque;
-    } catch (error) {
-      this.logger.error(`Erro ao listar posição de estoque: ${error.message}`);
-      throw new Error("Falha ao listar posição de estoque da Omie");
-    }
-
-    // Método de busca de dados do banco.
-    try {
-      // 1️⃣ Buscar os produtos do banco
-      this.logger.log("Buscando produtos no banco", "L");
-      const produtos = await this.productRepo.find();
-
-      // 2️⃣ Buscar os estoques no banco
-      this.logger.log("Buscando estoques no banco", "L");
-      const estoques = await this.stockRepo.find();
-
-      // 3️⃣ Criar um mapa de estoque por OMIE_PRD_ID
-      this.logger.log("Criando mapa de estoque por OMIE_PRD_ID", "L");
-      const estoqueMap = new Map<string, Stock[]>();
-
-      estoques.forEach((estoque) => {
-        if (!estoqueMap.has(estoque.omiePrdId)) {
-          estoqueMap.set(estoque.omiePrdId, []);
+        if (!codigoLoja) {
+          throw new Error(`Loja ${emp} não reconhecida`);
         }
-        estoqueMap.get(estoque.omiePrdId)?.push(estoque);
-      });
 
-      // 4️⃣ Atualizar os produtos com os dados de estoque correspondentes
-      this.logger.log("Associando estoque aos produtos", "L");
-      const produtosComEstoque: OmieProductFromDb[] = produtos.map(
-        (produto) => ({
-          id: produto.ID, // ✅ Garante que o ID esteja presente
-          codigo_omie: produto.codigo_omie,
-          codigo_produto: produto.codigo_produto,
-          name: produto.name,
-          desc: produto.desc,
-          type: produto.type,
-          id_type: produto.id_type,
-          cod_integ: produto.cod_integ,
-          valor_un: produto.valor_un,
-          primeira_loja: produto.primeira_loja,
-          estId: produto.est_id,
-          estoque: estoqueMap.get(produto.codigo_omie) || [], // ✅ Garante que estoque nunca seja undefined
-        }),
-      );
+        const requestBody: ListarEstPosRequest = {
+          call: "ListarPosEstoque",
+          app_key: appKey,
+          app_secret: appSecret,
+          param: [
+            {
+              nPagina: dto.nPagina ?? 1,
+              nRegPorPagina: dto.nRegPorPagina ?? 500,
+              dDataPosicao: d10, // Usa D-10 fixo
+              cExibeTodos: "N",
+              codigo_local_estoque: 0,
+            },
+          ],
+        };
 
-      this.logger.log(
-        `Listagem de estoque concluída com ${produtosComEstoque.length} produtos`,
-        "L",
-      );
-      return produtosComEstoque;
-    } catch (error) {
-      this.logger.error(
-        `Falha ao listar posição de estoque: ${error.message}` + error.stack,
-      );
-      throw new Error("Falha ao listar posição de estoque");
+        this.logger.log(`Chamando Omie para estoque de ${emp} em ${d10}`, "L");
+        const response = await axios.post<ListarEstPosResponse>(
+          url,
+          requestBody,
+          {
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+
+        const stockData = response.data.produtos;
+        this.logger.log(
+          `Recebidos ${stockData.length} itens de estoque para ${emp}`,
+          "L",
+        );
+        await this.saveStock(stockData, emp);
+
+        const produtosDb = await this.productRepo.find({
+          where: { primeira_loja: emp },
+        });
+        const produtosComEstoque = await Promise.all(
+          produtosDb.map((p) => this.mapToOmieProductFromDb(p)),
+        );
+        allProductsWithStock = [...allProductsWithStock, ...produtosComEstoque];
+      } catch (error) {
+        this.logger.error(
+          `Erro ao listar posição de estoque para ${emp}: ${error.message}`,
+        );
+        continue;
+      }
     }
+
+    this.logger.log(
+      `Listagem concluída com ${allProductsWithStock.length} produtos`,
+      "L",
+    );
+    return allProductsWithStock;
   }
 
   async listMovements(empresa: string | null, dto: ListMovementsRequestDto) {
-    if (!empresa) {
-      throw new Error("Empresa não especificada");
+    const empresasParaProcessar = empresa ? [empresa] : this.EMPRESAS;
+    let processedMovements = 0;
+
+    // Pegar a data máxima inicial de DHoje
+    const maxDateResult = await this.stockRepo
+      .createQueryBuilder("stock")
+      .select("MAX(stock.DHoje)", "maxDate")
+      .getRawOne();
+    let movementDate = maxDateResult.maxDate
+      ? new Date(maxDateResult.maxDate)
+      : null;
+
+    if (!movementDate) {
+      this.logger.log("Sem estoque registrado. Usando D-10 como fallback", "L");
+      movementDate = new Date();
+      movementDate.setDate(movementDate.getDate() - 10);
     }
-    try {
-      const { appKey, appSecret } = this.getOmieConfig(empresa);
-      const url = "https://app.omie.com.br/api/v1/estoque/movimentos/";
 
-      const params = {
-        pagina: dto.pagina,
-        registros_por_pagina: dto.registros_por_pagina,
-        data_inicial: dto.data_inicial,
-        data_final: dto.data_final,
-        cod_produto: dto.cod_produto,
-      };
+    const today = new Date(); // Data atual para limite
+    let currentDateStr = movementDate.toLocaleDateString("pt-BR"); // Data inicial
 
-      const requestBody = {
-        call: "ListarMovimentos",
-        app_key: appKey,
-        app_secret: appSecret,
-        param: [params],
-      };
+    this.logger.log(
+      `Iniciando listagem de movimentos a partir de ${currentDateStr}`,
+      "L",
+    );
 
-      const response = await axios.post(url, requestBody, {
-        headers: { "Content-Type": "application/json" },
-      });
-      this.lastMovementScan = new Date();
-      return response.data.movimentos;
-    } catch (error) {
-      console.error(
-        "Erro na chamada à Omie (movimentos):",
-        error.response?.data || error.message,
-      );
-      throw new Error("Falha ao listar movimentos da Omie");
+    // Tipo para chaves numéricas de Stock
+    type StockKey = keyof Pick<
+      Stock,
+      | "EST_VIX"
+      | "EST_TEL"
+      | "EST_SUP"
+      | "EST_UNI"
+      | "EST_LIN"
+      | "EST_EST"
+      | "EST_VIX_DM1"
+      | "EST_TEL_DM1"
+      | "EST_SUP_DM1"
+      | "EST_UNI_DM1"
+      | "EST_LIN_DM1"
+      | "EST_EST_DM1"
+      | "EST_TOTAL_HOJE"
+      | "EST_TOTAL_DM1"
+    >;
+
+    // Mapa de campos de estoque por empresa
+    const stockFields: { [key: string]: { today: StockKey; dm1: StockKey } } = {
+      VITORIA: { today: "EST_VIX", dm1: "EST_VIX_DM1" },
+      TELARAME: { today: "EST_TEL", dm1: "EST_TEL_DM1" },
+      SUPERTELAS: { today: "EST_SUP", dm1: "EST_SUP_DM1" },
+      UNIAO: { today: "EST_UNI", dm1: "EST_UNI_DM1" },
+      LINHARES: { today: "EST_LIN", dm1: "EST_LIN_DM1" },
+      ESTRUTURACO: { today: "EST_EST", dm1: "EST_EST_DM1" },
+    };
+
+    // Loop para avançar dias até encontrar movimentações ou chegar ao dia atual
+    while (movementDate <= today && processedMovements === 0) {
+      processedMovements = 0; // Resetar a cada tentativa de data
+      currentDateStr = movementDate.toLocaleDateString("pt-BR");
+
+      this.logger.log(`Processando movimentos para ${currentDateStr}`, "L");
+
+      for (const emp of empresasParaProcessar) {
+        try {
+          const { appKey, appSecret } = this.getOmieConfig(emp);
+          const url = "https://app.omie.com.br/api/v1/estoque/movestoque/";
+
+          const params = {
+            pagina: dto.pagina ?? 1,
+            registros_por_pagina: dto.registros_por_pagina ?? 500,
+            data_inicial: currentDateStr,
+            data_final: currentDateStr,
+            codigo_local_estoque: 0,
+          };
+
+          const requestBody = {
+            call: "ListarMovimentos",
+            app_key: appKey,
+            app_secret: appSecret,
+            param: [params],
+          };
+
+          this.logger.log(`Chamando Omie para movimentos de ${emp}`, "L");
+          const response = await axios.post<ListMovementsResponse>(
+            url,
+            requestBody,
+            {
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+
+          const movements = response.data.cadastros || [];
+          this.logger.log(
+            `Recebidos ${movements.length} movimentos para ${emp}`,
+            "O",
+          );
+
+          for (const item of movements) {
+            try {
+              const product = await this.productRepo.findOne({
+                where: { codigo_omie: item.cCodProd },
+              });
+
+              if (!product) {
+                this.logger.warn(
+                  `Produto ${item.cCodProd} não encontrado para ${emp}`,
+                  "P",
+                );
+                continue;
+              }
+
+              const stock = await this.stockRepo.findOne({
+                where: { omiePrdId: product.codigo_omie },
+              });
+
+              if (!stock) {
+                this.logger.warn(
+                  `Estoque não encontrado para ${product.codigo_omie} em ${emp}`,
+                  "P",
+                );
+                continue;
+              }
+
+              const movementDateItem = new Date(item.dDataMovimento);
+              const aux = stock.DHoje;
+              const auxm1 = stock.DMenos1;
+
+              const fields = stockFields[emp.toUpperCase()];
+              if (!fields) {
+                this.logger.warn(`Loja ${emp} não reconhecida`, "P");
+                continue;
+              }
+
+              const movementQty =
+                (item.nQtdeEntradas || 0) - (item.nQtdeSaidas || 0);
+
+              if (movementDateItem.getTime() > aux.getTime()) {
+                stock.DMenos1 = aux;
+                stock.DHoje = movementDateItem;
+
+                stock.EST_VIX_DM1 = stock.EST_VIX || 0;
+                stock.EST_TEL_DM1 = stock.EST_TEL || 0;
+                stock.EST_SUP_DM1 = stock.EST_SUP || 0;
+                stock.EST_UNI_DM1 = stock.EST_UNI || 0;
+                stock.EST_LIN_DM1 = stock.EST_LIN || 0;
+                stock.EST_EST_DM1 = stock.EST_EST || 0;
+                stock.EST_TOTAL_DM1 = stock.EST_TOTAL_HOJE || 0;
+
+                stock[fields.today] =
+                  ((stock[fields.today] as number | undefined) ?? 0) +
+                  movementQty;
+                stock.EST_TOTAL_HOJE =
+                  (stock.EST_VIX || 0) +
+                  (stock.EST_TEL || 0) +
+                  (stock.EST_SUP || 0) +
+                  (stock.EST_UNI || 0) +
+                  (stock.EST_LIN || 0) +
+                  (stock.EST_EST || 0);
+
+                this.logger.log(
+                  `Novo dia: ${product.codigo_omie} em ${emp} - ` +
+                    `D-1: ${auxm1.toLocaleString("pt-BR")}, D: ${movementDateItem.toLocaleString("pt-BR")}, ` +
+                    `${fields.today}: ${stock[fields.today]}, ${fields.dm1}: ${stock[fields.dm1]}, ` +
+                    `Total: ${stock.EST_TOTAL_HOJE}, Total D-1: ${stock.EST_TOTAL_DM1}`,
+                  "P",
+                );
+              } else if (movementDateItem.getTime() === aux.getTime()) {
+                stock.DHoje = movementDateItem;
+                const oldStock =
+                  (stock[fields.today] as number | undefined) ?? 0;
+                stock[fields.today] = oldStock + movementQty;
+                stock.EST_TOTAL_HOJE =
+                  (stock.EST_TOTAL_HOJE || 0) -
+                  oldStock +
+                  ((stock[fields.today] as number | undefined) ?? 0);
+
+                this.logger.log(
+                  `Mesmo dia: ${product.codigo_omie} em ${emp} - ` +
+                    `D-1: ${auxm1.toLocaleString("pt-BR")}, D: ${movementDateItem.toLocaleString("pt-BR")}, ` +
+                    `${fields.today}: ${stock[fields.today]}, ${fields.dm1}: ${stock[fields.dm1]}, ` +
+                    `Total: ${stock.EST_TOTAL_HOJE}, Total D-1: ${stock.EST_TOTAL_DM1}`,
+                  "P",
+                );
+              } else {
+                stock.DHoje = aux;
+                this.logger.log(
+                  `Movimento anterior ignorado: ${product.codigo_omie} em ${emp} - D: ${movementDateItem.toLocaleString("pt-BR")}`,
+                  "P",
+                );
+                continue;
+              }
+
+              await this.stockRepo.save(stock);
+              processedMovements++;
+            } catch (error) {
+              this.logger.error(
+                `Erro ao processar movimento ${item.id || item.cCodProd} para ${emp}: ${error.message}`,
+                error.stack,
+              );
+              continue;
+            }
+          }
+
+          this.lastMovementScan = new Date();
+        } catch (error) {
+          this.logger.error(
+            `Erro ao listar movimentos para ${emp}: ${error.message}`,
+            error.stack,
+          );
+          continue;
+        }
+      }
+
+      // Se não houve movimentações, avançar para o próximo dia
+      if (processedMovements === 0 && movementDate < today) {
+        movementDate.setDate(movementDate.getDate() + 1);
+        this.logger.log(
+          `Nenhuma movimentação em ${currentDateStr}. Avançando para ${movementDate.toLocaleDateString("pt-BR")}`,
+          "L",
+        );
+      } else {
+        break; // Sai do loop se houve movimentações ou chegou ao dia atual
+      }
     }
+
+    this.logger.log(
+      `Total de ${processedMovements} movimentos processados`,
+      "L",
+    );
+    return processedMovements;
   }
 
   private async saveOrUpdateProducts(
@@ -362,13 +548,13 @@ export class ProductsService {
   ) {
     for (const prod of products) {
       try {
-        console.log(`Buscando produto existente: ${prod.codigo}`);
+        this.logger.error(`Buscando produto existente: ${prod.codigo}`);
         const existingProduct = await this.productRepo.findOne({
           where: { codigo_omie: prod.codigo },
         });
         const product = existingProduct || new Product();
 
-        console.log(
+        this.logger.error(
           `Produto: ${prod.codigo}, codigo_produto_integracao: ${prod.codigo_produto_integracao}`,
         );
 
@@ -385,7 +571,7 @@ export class ProductsService {
           codigoIntegracao && !isNaN(Number(codigoIntegracao))
             ? Number(codigoIntegracao)
             : (existingProduct?.cod_integ ?? 0);
-        console.log(`cod_integ antes do save: ${product.cod_integ}`);
+        this.logger.error(`cod_integ antes do save: ${product.cod_integ}`);
 
         product.valor_un =
           prod.valor_unitario ?? existingProduct?.valor_un ?? 0;
@@ -397,11 +583,11 @@ export class ProductsService {
           "P",
         );
       } catch (error) {
-        console.error(
+        this.logger.error(
           `Erro ao processar produto ${prod.codigo}:`,
           error.message,
         );
-        throw error;
+        continue; // Pula para o próximo produto, não para a próxima empresa
       }
     }
   }
@@ -650,5 +836,14 @@ export class ProductsService {
     return this.lastMovementScan
       ? this.lastMovementScan.toLocaleString("pt-BR")
       : "00/00/00 00:00:00";
+  }
+
+  async clearDatabase() {
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.query(`TRUNCATE TABLE stock RESTART IDENTITY CASCADE`);
+    await queryRunner.query(`TRUNCATE TABLE product RESTART IDENTITY CASCADE`);
+    await queryRunner.release();
+    this.logger.log("Tabelas product e stock limpas", "L");
   }
 }

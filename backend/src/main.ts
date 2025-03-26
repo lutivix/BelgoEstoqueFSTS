@@ -2,6 +2,10 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { DataSource } from "typeorm";
+import * as crypto from "crypto";
+
+// Forçar o crypto globalmente
+global.crypto = crypto as any;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

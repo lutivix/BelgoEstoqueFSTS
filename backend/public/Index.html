@@ -29,12 +29,12 @@
 
     // Funções dos botões (chamadas API)
     async function loadInitial() {
-      const res = await fetch('/products/load-initial?empresa=VITORIA', { method: 'POST' });
+      const res = await fetch('/products/load-initial', { method: 'POST' });
       alert(await res.text());
     }
 
     async function gerarEstoque() {
-      const res = await fetch('/products/stock?empresa=VITORIA');
+      const res = await fetch('/products/stock');
       alert(await res.text());
     }
 
@@ -44,7 +44,7 @@
     }
 
     async function gerarExcel() {
-      window.location.href = '/products/export-excel?empresa=VITORIA';
+      window.location.href = '/products/export-excel';
     }
 
     // Última Varredura

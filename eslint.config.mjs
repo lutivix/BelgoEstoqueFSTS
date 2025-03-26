@@ -82,9 +82,10 @@ export default [
           singleQuote: false,
           trailingComma: "all",
           tabWidth: 2,
-          useTabs: false,
+          useTabs: false,          
         },
       ],
+      "linebreak-style": ["error", "unix"]
     },
   },
 ];
