@@ -37,6 +37,13 @@ async function bootstrap() {
   };
 
   await checkConnection();
+
+  app.enableCors({
+    origin: "http://localhost:5173", // Permite apenas o frontend em dev
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Métodos permitidos
+    credentials: true, // Se precisar de cookies ou autenticação
+  });
+
   await app.listen(3000);
 }
 
