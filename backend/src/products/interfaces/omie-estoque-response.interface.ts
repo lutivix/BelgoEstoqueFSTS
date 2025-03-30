@@ -27,9 +27,10 @@ export interface Produtos {
 }
 
 export interface ListarEstPosResponse {
-  pagina: number; // Página atual
-  total_de_paginas: number; // Total de páginas
-  registros: number; // Quantidade de registros na página
-  total_de_registros: number; // Total de registros encontrados
+  dDataPosicao: string;
+  nPagina: number; // Página atual
+  nTotPaginas: number; // Total de páginas
+  nRegistros: number; // Quantidade de registros na página
+  nTotRegistros: number; // Total de registros encontrados
   produtos: Produtos[]; // Lista de produtos
 }

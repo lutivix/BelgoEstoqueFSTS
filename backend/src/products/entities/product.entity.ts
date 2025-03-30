@@ -6,25 +6,25 @@ export class Product {
   @PrimaryGeneratedColumn()
   ID: number;
 
-  @Column({ name: "COD_OMIE", unique: true })
+  @Column({ name: "COD_OMIE", length: 450 })
   codigo_omie: string;
 
-  @Column({ name: "COD_PRD" })
+  @Column({ name: "COD_PRD", length: 200 })
   codigo_produto: string;
 
-  @Column({ name: "NOME", length: 100 })
+  @Column({ name: "NOME", length: 200 })
   name: string;
 
-  @Column({ name: "DESCR", length: 200, nullable: true })
+  @Column({ name: "DESCR", length: 500, nullable: true })
   desc?: string;
 
-  @Column({ name: "FAMILIA", nullable: true })
+  @Column({ name: "FAMILIA", length: 200, nullable: true })
   type?: string;
 
-  @Column({ name: "COD_FAM", nullable: true })
+  @Column({ name: "COD_FAM", nullable: true, type: "bigint" })
   id_type?: number;
 
-  @Column({ name: "COD_INTG" })
+  @Column({ name: "COD_INTG", type: "bigint" })
   cod_integ: number;
 
   @Column({ name: "VL_UNI", type: "decimal", precision: 18, scale: 2 })

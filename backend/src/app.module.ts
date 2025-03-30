@@ -12,13 +12,19 @@ import { ScheduleModule } from "@nestjs/schedule"; // Importe o ScheduleModule
   imports: [
     ScheduleModule.forRoot(), // Registre o ScheduleModule
     ConfigModule.forRoot({
-      load: [omieConfig],
+      load: [
+        () => {
+          const configPath = join(process.cwd(), "config", "omie-keys.json");
+          return require(configPath);
+        },
+      ],
       isGlobal: true,
     }),
     DatabaseModule,
     ProductsModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, "..", "public"), // Pasta public no backend
+      // rootPath: join(__dirname, "..", "public"), // Pasta public no backend
+      rootPath: join(process.cwd(), "public"),
     }),
   ],
   controllers: [AppController],

@@ -3,6 +3,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { DatabaseService } from "./database.service";
 import { Product } from "../products/entities/product.entity"; // Importação explícita
 import { Stock } from "../products/entities/stock.entity"; // Importação explícita
+import { ScanMetadata } from "../products/entities/scan-metadata.entity"; // Adicione esta importação
 import { DatabaseController } from "./database.controller";
 
 @Module({
@@ -14,7 +15,7 @@ import { DatabaseController } from "./database.controller";
       username: "Lutivix",
       password: "lfsistemas",
       database: "BelgoEstoque",
-      entities: [Product, Stock], // Substituir o caminho dinâmico por entidades explícitas
+      entities: [Product, Stock, ScanMetadata], // Substituir o caminho dinâmico por entidades explícitas
       migrations: [__dirname + "/migrations/*{.ts,.js}"],
       synchronize: false,
       options: {
@@ -30,8 +31,7 @@ import { DatabaseController } from "./database.controller";
         logSchemaBuild: (message) => console.log(message),
         logMigration: (message) => console.log(message),
         log: (level, message) => console.log(`${level}: ${message}`),
-        logQuerySlow: (time, query) =>
-          console.log(`Slow query (${time}ms): ${query}`),
+        logQuerySlow: (time, query) => console.log(`Slow query (${time}ms): ${query}`),
       },
     }),
   ],

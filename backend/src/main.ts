@@ -27,9 +27,7 @@ async function bootstrap() {
     } catch (error) {
       console.error(`Tentativa ${retryCount + 1}: ${error.message}`);
       if (retryCount >= maxRetries) {
-        console.error(
-          `Falha ao conectar após ${maxRetries} tentativas. Encerrando aplicação.`,
-        );
+        console.error(`Falha ao conectar após ${maxRetries} tentativas. Encerrando aplicação.`);
         await app.close();
         process.exit(1);
       }

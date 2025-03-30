@@ -9,8 +9,13 @@ export class LoggerService {
   private logger;
 
   constructor() {
-    const today = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-    const logDir = path.join(__dirname, "../../logs");
+    const today = new Date()
+      .toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })
+      .split("/")
+      .reverse()
+      .join("");
+    // const logDir = path.join(__dirname, "../../logs");
+    const logDir = path.join(process.cwd(), "logs");
     if (!fs.existsSync(logDir)) {
       fs.mkdirSync(logDir);
     }
@@ -18,8 +23,7 @@ export class LoggerService {
       format: format.combine(
         format.timestamp({ format: "DD/MM/YYYY HH:mm:ss.SSS" }),
         format.printf(
-          ({ timestamp, level, message }) =>
-            `${timestamp} [${level.toUpperCase()}] ${message}`,
+          ({ timestamp, level, message }) => `${timestamp} [${level.toUpperCase()}] ${message}`,
         ),
       ),
       transports: [
