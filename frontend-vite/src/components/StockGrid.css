@@ -2,6 +2,7 @@
 :root {
   --navbar-width: 256px;
   --navbar-width-min: 80px;
+  font-family: Poppins;
 }
 
 /* Resets */
@@ -291,7 +292,7 @@ body {
   align-items: flex-start;
   justify-content: flex-start;
   box-sizing: border-box;
-  gap: 32px;
+  gap: 8px;
   min-height: 960px;
   font-size: 46px;
   color: #212529;
@@ -366,7 +367,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 0;
+  gap: 16;
   text-align: center;
   font-size: 14px;
   color: #adb5bd;
@@ -530,30 +531,45 @@ body {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 16px;
-  gap: 16px;
+  padding: 8px;
+  gap: 8px;
   z-index: 0;
   text-align: left;
   color: #343a40;
   width: 100%;
   min-height: 0; /* Evita colapso em flex */
   overflow: auto; /* Rolagem se necessário */
-  margin-top: 10; /* Garante que não tenha margem extra */
+  margin-top: 12px !important; /* Força 24px de margem com !important */
+  max-height: 468px;
+  border-radius: 16px;
+  height: auto; /* Evita que o flex force um height dinâmico */
 }
 
 
 .custom-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: collapse;  
+  /*table-layout: fixed; /* Força a tabela a respeitar dimensões definidas */
+  height:auto; /* Remove qualquer height imposto pelo pai */
 }
 .custom-table th, .custom-table td {
-  padding: 8px 16px;
+  padding: 0px 16px; /* Reduz o padding vertical de 8px para 4px */
+  height: 30px !important; /* Define altura fixa para as células */
+  line-height: 30px; /* Alinha o texto verticalmente */
+  max-height: 32px; /* Garante que não ultrapasse */
   border: 1px solid #e9ecef;
   text-align: center;
+  box-sizing: border-box; /* Garante que padding não aumente a altura */
+  font-family: Poppins;;
+  font-size: 12px;
+  overflow-x: auto;
+  /*display: block; /* Garante que o conteúdo não force expansão */
+  vertical-align: middle;
+  min-height: 0; /* Remove qualquer altura mínima implícita */
 }
 .custom-table th {
   background-color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   color: #6c757d;
   height: 28px;
 }
@@ -568,6 +584,27 @@ body {
 .custom-table tfoot {
   padding: 8px;
   text-align: right;
+}
+
+.custom-table tbody tr{
+  height: 32px !important;
+  max-height: 32px; /* Reforça a limitação */
+  overflow: hidden;
+  min-height: 0; /* Remove altura mínima do tr */
+}
+
+/* Ajuste específico para o Tooltip e IconButton */
+.custom-table td .MuiTooltip-tooltip {
+  max-width: 300px; /* Limita o tooltip, mas não afeta a célula */
+}
+
+.custom-table td .MuiIconButton-root {
+  padding: 2px; /* Reduz ainda mais o padding */
+  height: 20px; /* Menor que 32px pra caber com margem */
+  padding: 4px; /* Reduz o padding padrão do IconButton */
+  height: 24px; /* Limita a altura do botão */
+  width: 24px; /* Mantém proporcional */
+  min-height: 0; /* Remove altura mínima do tr */
 }
 
 .wrapper3 {
