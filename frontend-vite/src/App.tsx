@@ -30,9 +30,9 @@ function App() {
   //   </>
   // )
 
-  <div>
-      <StockGrid />
-    </div>
+
+    <StockGrid />
+
   )
 }
 

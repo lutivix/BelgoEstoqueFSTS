@@ -8,12 +8,18 @@
 body {
   margin: 0;
   line-height: normal;
+  padding: 0; /* Remove qualquer padding padrão */
+  height: 100vh; /* Força o body a ter altura da janela */
+  overflow: hidden; /* Evita scroll no body */
+  width: 100vw; /* Corrigi pra 100vw (era 100vh) */
+
 }
 
 /* Container Principal */
 .expanded-sidebar {
   width: 100%;
-  position: relative;
+  height: 100%;
+  position: absolute;
   background-color: #f8f9fa;
   overflow: auto;
   display: flex;
@@ -24,6 +30,9 @@ body {
   font-size: 14px;
   color: #fff;
   font-family: Poppins;
+  overflow: hidden; /* Evita ultrapassar a janela */
+  top:0;
+  left: 0;
 }
 
 /* Sidebar */
@@ -31,7 +40,7 @@ body {
   left: 1vw;
   top: 1vw;
   border-radius: 16px;
-  position: fixed;
+  position: absolute;
   height: calc(100% - 2vw);
   align-self: stretch;
   width: var(--navbar-width);
@@ -42,6 +51,7 @@ body {
   justify-content: flex-start;
   z-index: 1;
   transition: width 0.3s ease;
+  height: calc(100% - 2vw); /* Ajusta pra caber com top e bottom */
 }
 
 .header {
@@ -135,6 +145,7 @@ body {
   align-items: flex-start;
   justify-content: flex-start;
   gap: 8px;
+  width: 100%;
 }
 
 .navbar {
@@ -176,8 +187,10 @@ body {
 
 /* Main Content */
 .main {
+  margin-left: calc(var(--navbar-width) + 2vw); /* Compensa o left: 1vw da sidebar */
+  width: calc(100% - var(--navbar-width) - 2vw); /* O resto da largura */
   flex: 1;
-  height: 1024px;
+  height: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -202,6 +215,7 @@ body {
   padding: 0 32px 0 56px;
   box-sizing: border-box;
   gap: 8px;
+  width: 100%;
 }
 
 .bell-icon {
@@ -268,18 +282,22 @@ body {
 }
 
 .body {
-  align-self: stretch;
+  flex: 1; /* Ocupa o espaço disponível */
+  padding: 8px 32px; /* Reduzido padding-top */
+  align-self: left;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 16px 32px 32px;
   box-sizing: border-box;
   gap: 32px;
   min-height: 960px;
   font-size: 46px;
   color: #212529;
+  overflow-y: auto; /* Rolagem se necessário */
+  width: 100%;
+  height: 100%;
 }
 
 .header1 {
@@ -289,11 +307,12 @@ body {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+  /* height: 32px; */
 }
 
 .produtos {
   position: relative;
-  line-height: 104%;
+  line-height: 100%;
   font-weight: 500;
 }
 
@@ -340,16 +359,18 @@ body {
 
 /* Table */
 .table {
+  flex: 1; /* Ocupa o espaço restante */
   align-self: stretch;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 16px;
+  gap: 0;
   text-align: center;
   font-size: 14px;
   color: #adb5bd;
+  width: 100%;
 }
 
 .actions {
@@ -359,6 +380,9 @@ body {
   align-items: center;
   justify-content: space-between;
   z-index: 1;
+  width: 100%;
+  /* height: 40px; */
+  /* margin-bottom: 0; */
 }
 
 .searchbox {
@@ -367,7 +391,7 @@ body {
   background-color: #f8f9fa;
   border: 1px solid #adb5bd;
   box-sizing: border-box;
-  height: 40px;
+  height: 32px;
   overflow: hidden;
   flex-shrink: 0;
   display: flex;
@@ -376,6 +400,45 @@ body {
   justify-content: flex-start;
   padding: 0 12px;
   gap: 8px;
+}
+
+.searchbox-parent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.searchbox-wrapper {
+  width: 320px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #adb5bd;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 12px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.searchbox-input {
+  flex: 1;
+  height: 100%; /* Ocupa a altura do wrapper */
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: #343a40;
+  font-family: Poppins;
+  padding: 0;
+  margin-left: 8px; /* Espaço entre ícone e texto */
+  outline: none; /* Remove borda de foco padrão */
+}
+
+.searchbox-input::placeholder {
+  color: #adb5bd;
 }
 
 .search-icon {
@@ -387,7 +450,7 @@ body {
 
 .search {
   position: relative;
-  line-height: 132%;
+  line-height: 100%;
   z-index: 0;
 }
 
@@ -459,6 +522,7 @@ body {
 }
 
 .wrapper2 {
+  flex: 1; /* Ocupa o espaço disponível */
   align-self: stretch;
   border-radius: 8px;
   background-color: #fff;
@@ -471,9 +535,45 @@ body {
   z-index: 0;
   text-align: left;
   color: #343a40;
+  width: 100%;
+  min-height: 0; /* Evita colapso em flex */
+  overflow: auto; /* Rolagem se necessário */
+  margin-top: 10; /* Garante que não tenha margem extra */
+}
+
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.custom-table th, .custom-table td {
+  padding: 8px 16px;
+  border: 1px solid #e9ecef;
+  text-align: center;
+}
+.custom-table th {
+  background-color: #fff;
+  font-size: 12px;
+  color: #6c757d;
+  height: 28px;
+}
+
+.custom-table tbody tr{
+  height: 28px;
+}
+
+.custom-table tbody tr:nth-child(odd) {
+  background-color: #f8f9fa;
+}
+.custom-table tfoot {
+  padding: 8px;
+  text-align: right;
 }
 
 .wrapper3 {
+  width: 100%;
+  height: 100%; /* Garante que o DataGrid use o espaço */
+  max-height: 600px; /* Limita a altura máxima do grid */
   align-self: stretch;
   display: flex;
   flex-direction: row;
@@ -493,8 +593,8 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
-  gap: 32px;
+  justify-content: flex-end;
+  gap: 16px;
   text-align: center;
 }
 
@@ -600,7 +700,9 @@ body {
 }
 
 #nav-toggle:checked ~ .main {
-  margin-left: calc(var(--navbar-width-min) + 16px);
+  /* margin-left: calc(var(--navbar-width-min) + 16px); */
+  margin-left: calc(var(--navbar-width-min) + 2vw);
+  width: calc(100% - var(--navbar-width-min) - 2vw);
 }
 
 #nav-toggle:checked ~ .sidebar .header .logo-icon {

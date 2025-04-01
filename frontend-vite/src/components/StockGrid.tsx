@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import {
-  Box,
-  TextField,
-  Typography,
+  Box, Typography,
   IconButton, useMediaQuery
 } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import SearchIcon from "@mui/icons-material/Search";
+import { GridColDef } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 import { OmieProductFromDb } from "../types/omie-product-from-db";
@@ -97,7 +94,7 @@ const StockGrid = () => {
     {
       field: "edit",
       headerName: "",
-      width: 60,
+      width: 70,
       sortable: false,
       filterable: false,
       disableColumnMenu: true,
@@ -207,64 +204,71 @@ const StockGrid = () => {
               </Box>
             </Box>
           </Box>
-          <Box className="table">
-            <Box className="actions">
-              <Box className="searchbox-parent">
-                <TextField
-                  className="searchbox"
-                  placeholder="Pesquisar"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  InputProps={{ startAdornment: <SearchIcon className="search-icon" /> }}
-                />
-                <Box className="select-comodities">
-                  <Box className="button">
-                    <img className="icon" alt="Filtro" src="/images/Filter.svg" />
+            <Box className="table">
+              <Box className="actions">
+                <Box className="searchbox-parent">
+                  <Box className="searchbox-wrapper">
+                    <img className="search-icon" alt="Pesquisar" src="/images/Search.svg" />
+                    <input
+                      className="searchbox-input"
+                      placeholder="Pesquisar"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </Box>
+                  <Box className="select-comodities">
+                    <Box className="button">
+                      <img className="icon" alt="Filtro" src="/images/Filter.svg" />
+                    </Box>
                   </Box>
                 </Box>
-              </Box>
-              <Box className="button1">
-                <img className="icon" alt="Adicionar" src="/images/Plus.svg" />
-                <Typography className="label">Adicionar</Typography>
-              </Box>
+                <Box className="button1">
+                  <img className="icon" alt="Adicionar" src="/images/Plus.svg" />
+                  <Typography className="label">Adicionar</Typography>
+                </Box>
             </Box>
             <Box className="wrapper2">
-              <DataGrid
-                className="wrapper3"
-                rows={filteredProducts}
-                columns={columns}
-                loading={loading}
-                getRowId={(row) => row.id}
-                initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
-                pageSizeOptions={[10, 25, 50]}
-                checkboxSelection
-                disableRowSelectionOnClick
-                rowHeight={56} // Igual ao seu CSS (min-height: 56px)
-                sx={{
-                  border: "none",
-                  "& .MuiDataGrid-columnHeaders": {
-                    borderBottom: "1px solid #e9ecef",
-                    backgroundColor: "#fff",
-                    fontSize: "12px",
-                    color: "#6c757d",
-                    height: "40.5px",
-                  },
-                  "& .MuiDataGrid-cell": {
-                    borderBottom: "1px solid #e9ecef",
-                    borderRight: "1px solid #e9ecef",
-                    padding: "8px 16px",
-                    fontSize: "14px",
-                    color: "#343a40",
-                  },
-                  "& .MuiDataGrid-row:nth-of-type(odd)": { backgroundColor: "#f8f9fa" },
-                  "& .MuiDataGrid-footerContainer": {
-                    borderTop: "none",
-                    padding: "16px",
-                    justifyContent: "flex-start",
-                    gap: "32px",
-                  },
-                }}
-              />
+              <table className="custom-table">
+                  <thead>
+                    <tr>
+                      <th>Código Omie</th>
+                      <th>Nome</th>
+                      <th>Família</th>
+                      <th>Loja</th>
+                      <th>Estoque Total</th>
+                      <th>Data</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredProducts.slice(0, 10).map((product) => (
+                      <tr key={product.id}>
+                        <td>{product.codigo_omie}</td>
+                        <td>{product.name}</td>
+                        <td>{product.type}</td>
+                        <td>{product.primeira_loja}</td>
+                        <td>{product.estoque_total}</td>
+                        <td>{formatDate(product.D)}</td>
+                        <td>
+                          <IconButton size="small">
+                            <EditIcon sx={{ color: "#212529" }} />
+                          </IconButton>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colSpan={7}>
+                        <Box className="pagination">
+                          <button>Prev</button>
+                          <span>Página 1</span>
+                          <button>Next</button>
+                        </Box>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
             </Box>
           </Box>
         </Box>
