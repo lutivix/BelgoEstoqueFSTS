@@ -551,17 +551,19 @@ body {
   border-collapse: collapse;  
   /*table-layout: fixed; /* Força a tabela a respeitar dimensões definidas */
   height:auto; /* Remove qualquer height imposto pelo pai */
+  overflow-y: auto;
 }
 .custom-table th, .custom-table td {
   padding: 0px 16px; /* Reduz o padding vertical de 8px para 4px */
-  height: 30px !important; /* Define altura fixa para as células */
-  line-height: 30px; /* Alinha o texto verticalmente */
-  max-height: 32px; /* Garante que não ultrapasse */
+  height: 36px !important; /* Define altura fixa para as células */
+  line-height: 36px; /* Alinha o texto verticalmente */
+  max-height: 40px; /* Garante que não ultrapasse */
   border: 1px solid #e9ecef;
   text-align: center;
   box-sizing: border-box; /* Garante que padding não aumente a altura */
   font-family: Poppins;;
   font-size: 12px;
+  font-style: bold;
   overflow-x: auto;
   /*display: block; /* Garante que o conteúdo não force expansão */
   vertical-align: middle;
@@ -569,13 +571,13 @@ body {
 }
 .custom-table th {
   background-color: #fff;
-  font-size: 14px;
+  font-size: 15px;
   color: #6c757d;
-  height: 28px;
+  height: 50px !important;
 }
 
 .custom-table tbody tr{
-  height: 28px;
+  height: 36px;
 }
 
 .custom-table tbody tr:nth-child(odd) {
@@ -630,9 +632,10 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 16px;
   text-align: center;
+  padding-top: 8px;
 }
 
 .pagination-prev {
@@ -644,6 +647,7 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .pagination-item {
@@ -658,6 +662,7 @@ body {
   align-items: center;
   justify-content: center;
   color: #0057fc;
+  cursor: pointer;
 }
 
 .pagination-next {
@@ -671,6 +676,23 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+}
+
+.pagination-item.active {
+  background-color: #0057fc !important;
+  color: #fff !important;
+}
+
+.pagination-prev[disabled],
+.pagination-next[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.select-an-item {
+  appearance: none; /* Remove estilo padrão do select */
+  padding-right: 20px; /* Espaço para o ícone Chevron Down */
 }
 
 .div41 {
@@ -690,7 +712,7 @@ body {
 }
 
 .select {
-  width: 137px;
+  width: 100px;
   border-radius: 8px;
   background-color: #fff;
   border: 1px solid #ced4da;
@@ -718,7 +740,7 @@ body {
   align-items: center;
   justify-content: flex-start;
   gap: 8px;
-  text-align: left;
+  text-align: left;  
 }
 
 .page {

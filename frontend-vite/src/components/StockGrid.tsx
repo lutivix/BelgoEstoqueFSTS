@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   Box, Typography, Tooltip,
   IconButton, useMediaQuery
@@ -36,6 +36,8 @@ const StockGrid = () => {
   const [loading, setLoading] = useState(true);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // Estado pra sidebar retrátil
   const isSmallScreen = useMediaQuery("(max-width: 800px)");
+  const [page, setPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const backendUrl = "http://192.168.7.216:3000/products/db";
 
@@ -67,6 +69,14 @@ const StockGrid = () => {
     );
     setFilteredProducts(filtered);
   }, [searchTerm, products]);
+
+  const paginatedProducts = useMemo(() => {
+    const start = (page - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return filteredProducts.slice(start, end);
+  }, [filteredProducts, page, itemsPerPage]);
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
   const fullColumns: GridColDef[] = [
     { field: "codigo_omie", headerName: "Código Omie", minWidth: 120, flex: 1, headerAlign: "center", align: "center" },
@@ -198,19 +208,23 @@ const StockGrid = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredProducts.slice(0, 10).map((product) => (
+                    {paginatedProducts.map((product) => (
                       <tr key={product.id}>
                         <td>{product.codigo_omie}</td>
                         <td>{product.name}</td>
                         <td>{product.type}</td>
                         <td>{product.primeira_loja}</td>
-                        <td><Tooltip title={getStockTooltip(product)} arrow>
-                          <span>{product.estoque_total}</span>
+                        <td>
+                          <Tooltip title={getStockTooltip(product)} arrow>
+                            <span>{product.estoque_total}</span>
                           </Tooltip>
-                      </td>
+                        </td>
                         <td>{formatDate(product.D)}</td>
                         <td>
-                          <IconButton size="small">
+                          <IconButton
+                            size="small"
+                            onClick={() => console.log("Editar produto:", product.id)}
+                          >
                             <EditIcon sx={{ color: "#212529" }} />
                           </IconButton>
                         </td>
@@ -221,9 +235,80 @@ const StockGrid = () => {
                     <tr>
                       <td colSpan={7}>
                         <Box className="pagination">
-                          <button>Prev</button>
-                          <span>Página 1</span>
-                          <button>Next</button>
+                          <Box className="wrapper4">
+                            {/* Botão Prev */}
+                            <Box
+                              className="pagination-prev"
+                              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                              sx={{ cursor: page === 1 ? "not-allowed" : "pointer", opacity: page === 1 ? 0.5 : 1 }}
+                            >
+                              <img className="icon" alt="Anterior" src="./images/Chevron Left.svg" />
+                            </Box>
+
+                            {/* Números das Páginas Dinâmicos */}
+                            {(() => {
+                              const maxPagesToShow = 5;
+                              const half = Math.floor(maxPagesToShow / 2);
+                              let startPage = Math.max(1, page - half);
+                              let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+                              // Ajusta o início se o fim estiver no limite
+                              if (endPage - startPage + 1 < maxPagesToShow) {
+                                startPage = Math.max(1, endPage - maxPagesToShow + 1);
+                              }
+
+                              return Array.from({ length: endPage - startPage + 1 }, (_, index) => {
+                                const pageNumber = startPage + index;
+                                return (
+                                  <Box
+                                    key={pageNumber}
+                                    className={`pagination-item ${page === pageNumber ? "active" : ""}`}
+                                    onClick={() => setPage(pageNumber)}
+                                    sx={{
+                                      cursor: "pointer",
+                                      backgroundColor: page === pageNumber ? "#0057fc" : "#fff",
+                                      color: page === pageNumber ? "#fff" : "#0057fc",
+                                    }}
+                                  >
+                                    <Typography className="div41">{pageNumber}</Typography>
+                                  </Box>
+                                );
+                              });
+                            })()}
+
+                            {/* Botão Next */}
+                            <Box
+                              className="pagination-next"
+                              onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+                              sx={{
+                                cursor: page === totalPages || totalPages === 0 ? "not-allowed" : "pointer",
+                                opacity: page === totalPages || totalPages === 0 ? 0.5 : 1,
+                              }}
+                            >
+                              <img className="icon" alt="Próximo" src="./images/Chevron Right.svg" />
+                            </Box>
+                          </Box>
+
+                          {/* Seletor de Itens por Página */}
+                          <Box className="wrapper5">
+                            <Box className="select">
+                              <select
+                                className="select-an-item"
+                                value={itemsPerPage}
+                                onChange={(e) => {
+                                  setItemsPerPage(Number(e.target.value));
+                                  setPage(1); // Reseta para a primeira página ao mudar itens por página
+                                }}
+                                style={{ border: "none", background: "transparent", fontFamily: "Poppins", fontSize: "14px" }}
+                              >
+                                <option value={10}>10</option>
+                                <option value={25}>25</option>
+                                <option value={50}>50</option>
+                              </select>
+                              {/* <img className="icon" alt="Expandir" src="./images/Chevron Down.svg" /> */}
+                            </Box>
+                            <Typography className="page">Page</Typography>
+                          </Box>
                         </Box>
                       </td>
                     </tr>
