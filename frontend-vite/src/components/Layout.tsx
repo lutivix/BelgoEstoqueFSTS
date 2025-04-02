@@ -6,7 +6,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <Box className="expanded-sidebar">
+    <Box className="Principal">
       <input
         id="nav-toggle"
         type="checkbox"

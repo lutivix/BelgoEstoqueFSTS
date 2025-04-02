@@ -5,19 +5,23 @@
   font-family: Poppins;
 }
 
+html {
+  height: 100vh;
+  width: 100vw;
+}
+
 /* Resets */
 body {
   margin: 0;
-  line-height: normal;
   padding: 0; /* Remove qualquer padding padrão */
-  height: 100vh; /* Força o body a ter altura da janela */
+  height: 100%; /* Força o body a ter altura da janela */
+  width: 100%; /* Corrigi pra 100vw (era 100vh) */
   overflow: hidden; /* Evita scroll no body */
-  width: 100vw; /* Corrigi pra 100vw (era 100vh) */
-
+  line-height: normal;
 }
 
-/* Container Principal */
-.expanded-sidebar {
+/* Container Principal ou Master Page */
+.Principal {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -30,9 +34,8 @@ body {
   text-align: left;
   font-size: 14px;
   color: #fff;
-  font-family: Poppins;
   overflow: hidden; /* Evita ultrapassar a janela */
-  top:0;
+  top: 0;
   left: 0;
 }
 
@@ -43,7 +46,6 @@ body {
   border-radius: 16px;
   position: absolute;
   height: calc(100% - 2vw);
-  align-self: stretch;
   width: var(--navbar-width);
   background-color: #d7060f;
   display: flex;
@@ -74,7 +76,6 @@ body {
   margin-left: -5px;
   position: relative;
   top: 40px;
-  z-index: 0;
   content: url("./images/belgo-cercas.png");
 }
 
@@ -315,6 +316,7 @@ body {
   position: relative;
   line-height: 100%;
   font-weight: 500;
+  font-size: 30px;
 }
 
 .breadcrumbs {
@@ -495,7 +497,7 @@ body {
 .button1 {
   border-radius: 8px;
   background-color: #fff;
-  border: 1px solid #0057fc;
+  border: 1px solid #949daf;
   box-sizing: border-box;
   height: 40px;
   overflow: hidden;
@@ -505,7 +507,7 @@ body {
   justify-content: center;
   padding: 0 16px;
   gap: 8px;
-  color: #0057fc;
+  color: #949daf;
 }
 
 .label {
@@ -532,7 +534,7 @@ body {
   align-items: flex-start;
   justify-content: flex-start;
   padding: 8px;
-  gap: 8px;
+  gap: 16px;
   z-index: 0;
   text-align: left;
   color: #343a40;
@@ -540,20 +542,29 @@ body {
   min-height: 0; /* Evita colapso em flex */
   overflow: auto; /* Rolagem se necessário */
   margin-top: 12px !important; /* Força 24px de margem com !important */
-  max-height: 468px;
+  max-height: 430px;
   border-radius: 16px;
   height: auto; /* Evita que o flex force um height dinâmico */
+  position: relative; /* Necessário para o sticky funcionar corretamente */
 }
-
 
 .custom-table {
   width: 100%;
-  border-collapse: collapse;  
+  border-collapse: collapse;
   /*table-layout: fixed; /* Força a tabela a respeitar dimensões definidas */
-  height:auto; /* Remove qualquer height imposto pelo pai */
+  height: auto; /* Remove qualquer height imposto pelo pai */
   overflow-y: auto;
 }
-.custom-table th, .custom-table td {
+
+.custom-table thead {
+  position: sticky; /* Fixa o thead no topo */
+  top: 0; /* Alinha ao topo do container pai */
+  background-color: #fff; /* Garante fundo branco para o cabeçalho */
+  z-index: 2; /* Fica acima do tbody durante a rolagem */
+}
+
+.custom-table th,
+.custom-table td {
   padding: 0px 16px; /* Reduz o padding vertical de 8px para 4px */
   height: 36px !important; /* Define altura fixa para as células */
   line-height: 36px; /* Alinha o texto verticalmente */
@@ -561,7 +572,7 @@ body {
   border: 1px solid #e9ecef;
   text-align: center;
   box-sizing: border-box; /* Garante que padding não aumente a altura */
-  font-family: Poppins;;
+  font-family: Poppins;
   font-size: 12px;
   font-style: bold;
   overflow-x: auto;
@@ -570,13 +581,18 @@ body {
   min-height: 0; /* Remove qualquer altura mínima implícita */
 }
 .custom-table th {
-  background-color: #fff;
   font-size: 15px;
   color: #6c757d;
-  height: 50px !important;
+  height: 40px !important;
+
+  /* Já tem background-color: #fff no seu CSS, mas reforço aqui */
+  background-color: #fff !important;
+  position: sticky;
+  top: 0;
+  z-index: 2; /* Garante que os th fiquem acima das células do tbody */
 }
 
-.custom-table tbody tr{
+.custom-table tbody tr {
   height: 36px;
 }
 
@@ -588,7 +604,7 @@ body {
   text-align: right;
 }
 
-.custom-table tbody tr{
+.custom-table tbody tr {
   height: 32px !important;
   max-height: 32px; /* Reforça a limitação */
   overflow: hidden;
@@ -625,6 +641,17 @@ body {
   padding: 0;
 }
 
+.wrapper6 {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background-color: #ffffff;
+  border-radius: 16px 16px 16px 16px;
+  width: 800px;
+  padding: 2px;
+}
 /* Pagination (não usada diretamente no DataGrid, mas mantida pra referência) */
 .pagination {
   align-self: stretch;
@@ -635,7 +662,9 @@ body {
   justify-content: flex-start;
   gap: 16px;
   text-align: center;
-  padding-top: 8px;
+  background-color: #fff;
+  padding-top: 2px;
+  width: auto;
 }
 
 .pagination-prev {
@@ -654,14 +683,14 @@ body {
   width: 40px;
   border-radius: 8px;
   background-color: #fff;
-  border: 1px solid #0057fc;
+  border: 1px solid #949daf;
   box-sizing: border-box;
   height: 40px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  color: #0057fc;
+  color: #949daf !important;
   cursor: pointer;
 }
 
@@ -680,8 +709,8 @@ body {
 }
 
 .pagination-item.active {
-  background-color: #0057fc !important;
-  color: #fff !important;
+  background-color: #949daf !important;
+  color: #d7060f !important;
 }
 
 .pagination-prev[disabled],
@@ -693,6 +722,7 @@ body {
 .select-an-item {
   appearance: none; /* Remove estilo padrão do select */
   padding-right: 20px; /* Espaço para o ícone Chevron Down */
+  width: 100%; /* Garante que o select seja clicável em toda a área */
 }
 
 .div41 {
@@ -726,6 +756,7 @@ body {
   justify-content: flex-start;
   padding: 0 12px;
   gap: 8px;
+  position: relative; /* Necessário para posicionar o ícone absoluto */
 }
 
 .select-an-item {
@@ -740,7 +771,7 @@ body {
   align-items: center;
   justify-content: flex-start;
   gap: 8px;
-  text-align: left;  
+  text-align: left;
 }
 
 .page {
