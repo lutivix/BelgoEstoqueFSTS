@@ -1,159 +1,20 @@
-.bell-icon {
-  width: 24px;
-  height: 24px;
+/* Grid básico de consulta */
+.grid {
+  /*flex: 1; /* Ocupa o espaço restante */
+  /*align-self: stretch;
   overflow: hidden;
-  flex-shrink: 0;
-  z-index: 0;
-}
-
-.bullet {
-  width: 8px;
-  position: absolute;
-  margin: 0 !important;
-  top: 8px;
-  right: 8px;
-  border-radius: 50%;
-  background-color: #ff1f25;
-  height: 8px;
-  z-index: 1;
-}
-
-.notification {
-  width: 40px;
-  border-radius: 8px;
-  background-color: #fff;
-  border: 1px solid #e9ecef;
-  box-sizing: border-box;
-  overflow: hidden;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: 8px;
-  position: relative;
-  gap: 8px;
-}
-
-.profile-child {
-  width: 24px;
-  border-radius: 2px;
-  height: 24px;
-  object-fit: cover;
-}
-
-.luciana {
-  position: relative;
-  line-height: 132%;
-  font-weight: 500;
-}
-
-.profile {
-  border-radius: 8px;
-  background-color: #fff;
-  border: 1px solid #e9ecef;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: 8px;
-  gap: 8px;
-}
-
-.body {
-  flex: 1; /* Ocupa o espaço disponível */
-  padding: 8px; /* Reduzido padding-top */
-  align-self: left;
-  overflow: hidden;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  box-sizing: border-box;
-  gap: 8px;
-  min-height: 960px;
-  font-size: 46px;
-  color: #212529;
-  overflow-y: auto; /* Rolagem se necessário */
-  width: 100%;
-  height: 100%;
-}
-
-.header1 {
-  align-self: stretch;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  /* height: 32px; */
-}
-
-.produtos {
-  position: relative;
-  line-height: 100%;
-  font-weight: 500;
-  font-size: 30px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.breadcrumbs {
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  font-size: 14px;
-  color: #6c757d;
-}
-
-.breadcrumbitem {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
-.breadcrumbseparator {
-  height: 24px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 0 8px;
-  box-sizing: border-box;
-}
-
-.breadcrumbitem1 {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  color: #212529;
-}
-
-.link {
-  position: relative;
-  line-height: 132%;
-}
-
-/* Table */
-.table {
-  flex: 1; /* Ocupa o espaço restante */
-  align-self: stretch;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: flex-start; */
+  /* justify-content: flex-start; */
   gap: 16;
   text-align: center;
   font-size: 14px;
   color: #adb5bd;
   width: 100%;
+  height: 100%;
+  /* background-color: #0cf118; */
+  /* border-radius: 10px 10px 10px 20px; */
 }
 
 .actions {
@@ -166,6 +27,290 @@
   width: 100%;
   /* height: 40px; */
   /* margin-bottom: 0; */
+
+  /* background-color: violet; */
+}
+
+/* Container do Grid principal */
+.wrapper-grid {
+  flex: 1; /* Ocupa o espaço disponível */
+  align-self: stretch;
+  background-color: #fff;
+  /* background-color: #e71b1b; */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 16px;
+  z-index: 0;
+  text-align: left;
+  color: #343a40;
+  width: 100%;
+  overflow: auto; /* Rolagem se necessário */
+  margin-top: 12px !important; /* Força 24px de margem com !important */
+  min-height: 0; /* Evita colapso em flex */
+  max-height: 700px;
+  border-radius: 16px 16px 16px 0px;
+  height: 480px;
+  position: relative; /* Necessário para o sticky funcionar corretamente */
+}
+
+.grid__table {
+  width: 100%;
+  border-collapse: collapse;
+  /*table-layout: fixed; /* Força a tabela a respeitar dimensões definidas */
+  /*height: 200px; /* Remove qualquer height imposto pelo pai */
+  overflow-y: auto;
+  /* background-color: #3fb8d6; */
+}
+
+.grid__table thead {
+  position: sticky; /* Fixa o thead no topo */
+  top: 0; /* Alinha ao topo do container pai */
+  background-color: #fff; /* Garante fundo branco para o cabeçalho */
+  z-index: 2; /* Fica acima do tbody durante a rolagem */
+}
+
+.grid__table th,
+.grid__table td {
+  padding: 0px 16px; /* Reduz o padding vertical de 8px para 4px */
+  height: 36px !important; /* Define altura fixa para as células */
+  line-height: 36px; /* Alinha o texto verticalmente */
+  max-height: 40px; /* Garante que não ultrapasse */
+  border: 1px solid #e9ecef;
+  text-align: center;
+  box-sizing: border-box; /* Garante que padding não aumente a altura */
+  font-family: Poppins;
+  font-size: 12px;
+  font-style: bold;
+  overflow-x: auto;
+  /*display: block; /* Garante que o conteúdo não force expansão */
+  vertical-align: middle;
+  min-height: 0; /* Remove qualquer altura mínima implícita */
+}
+.grid__table th {
+  font-size: 15px;
+  color: #6c757d;
+  height: 40px !important;
+
+  /* Já tem background-color: #fff no seu CSS, mas reforço aqui */
+  background-color: #fff !important;
+  position: sticky;
+  top: 0;
+  z-index: 1; /* Garante que os th fiquem acima das células do tbody */
+}
+
+.grid__table tbody tr {
+  height: 36px;
+}
+
+.grid__table tbody tr:nth-child(odd) {
+  background-color: #f8f9fa;
+}
+.grid__table tfoot {
+  padding: 8px;
+  text-align: right;
+}
+
+.grid__table tbody tr {
+  height: 32px !important;
+  max-height: 32px; /* Reforça a limitação */
+  overflow: hidden;
+  min-height: 0; /* Remove altura mínima do tr */
+}
+
+/* Ajuste específico para o Tooltip e IconButton */
+.grid__table td .MuiTooltip-tooltip {
+  max-width: 300px; /* Limita o tooltip, mas não afeta a célula */
+}
+
+.grid__table td .MuiIconButton-root {
+  padding: 2px; /* Reduz ainda mais o padding */
+  height: 20px; /* Menor que 32px pra caber com margem */
+  padding: 4px; /* Reduz o padding padrão do IconButton */
+  height: 24px; /* Limita a altura do botão */
+  width: 24px; /* Mantém proporcional */
+  min-height: 0; /* Remove altura mínima do tr */
+}
+
+/* Linha expandida */
+.grid__expanded-row {
+  background-color: #f1f3f5; /* Fundo mais claro pra destacar */
+  height: auto; /* Permite altura variável */
+}
+
+.grid__expanded-content {
+  padding: 8px 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #343a40;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.grid__expanded-content span {
+  white-space: nowrap; /* Impede quebra de texto nos valores */
+}
+
+.grid__edit-button.expanded {
+  background-color: #e9ecef; /* Fundo leve quando expandido */
+  border-radius: 4px;
+}
+
+.grid__stock-input {
+  width: 60px;
+  padding: 4px;
+  font-size: 12px;
+  font-family: Poppins;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  text-align: center;
+  margin-left: 4px;
+}
+
+.grid__expanded-content label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.grid__save-button {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-family: Poppins;
+  background-color: #949daf;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.grid__save-button:hover {
+  background-color: #6c757d;
+}
+
+/* Tela pequena */
+@media (max-width: 800px) {
+  .grid__table--small th:nth-child(3) ~ th,
+  .grid__table--small td:nth-child(3) ~ td {
+    display: none; /* Esconde colunas extras */
+  }
+
+  .grid__table--small th,
+  .grid__table--small td {
+    padding: 4px; /* Reduz padding em telas pequenas */
+    font-size: 12px; /* Ajusta tamanho da fonte */
+  }
+}
+
+/* Botão de edição */
+.grid__edit-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.grid__edit-button img {
+  width: 16px;
+  height: 16px;
+}
+
+/* Pagination (não usada diretamente no DataGrid, mas mantida pra referência) */
+
+.wrapper-pagination {
+  width: 490px;
+  position: absolute;
+  align-self: stretch;
+  /* display: flex; */
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  /* background-color: #2915dd; */
+  /* border-radius: 0px 0px 16px 16px; */
+  padding: 2px;
+  margin-top: 20px;
+  top: calc(100% - 2vh - 58px);
+}
+
+.pagination {
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  text-align: center;
+  background-color: #fff;
+  padding-top: 2px;
+  width: auto;
+  border-radius: 0px 0px 8px 8px;
+  position: relative;
+  left: -3px;
+}
+
+.pagination-prev {
+  width: 40px;
+  border-radius: 8px;
+  background-color: #e9ecef;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.pagination-item {
+  width: 40px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #949daf;
+  box-sizing: border-box;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: #949daf !important;
+  cursor: pointer;
+}
+
+.pagination-next {
+  width: 40px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  box-sizing: border-box;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.pagination-item--active {
+  background-color: #949daf !important;
+  color: #d7060f !important;
+}
+
+.pagination-prev--disabled,
+.pagination-next--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.select-an-item {
+  appearance: none; /* Remove estilo padrão do select */
+  padding-right: 20px; /* Espaço para o ícone Chevron Down */
+  width: 100%; /* Garante que o select seja clicável em toda a área */
 }
 
 .searchbox {
@@ -304,107 +449,6 @@
   flex-shrink: 0;
 }
 
-.wrapper2 {
-  flex: 1; /* Ocupa o espaço disponível */
-  align-self: stretch;
-  border-radius: 8px;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 8px;
-  gap: 16px;
-  z-index: 0;
-  text-align: left;
-  color: #343a40;
-  width: 100%;
-  min-height: 0; /* Evita colapso em flex */
-  overflow: auto; /* Rolagem se necessário */
-  margin-top: 12px !important; /* Força 24px de margem com !important */
-  max-height: 430px;
-  border-radius: 16px;
-  height: auto; /* Evita que o flex force um height dinâmico */
-  position: relative; /* Necessário para o sticky funcionar corretamente */
-}
-
-.custom-table {
-  width: 100%;
-  border-collapse: collapse;
-  /*table-layout: fixed; /* Força a tabela a respeitar dimensões definidas */
-  height: auto; /* Remove qualquer height imposto pelo pai */
-  overflow-y: auto;
-}
-
-.custom-table thead {
-  position: sticky; /* Fixa o thead no topo */
-  top: 0; /* Alinha ao topo do container pai */
-  background-color: #fff; /* Garante fundo branco para o cabeçalho */
-  z-index: 2; /* Fica acima do tbody durante a rolagem */
-}
-
-.custom-table th,
-.custom-table td {
-  padding: 0px 16px; /* Reduz o padding vertical de 8px para 4px */
-  height: 36px !important; /* Define altura fixa para as células */
-  line-height: 36px; /* Alinha o texto verticalmente */
-  max-height: 40px; /* Garante que não ultrapasse */
-  border: 1px solid #e9ecef;
-  text-align: center;
-  box-sizing: border-box; /* Garante que padding não aumente a altura */
-  font-family: Poppins;
-  font-size: 12px;
-  font-style: bold;
-  overflow-x: auto;
-  /*display: block; /* Garante que o conteúdo não force expansão */
-  vertical-align: middle;
-  min-height: 0; /* Remove qualquer altura mínima implícita */
-}
-.custom-table th {
-  font-size: 15px;
-  color: #6c757d;
-  height: 40px !important;
-
-  /* Já tem background-color: #fff no seu CSS, mas reforço aqui */
-  background-color: #fff !important;
-  position: sticky;
-  top: 0;
-  z-index: 2; /* Garante que os th fiquem acima das células do tbody */
-}
-
-.custom-table tbody tr {
-  height: 36px;
-}
-
-.custom-table tbody tr:nth-child(odd) {
-  background-color: #f8f9fa;
-}
-.custom-table tfoot {
-  padding: 8px;
-  text-align: right;
-}
-
-.custom-table tbody tr {
-  height: 32px !important;
-  max-height: 32px; /* Reforça a limitação */
-  overflow: hidden;
-  min-height: 0; /* Remove altura mínima do tr */
-}
-
-/* Ajuste específico para o Tooltip e IconButton */
-.custom-table td .MuiTooltip-tooltip {
-  max-width: 300px; /* Limita o tooltip, mas não afeta a célula */
-}
-
-.custom-table td .MuiIconButton-root {
-  padding: 2px; /* Reduz ainda mais o padding */
-  height: 20px; /* Menor que 32px pra caber com margem */
-  padding: 4px; /* Reduz o padding padrão do IconButton */
-  height: 24px; /* Limita a altura do botão */
-  width: 24px; /* Mantém proporcional */
-  min-height: 0; /* Remove altura mínima do tr */
-}
-
 .wrapper3 {
   width: 100%;
   height: 100%; /* Garante que o DataGrid use o espaço */
@@ -419,90 +463,6 @@
 .table .wrapper2 {
   width: 100%;
   padding: 0;
-}
-
-.wrapper6 {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  background-color: #ffffff;
-  border-radius: 16px 16px 16px 16px;
-  width: 800px;
-  padding: 2px;
-}
-/* Pagination (não usada diretamente no DataGrid, mas mantida pra referência) */
-.pagination {
-  align-self: stretch;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 16px;
-  text-align: center;
-  background-color: #fff;
-  padding-top: 2px;
-  width: auto;
-}
-
-.pagination-prev {
-  width: 40px;
-  border-radius: 8px;
-  background-color: #e9ecef;
-  height: 40px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.pagination-item {
-  width: 40px;
-  border-radius: 8px;
-  background-color: #fff;
-  border: 1px solid #949daf;
-  box-sizing: border-box;
-  height: 40px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  color: #949daf !important;
-  cursor: pointer;
-}
-
-.pagination-next {
-  width: 40px;
-  border-radius: 8px;
-  background-color: #fff;
-  border: 1px solid #ced4da;
-  box-sizing: border-box;
-  height: 40px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.pagination-item.active {
-  background-color: #949daf !important;
-  color: #d7060f !important;
-}
-
-.pagination-prev[disabled],
-.pagination-next[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.select-an-item {
-  appearance: none; /* Remove estilo padrão do select */
-  padding-right: 20px; /* Espaço para o ícone Chevron Down */
-  width: 100%; /* Garante que o select seja clicável em toda a área */
 }
 
 .div41 {
@@ -564,6 +524,12 @@
 .icon {
   margin-right: 10px;
   font-size: 20px;
+}
+
+.select-icon {
+  position: absolute;
+  right: 20px;
+  pointer-events: none;
 }
 
 .text {

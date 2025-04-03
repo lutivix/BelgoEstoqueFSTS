@@ -20,6 +20,7 @@ body {
   width: 100%; /* Corrigi pra 100vw (era 100vh) */
   overflow: hidden; /* Evita scroll no body */
   line-height: normal;
+  margin: 1vh;
 }
 
 /* Container Principal ou Master Page */
@@ -43,11 +44,10 @@ body {
 
 /* Sidebar */
 .sidebar {
-  left: 1vw;
-  top: 1vw;
+  margin: 1vh;
   border-radius: 16px;
   position: absolute;
-  height: calc(100% - 2vw);
+  height: calc(100% - 2vh);
   width: var(--navbar-width);
   background-color: #d7060f;
   display: flex;
@@ -56,7 +56,6 @@ body {
   justify-content: flex-start;
   z-index: 1;
   transition: width 0.3s ease;
-  height: calc(100% - 2vw); /* Ajusta pra caber com top e bottom */
 }
 
 .sidebar__header {
@@ -140,8 +139,8 @@ body {
 
 #nav-toggle:checked ~ .main {
   /* margin-left: calc(var(--navbar-width-min) + 16px); */
-  margin-left: calc(var(--navbar-width-min) + 2vw);
-  width: calc(100% - var(--navbar-width-min) - 2vw);
+  margin-left: calc(var(--navbar-width-min) + 2vh);
+  width: calc(100% - var(--navbar-width-min) - 2vh);
 }
 
 #nav-toggle:checked ~ .sidebar .sidebar__header .sidebar__logo-icon {
@@ -159,30 +158,13 @@ body {
   width: 88px;
 }
 
-#nav-toggle:checked ~ .sidebar .sidebar__nav-item .dashboard {
+#nav-toggle:checked ~ .sidebar .sidebar__nav-item .sidebar__nav-title {
   opacity: 0;
   width: 0;
   overflow: hidden;
 }
 
-/*Items Globais*/
-.arrow-left-icon {
-  width: 20px;
-  height: 20px;
-  overflow: hidden;
-  flex-shrink: 0;
-  content: url("./images/Arrow Left.svg");
-}
-
-.home-icon {
-  width: 24px;
-  height: 24px;
-  overflow: hidden;
-  flex-shrink: 0;
-  margin-left: -5px;
-}
-
-.dashboard {
+.sidebar__nav-title {
   flex: 1;
   position: relative;
   letter-spacing: 0.03em;
@@ -209,7 +191,7 @@ body {
   margin-left: 0%;
 }
 
-.wrapper {
+.sidebar__wrapper {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -233,7 +215,7 @@ body {
   gap: 8px;
 }
 
-.navbar1 {
+.sidebar__footer {
   align-self: stretch;
   overflow: hidden;
   display: flex;
@@ -245,20 +227,22 @@ body {
 
 /* Main Content */
 .main {
-  margin-left: calc(var(--navbar-width) + 2vw); /* Compensa o left: 1vw da sidebar */
-  width: calc(100% - var(--navbar-width) - 2vw); /* O resto da largura */
-  flex: 1;
-  height: 100%;
+  margin-left: calc(var(--navbar-width) + 2vh); /* Compensa o left: 1vw da sidebar */
+  width: calc(100% - var(--navbar-width) - 2vh); /* O resto da largura */
+  height: calc(100% - 2vh);
   overflow: hidden;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: flex-start;
-  min-height: 1024px;
-  z-index: 0;
+  justify-content: flex-start; */
+  /* min-height: 700px; */
   color: #343a40;
-  margin-left: calc(var(--navbar-width) + 16px);
   transition: margin-left 0.3s ease;
+  /* border-radius: 8px; */
+  margin-top: 1vh;
+  margin-bottom: 15vh;
+  margin-right: 1vh;
+  /* background-color: #000000; */
 }
 
 .page-header {
@@ -274,19 +258,176 @@ body {
   box-sizing: border-box;
   gap: 8px;
   width: 100%;
+  /* background-color: rgb(132, 228, 22); */
 }
 
-.dinamico {
-  margin: 8px;
+.page-header__bell-icon {
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+  flex-shrink: 0;
+  z-index: 0;
 }
 
-.content-area {
-  flex: 1;
-  padding: 8px 32px;
-  overflow-y: auto;
-  width: 100%;
-  height: 100%;
+.page-header__bullet {
+  width: 8px;
+  position: absolute;
+  margin: 0 !important;
+  top: 8px;
+  right: 8px;
+  border-radius: 50%;
+  background-color: #ff1f25;
+  height: 8px;
+  z-index: 1;
+}
+
+.page-header__notification {
+  width: 40px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  box-sizing: border-box;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  gap: 8px;
+}
+
+.page-header__profile-child {
+  width: 24px;
+  border-radius: 2px;
+  height: 24px;
+  object-fit: cover;
+}
+
+.page-header__user {
+  position: relative;
+  line-height: 132%;
+  font-weight: 500;
+}
+
+.page-header__profile {
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  gap: 8px;
+}
+
+.page-header__home-icon {
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-left: -5px;
+}
+
+.body {
+  /*flex: 1; /* Ocupa o espaço disponível */
+  /*padding: 8px; /* Reduzido padding-top */
+  align-self: left;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  gap: 8px;
+  font-size: 46px;
+  color: #000000;
+  overflow-y: auto; /* Rolagem se necessário */
+  /* background-color: #e61ee6; */
+  /* border-radius: 8px; */
+  margin-bottom: 1vh;
+  height: calc(100% - 2vh);
+}
+
+.header {
+  align-self: stretch;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 2px;
+  /* height: 32px; */
+  /* background-color: orange; */
+}
+
+.header__title {
+  position: relative;
+  line-height: 100%;
+  font-weight: 500;
+  font-size: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.header__crumbs {
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.header__crumbs-item {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.header__crumb-separator {
+  height: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 8px;
   box-sizing: border-box;
 }
 
-/* Copie os estilos de sidebar retrátil (#nav-toggle) do StockGrid.css */
+.header__crumbs-item1 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: #212529;
+}
+
+.header__link {
+  position: relative;
+  line-height: 132%;
+}
+
+.dinamico {
+  flex: 1;
+  /* background-color: rgb(233, 156, 13); */
+  /* border-radius: 8px; */
+  margin-bottom: 1vh;
+  height: calc(100%-1vh);
+  /* background-color: lightcoral; */
+}
+
+/*Items Globais*/
+.arrow-left-icon {
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  flex-shrink: 0;
+  content: url("./images/Arrow Left.svg");
+}

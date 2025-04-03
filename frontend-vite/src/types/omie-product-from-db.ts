@@ -7,7 +7,7 @@ export interface OmieProductFromDb {
   id_type: string;
   valor_un: number;
   primeira_loja: string;
-  id: number;
+  id: string; // Mude de number pra string
   cod_integ: string;
   estoque_vitoria: number;
   estoque_uniao: number;
