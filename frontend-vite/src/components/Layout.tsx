@@ -1,12 +1,11 @@
 import { useState } from "react"; // Adiciona o import do useState
-import { Box, Typography } from "@mui/material";
 import "./Layout.css";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <Box className="Principal">
+    <div className="principal">
       <input
         id="nav-toggle"
         type="checkbox"
@@ -15,75 +14,75 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         style={{ display: "none" }}
       />
 
-      <Box className="sidebar">
-        <Box className="header">
+      <div className="sidebar">
+        <div className="sidebar__header">
           <img
-            className="logo-icon"
+            className="sidebar__logo-icon"
             alt="Logo"
             src={sidebarCollapsed ? "/images/b-cercas.png" : "/images/belgo-cercas.png"}
           />
           <hr />
-          <label htmlFor="nav-toggle" className="sidebarcollapse-button">
+          <label htmlFor="nav-toggle" className="sidebar__collapse-button">
             <img
               className="arrow-left-icon"
               alt="Toggle"
               src={sidebarCollapsed ? "/images/Arrow Right.svg" : "/images/Arrow Left.svg"}
             />
           </label>
-        </Box>
-        <Box className="navbar">
-          <Box className="wrapper">
-            <Box className="sidebarnav-item">
+        </div>
+        <div className="sidebar__navbar">
+          <div className="wrapper">
+            <div className="sidebar__nav-item">
               <img className="home-icon" alt="Dashboard" src="/images/Home.svg" />
-              <Typography className="dashboard">Dashboard</Typography>
-            </Box>
-            <Box className="sidebarnav-item">
+              <span className="dashboard">Dashboard</span>
+            </div>
+            <div className="sidebar__nav-item">
               <img className="home-icon" alt="Produtos" src="/images/Spinner.svg" />
-              <Typography className="dashboard">Produtos</Typography>
-            </Box>
-          </Box>
-          <Box className="col">
-            <Box className="wrapper">
-              <Box className="sidebarnav-item">
+              <span className="dashboard">Produtos</span>
+            </div>
+          </div>
+          <div className="col">
+            <div className="wrapper">
+              <div className="sidebar__nav-item">
                 <img className="home-icon" alt="Mensagens" src="/images/Mail.svg" />
-                <Typography className="dashboard">Mensagens</Typography>
-              </Box>
-              <Box className="sidebarnav-item">
+                <span className="dashboard">Mensagens</span>
+              </div>
+              <div className="sidebar__nav-item">
                 <img className="home-icon" alt="Configurações" src="/images/Setting.svg" />
-                <Typography className="dashboard">Configurações</Typography>
-              </Box>
-              <Box className="sidebarnav-item">
+                <span className="dashboard">Configurações</span>
+              </div>
+              <div className="sidebar__nav-item">
                 <img className="home-icon" alt="Help" src="/images/Help.svg" />
-                <Typography className="dashboard">Help centre</Typography>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-        <Box className="navbar1">
-          <Box className="sidebarnav-item5">
+                <span className="dashboard">Help centre</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="navbar1">
+          <div className="sidebar__nav-item5">
             <img className="home-icon" alt="Sair" src="/images/Arrow Left.svg" />
-            <Typography className="dashboard">Sair</Typography>
-          </Box>
-        </Box>
-      </Box>
+            <span className="dashboard">Sair</span>
+          </div>
+        </div>
+      </div>
 
-      <Box className="main">
-        <Box className="page-header">
-          <Box className="notification">
+      <div className="main">
+        <div className="page-header">
+          <div className="notification">
             <img className="bell-icon" alt="Notificações" src="/images/Bell.svg" />
-            <Box className="bullet" />
-          </Box>
-          <Box className="profile">
+            <div className="bullet" />
+          </div>
+          <div className="profile">
             <img className="profile-child" alt="Avatar" src="/images/Rectangle 1.png" />
-            <Typography className="luciana">Luciana</Typography>
+            <span className="luciana">Luciana</span>
             <img className="home-icon" alt="Dropdown" src="/images/Chevron Down.svg" />
-          </Box>
-        </Box>
-        <Box className="content-area">
+          </div>
+        </div>
+        <div className="dinamico">
           {children} {/* Aqui entra o conteúdo variável */}
-        </Box>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   );
 };
 

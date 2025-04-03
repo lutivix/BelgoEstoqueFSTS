@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { Box, Typography, Tooltip, IconButton, useMediaQuery } from "@mui/material";
+import { Box, Tooltip, IconButton, useMediaQuery } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
@@ -197,13 +197,13 @@ const StockGrid = () => {
           <p className="produtos">Produtos</p>
           <Box className="breadcrumbs">
             <Box className="breadcrumbitem">
-              <Typography className="link">Dashboard</Typography>
+              <span className="link">Dashboard</span>
             </Box>
             <Box className="breadcrumbseparator">
-              <Typography className="link">/</Typography>
+              <span className="link">/</span>
             </Box>
             <Box className="breadcrumbitem1">
-              <Typography className="link">Produtos</Typography>
+              <span className="link">Produtos</span>
             </Box>
           </Box>
         </Box>
@@ -227,7 +227,7 @@ const StockGrid = () => {
             </Box>
             <Box className="button1">
               <img className="icon" alt="Adicionar" src="/images/Plus.svg" />
-              <Typography className="label">Adicionar</Typography>
+              <span className="label">Adicionar</span>
             </Box>
           </Box>
           <Box className="wrapper2">
@@ -270,111 +270,109 @@ const StockGrid = () => {
               </tbody>
             </table>
           </Box>
-          <Box>
-            <div className="wrapper6">
-              <tfoot>
-                <tr>
-                  <td colSpan={7}>
-                    <Box className="pagination">
-                      <Box className="wrapper4">
-                        {/* Botão Prev */}
-                        <Box
-                          className="pagination-prev"
-                          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                          sx={{
-                            cursor: page === 1 ? "not-allowed" : "pointer",
-                            opacity: page === 1 ? 0.5 : 1,
-                          }}
-                        >
-                          <img className="icon" alt="Anterior" src="./images/Chevron Left.svg" />
-                        </Box>
-
-                        {/* Números das Páginas Dinâmicos */}
-                        {(() => {
-                          const maxPagesToShow = 5;
-                          const half = Math.floor(maxPagesToShow / 2);
-                          let startPage = Math.max(1, page - half);
-                          let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
-
-                          // Ajusta o início se o fim estiver no limite
-                          if (endPage - startPage + 1 < maxPagesToShow) {
-                            startPage = Math.max(1, endPage - maxPagesToShow + 1);
-                          }
-
-                          return Array.from({ length: endPage - startPage + 1 }, (_, index) => {
-                            const pageNumber = startPage + index;
-                            return (
-                              <Box
-                                key={pageNumber}
-                                className={`pagination-item ${page === pageNumber ? "active" : ""}`}
-                                onClick={() => setPage(pageNumber)}
-                                sx={{
-                                  cursor: "pointer",
-                                  backgroundColor: page === pageNumber ? "#0057fc" : "#fff",
-                                  color: page === pageNumber ? "#fff" : "#0057fc",
-                                }}
-                              >
-                                <Typography className="div41">{pageNumber}</Typography>
-                              </Box>
-                            );
-                          });
-                        })()}
-
-                        {/* Botão Next */}
-                        <Box
-                          className="pagination-next"
-                          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-                          sx={{
-                            cursor:
-                              page === totalPages || totalPages === 0 ? "not-allowed" : "pointer",
-                            opacity: page === totalPages || totalPages === 0 ? 0.5 : 1,
-                          }}
-                        >
-                          <img className="icon" alt="Próximo" src="./images/Chevron Right.svg" />
-                        </Box>
+          <Box className="wrapper6">
+            <tfoot>
+              <tr>
+                <td colSpan={7}>
+                  <Box className="pagination">
+                    <Box className="wrapper4">
+                      {/* Botão Prev */}
+                      <Box
+                        className="pagination-prev"
+                        onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                        sx={{
+                          cursor: page === 1 ? "not-allowed" : "pointer",
+                          opacity: page === 1 ? 0.5 : 1,
+                        }}
+                      >
+                        <img className="icon" alt="Anterior" src="./images/Chevron Left.svg" />
                       </Box>
 
-                      {/* Seletor de Itens por Página */}
-                      <Box className="wrapper5">
-                        <Box className="select">
-                          <select
-                            className="select-an-item"
-                            value={page}
-                            onChange={(e) => setPage(Number(e.target.value))} // Muda a página diretamente
-                            style={{
-                              border: "none",
-                              background: "transparent",
-                              fontFamily: "Poppins",
-                              fontSize: "14px",
-                              width: "100%",
-                              paddingRight: "24px",
-                              appearance: "none",
-                            }}
-                          >
-                            {Array.from({ length: totalPages }, (_, index) => (
-                              <option key={index + 1} value={index + 1}>
-                                {index + 1}
-                              </option>
-                            ))}
-                          </select>
-                          <img
-                            className="icon select-icon"
-                            alt="Selecionar página"
-                            src="./images/Chevron Down.svg"
-                            style={{
-                              position: "absolute",
-                              right: "8px",
-                              pointerEvents: "none",
-                            }}
-                          />
-                        </Box>
-                        <Typography className="page">Page</Typography>
+                      {/* Números das Páginas Dinâmicos */}
+                      {(() => {
+                        const maxPagesToShow = 5;
+                        const half = Math.floor(maxPagesToShow / 2);
+                        let startPage = Math.max(1, page - half);
+                        let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+                        // Ajusta o início se o fim estiver no limite
+                        if (endPage - startPage + 1 < maxPagesToShow) {
+                          startPage = Math.max(1, endPage - maxPagesToShow + 1);
+                        }
+
+                        return Array.from({ length: endPage - startPage + 1 }, (_, index) => {
+                          const pageNumber = startPage + index;
+                          return (
+                            <Box
+                              key={pageNumber}
+                              className={`pagination-item ${page === pageNumber ? "active" : ""}`}
+                              onClick={() => setPage(pageNumber)}
+                              sx={{
+                                cursor: "pointer",
+                                backgroundColor: page === pageNumber ? "#0057fc" : "#fff",
+                                color: page === pageNumber ? "#fff" : "#0057fc",
+                              }}
+                            >
+                              <span className="div41">{pageNumber}</span>
+                            </Box>
+                          );
+                        });
+                      })()}
+
+                      {/* Botão Next */}
+                      <Box
+                        className="pagination-next"
+                        onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+                        sx={{
+                          cursor:
+                            page === totalPages || totalPages === 0 ? "not-allowed" : "pointer",
+                          opacity: page === totalPages || totalPages === 0 ? 0.5 : 1,
+                        }}
+                      >
+                        <img className="icon" alt="Próximo" src="./images/Chevron Right.svg" />
                       </Box>
                     </Box>
-                  </td>
-                </tr>
-              </tfoot>
-            </div>
+
+                    {/* Seletor de Itens por Página */}
+                    <Box className="wrapper5">
+                      <Box className="select">
+                        <select
+                          className="select-an-item"
+                          value={page}
+                          onChange={(e) => setPage(Number(e.target.value))} // Muda a página diretamente
+                          style={{
+                            border: "none",
+                            background: "transparent",
+                            fontFamily: "Poppins",
+                            fontSize: "14px",
+                            width: "100%",
+                            paddingRight: "24px",
+                            appearance: "none",
+                          }}
+                        >
+                          {Array.from({ length: totalPages }, (_, index) => (
+                            <option key={index + 1} value={index + 1}>
+                              {index + 1}
+                            </option>
+                          ))}
+                        </select>
+                        <img
+                          className="icon select-icon"
+                          alt="Selecionar página"
+                          src="./images/Chevron Down.svg"
+                          style={{
+                            position: "absolute",
+                            right: "8px",
+                            pointerEvents: "none",
+                          }}
+                        />
+                      </Box>
+                      <span className="page">Page</span>
+                    </Box>
+                  </Box>
+                </td>
+              </tr>
+            </tfoot>
           </Box>
         </Box>
       </Box>
