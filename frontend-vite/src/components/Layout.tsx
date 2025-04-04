@@ -1,9 +1,14 @@
+import React from "react";
 import { useState } from "react"; // Adiciona o import do useState
+import { Link } from "react-router-dom"; // Adicione isso no topo do Layout.tsx
 import "./Layout.css";
 
-const sidebarItems = [
+const mainSidebarItems = [
   { id: "dashboard", label: "Dashboard", icon: "/images/Home.svg" },
   { id: "products", label: "Produtos", icon: "/images/Spinner.svg" },
+];
+
+const secondarySidebarItems = [
   { id: "messages", label: "Mensagens", icon: "/images/Mail.svg" },
   { id: "settings", label: "Configurações", icon: "/images/Setting.svg" },
   { id: "help", label: "Help Centre", icon: "/images/Help.svg" },
@@ -11,8 +16,25 @@ const sidebarItems = [
 
 const footerItem = { id: "logout", label: "Sair", icon: "/images/Arrow Left.svg" };
 
+const breadcrumbMap: Record<string, string> = {
+  "/": "Dashboard",
+  "/products": "Produtos",
+  // Adicione mais rotas aqui se precisar (ex.: "/messages": "Mensagens")
+};
+
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const getBreadcrumbs = () => {
+    const pathnames = location.pathname.split("/").filter((x) => x);
+    const crumbs = [{ path: "/", label: "Dashboard" }]; // Sempre começa com Dashboard
+    if (pathnames.length > 0) {
+      const fullPath = `/${pathnames[0]}`;
+      if (breadcrumbMap[fullPath]) {
+        crumbs.push({ path: fullPath, label: breadcrumbMap[fullPath] });
+      }
+    }
+    return crumbs;
+  };
 
   return (
     <div className="principal">
@@ -42,36 +64,32 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         </div>
         <div className="sidebar__navbar">
           <div className="sidebar__wrapper">
-            <div className="sidebar__nav-item">
-              <img className="home-icon" alt="sidebar__nav-title" src="/images/Home.svg" />
-              <span className="sidebar__nav-title">Dashboard</span>
-            </div>
-            <div className="sidebar__nav-item">
-              <img className="home-icon" alt="Produtos" src="/images/Spinner.svg" />
-              <span className="sidebar__nav-title">Produtos</span>
-            </div>
+            {mainSidebarItems.map((item) => (
+              <Link
+                key={item.id}
+                to={item.id === "dashboard" ? "/" : "/products"}
+                className="sidebar__nav-item"
+              >
+                <img className="home-icon" alt={item.label} src={item.icon} />
+                <span className="sidebar__nav-title">{item.label}</span>
+              </Link>
+            ))}
           </div>
           <div className="col">
             <div className="sidebar__wrapper">
-              <div className="sidebar__nav-item">
-                <img className="home-icon" alt="Mensagens" src="/images/Mail.svg" />
-                <span className="sidebar__nav-title">Mensagens</span>
-              </div>
-              <div className="sidebar__nav-item">
-                <img className="home-icon" alt="Configurações" src="/images/Setting.svg" />
-                <span className="sidebar__nav-title">Configurações</span>
-              </div>
-              <div className="sidebar__nav-item">
-                <img className="home-icon" alt="Help" src="/images/Help.svg" />
-                <span className="sidebar__nav-title">Help centre</span>
-              </div>
+              {secondarySidebarItems.map((item) => (
+                <div key={item.id} className="sidebar__nav-item">
+                  <img className="home-icon" alt={item.label} src={item.icon} />
+                  <span className="sidebar__nav-title">{item.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
         <div className="sidebar__footer">
           <div className="sidebar__nav-item5">
-            <img className="home-icon" alt="Sair" src="/images/Arrow Left.svg" />
-            <span className="sidebar__nav-title">Sair</span>
+            <img className="home-icon" alt={footerItem.label} src={footerItem.icon} />
+            <span className="sidebar__nav-title">{footerItem.label}</span>
           </div>
         </div>
       </div>
@@ -94,17 +112,24 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         </div>
         <div className="body">
           <div className="header">
-            <p className="header__title">Produtos</p>
+            <p className="header__title">{breadcrumbMap[location.pathname] || "Página"}</p>
             <div className="header__crumbs">
-              <div className="header__crumbs-item">
-                <span className="header__link">Dashboard</span>
-              </div>
-              <div className="header__crumb-separator">
-                <span className="header__link">/</span>
-              </div>
-              <div className="header__crumbs-item1">
-                <span className="header__link">Produtos</span>
-              </div>
+              {getBreadcrumbs().map((crumb, index) => (
+                <React.Fragment key={crumb.path}>
+                  <div
+                    className={`header__crumbs-item${index === getBreadcrumbs().length - 1 ? "1" : ""}`}
+                  >
+                    <Link to={crumb.path} className="header__link">
+                      {crumb.label}
+                    </Link>
+                  </div>
+                  {index < getBreadcrumbs().length - 1 && (
+                    <div className="header__crumb-separator">
+                      <span className="header__link">/</span>
+                    </div>
+                  )}
+                </React.Fragment>
+              ))}
             </div>
           </div>
           <div className="dinamico">

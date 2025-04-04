@@ -79,7 +79,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 16px 32px 32px;
+  padding: 8px 16px 16px;
   gap: 64px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -176,7 +176,7 @@ body {
 }
 
 .sidebar__nav-item {
-  width: 176px;
+  width: 100%;
   border-radius: 8px;
   height: 48px;
   overflow: hidden;
@@ -184,11 +184,26 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
-  padding: 0;
+  justify-content: center;
+  padding: 0 12px;
   box-sizing: border-box;
   gap: 8px;
-  margin-left: 0%;
+  /* margin-left: 2px; */
+  transition: background-color 0.2s ease; /* Suaviza o hover */
+  text-decoration: none; /* Remove sublinhado do Link */
+  color: #fff; /* Garante a cor do texto */
+}
+
+.sidebar__nav-item:hover,
+.sidebar__nav-item5:hover {
+  background-color: #c52424; /* Vermelho mais escuro pro hover */
+  cursor: pointer;
+}
+
+#nav-toggle:checked ~ .sidebar .sidebar__nav-item {
+  width: 100%; /* Garante que o item ocupe o espaço disponível */
+  justify-content: center; /* Centraliza o ícone */
+  padding: 0 12px; /* Mantém o padding consistente*/
 }
 
 .sidebar__wrapper {
@@ -380,10 +395,11 @@ body {
   align-items: flex-start;
   justify-content: flex-start;
   font-size: 14px;
-  color: #6c757d;
+  color: #6c757d; /* Cor padrão dos itens não ativos */
 }
 
 .header__crumbs-item {
+  appearance: none;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -402,6 +418,7 @@ body {
 }
 
 .header__crumbs-item1 {
+  appearance: none;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -409,9 +426,40 @@ body {
   color: #212529;
 }
 
+.header__crumbs-item .header__link {
+  color: #6c757d; /* Cinza pra itens não ativos */
+  text-decoration: none; /* Remove sublinhado padrão */
+}
+
+.header__crumbs-item .header__link:hover {
+  color: #343a40; /* Escurece no hover */
+  text-decoration: underline;
+}
+
+.header__crumbs-item1 .header__link {
+  color: #212529; /* Preto pro item ativo */
+  text-decoration: none; /* Sem sublinhado no ativo */
+}
+
+.header__crumbs-item1 .header__link:hover {
+  color: #212529; /* Mantém a cor no hover do ativo */
+  text-decoration: underline;
+}
+
 .header__link {
   position: relative;
   line-height: 132%;
+  text-decoration: none; /* Reforça a remoção do sublinhado */
+}
+
+/* Remove estilos de visitado/ativo do navegador */
+.header__link:visited,
+.header__link:active {
+  color: inherit; /* Usa a cor definida pelo pai */
+}
+
+.header__link:hover {
+  text-decoration: underline; /* Feedback no hover */
 }
 
 .dinamico {
