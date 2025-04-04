@@ -31,7 +31,7 @@ const StockGrid = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // Estado pra sidebar retrátil
   //const isSmallScreen = useMediaQuery("(max-width: 800px)");
   const [page, setPage] = useState(1);
-  const itemsPerPage = 10; // Fixo em 10, ou ajuste conforme necessário
+  const itemsPerPage = 15; // Fixo em 10, ou ajuste conforme necessário
   const maxPagesToShow = 3; // Mostra apenas 3 números por vez
 
   // Detecta tela pequena com window.matchMedia
@@ -327,7 +327,6 @@ const StockGrid = () => {
 
               {/* Números das Páginas Dinâmicos */}
               {(() => {
-                const maxPagesToShow = 5;
                 const half = Math.floor(maxPagesToShow / 2);
                 let startPage = Math.max(1, page - half);
                 let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);

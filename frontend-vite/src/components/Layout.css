@@ -467,8 +467,8 @@ body {
   /* background-color: rgb(233, 156, 13); */
   /* border-radius: 8px; */
   margin-bottom: 1vh;
-  height: calc(100%-1vh);
-  /* background-color: lightcoral; */
+  height: calc(100%-2vh);
+  background-color: lightcoral;
 }
 
 /*Items Globais*/
