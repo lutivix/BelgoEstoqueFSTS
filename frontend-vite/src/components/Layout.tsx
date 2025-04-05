@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react"; // Adiciona o import do useState
-import { Link } from "react-router-dom"; // Adicione isso no topo do Layout.tsx
 import "./Layout.css";
+import { Link } from "react-router-dom";
 
 const mainSidebarItems = [
   { id: "dashboard", label: "Dashboard", icon: "/images/Home.svg" },
@@ -96,11 +96,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
       <div className="main">
         <div className="page-header">
-          <div className="page-header__notification">
+          {/* <div className="page-header__notification">
             <img className="page-header__bell-icon" alt="Notificações" src="/images/Bell.svg" />
             <div className="page-header__bullet" />
-          </div>
-          <div className="page-header__profile">
+          </div> */}
+          {/* <div className="page-header__profile">
             <img
               className="page-header__profile-child"
               alt="Avatar"
@@ -108,7 +108,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             />
             <span className="page-header__user">Luciana</span>
             <img className="page-header__home-icon" alt="Dropdown" src="/images/Chevron Down.svg" />
-          </div>
+          </div> */}
         </div>
         <div className="body">
           <div className="header">
