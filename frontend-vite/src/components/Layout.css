@@ -19,7 +19,7 @@ body {
   align-items: center; /* Centraliza o wrapper verticalmente */
   justify-content: center; /* Centraliza o wrapper horizontalmente */
 
-  background-color: black;
+  /* background-color: black; */
 }
 
 /* Container Principal ou Master Page */
@@ -32,7 +32,8 @@ body {
   align-items: center;
   justify-content: flex-start;
 
-  background-color: #adc7e2;
+  background-color: #f8f9fa;
+  /* background-color: #adc7e2; */
   text-align: left;
   font-size: 14px;
   color: #fff;
@@ -246,27 +247,28 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
 
-  color: #ffffff;
+  color: #343a40;
   transition: margin-left 0.3s ease;
   /* border-radius: 8px; */
 
-  background-color: #6d5b22;
+  /* background-color: #6d5b22; */
 }
 
 .page-header {
   height: 64px;
   flex-shrink: 0;
+  align-self: stretch;
+
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  padding: 16px;
+  padding: 0 32px 0 56px;
 
   gap: 8px;
-  width: 100%;
-  background-color: rgb(75, 0, 215);
+  /* background-color: rgb(75, 0, 215); */
 }
 
 .page-header__bell-icon {
@@ -277,10 +279,10 @@ body {
 
 .page-header__bullet {
   width: 8px;
-  /* position: absolute; */
-  /* margin: 0 !important; */
-  /* top: 8px;
-  right: 8px; */
+  position: absolute;
+  margin: 0 !important;
+  top: 8px;
+  right: 8px;
   border-radius: 50%;
   background-color: #ff1f25;
   height: 8px;
@@ -343,11 +345,11 @@ body {
   gap: 8px;
   font-size: 46px;
   color: #000000;
-  background-color: #e61ee6;
+  /* background-color: #e61ee6; */
   /* border-radius: 8px; */
 
   flex: 1;
-  /* width: 100%; */
+  width: 100%;
 
   display: flex;
   flex-direction: column;
@@ -356,13 +358,14 @@ body {
 }
 
 .header {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 2px;
+  /* padding: 2px; */
   /* height: 32px; */
-  background-color: orange;
+  /* background-color: orange; */
 }
 
 .header__title {
@@ -450,12 +453,13 @@ body {
 
 .dinamico {
   flex: 1;
-  height: 96vh;
+  width: 100%;
+
   display: flex;
   flex-direction: column;
   align-items: flex-start; /* Centraliza o wrapper verticalmente */
-  justify-content: center; /* Centraliza o wrapper horizontalmente */
-  background-color: lightcoral;
+  justify-content: flex-start; /* Centraliza o wrapper horizontalmente */
+  /* background-color: lightcoral; */
 }
 
 /*Items Globais*/

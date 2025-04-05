@@ -1,6 +1,5 @@
 /* Grid básico de consulta */
 .grid {
-  height: 96vh;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -11,9 +10,9 @@
   font-size: 14px;
   color: #adb5bd;
   width: 100%;
-  background-color: #0cf118;
+  /* background-color: #0cf118; */
   /* border-radius: 10px 10px 10px 20px; */
-  max-height: calc(100% - 48px);
+  /* max-height: calc(100% - 48px); */
   /* display: grid;
   grid-template-rows: auto 1fr auto; actions, conteúdo, paginação */
 }
@@ -29,15 +28,16 @@
   /* height: 40px; */
   /* margin-bottom: 0; */
 
-  background-color: violet;
+  /* background-color: violet; */
 }
 
 /* Container do Grid principal */
 .wrapper-grid {
   /* align-self: stretch; */
   background-color: #fff;
-  background-color: #e71b1b;
+  /* background-color: #e71b1b; */
 
+  display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 16px;
@@ -45,24 +45,38 @@
   text-align: left;
   color: #343a40;
   width: 100%;
-  padding-top: 12px !important; /* Força 24px de margem com !important */
-  min-height: 0; /* Evita colapso em flex */
-  /* max-height: 700px; */
+  min-height: 0;
+
   border-radius: 16px 16px 0px 0px;
-  height: calc(100% - 96px);
 
-  position: relative; /* Necessário para o sticky funcionar corretamente */
-
+  /*position: relative; /* Necessário para o sticky funcionar corretamente */
+  max-height: 442px;
   overflow-y: auto; /* ativa rolagem quando necessário */
 }
 
+/* Customização da scrollbar */
+.wrapper-grid::-webkit-scrollbar {
+  width: 8px; /* Largura da barra */
+  height: 8px; /* Para consistência em scroll horizontal, se houver */
+}
+
+.wrapper-grid::-webkit-scrollbar-thumb {
+  background: #7b7575; /* Cor do thumb */
+  border-radius: 99px;
+}
+
+.wrapper-grid::-webkit-scrollbar-thumb:hover {
+  background: #a14949; /* Cor ao passar o mouse */
+}
+
 .grid__table {
+  flex: 1;
+
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; /* Força a tabela a respeitar dimensões definidas */
-  /*height: 200px; /* Remove qualquer height imposto pelo pai */
-  /* overflow-y: auto; */
-  background-color: #3fb8d6;
+  /*table-layout: fixed; /* Força a tabela a respeitar dimensões definidas */
+
+  /* background-color: #3fb8d6; */
   height: 100%;
 }
 
@@ -96,7 +110,7 @@
 .grid__table th {
   font-size: 15px;
   color: #6c757d;
-  height: 40px !important;
+  height: 38px !important;
 
   /* Já tem background-color: #fff no seu CSS, mas reforço aqui */
   background-color: #fff !important;
@@ -232,40 +246,33 @@
 
 .wrapper-pagination {
   width: 100%;
-  position: sticky;
-  align-self: stretch;
-  /* display: flex; */
+
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  /* background-color: #2915dd; */
-  /* border-radius: 0px 0px 16px 16px; */
-  padding: 2px;
-  /* margin-top: 20px; */
-  /* top: calc(100% - 2vh - 58px); */
+  background-color: #ffffff;
+  border-radius: 0px 0px 16px 16px;
   height: 48px;
   flex-shrink: 0; /* Não encolhe */
-  border-top: 1px solid #ccc;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Pra destacar do conteúdo */
-  bottom: 0;
-  z-index: 10;
+
+  position: sticky;
+  align-self: stretch;
 }
 
 .pagination {
-  overflow: hidden;
   display: flex;
   flex-direction: row;
-  align-items: left;
+  align-items: flex-start;
   justify-content: flex-start;
   gap: 16px;
   text-align: center;
   background-color: #fff;
-  padding-top: 2px;
-  padding: 8px 16px; /* Aumentei o padding pra consistência */
-  /*width: 100%; /* Ocupa toda a largura do wrapper */
   border-radius: 0px 0px 8px 8px;
+
+  padding: 2px;
+
   position: relative;
-  left: -3px;
 }
 
 .pagination-prev {
