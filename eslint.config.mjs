@@ -79,12 +79,14 @@ export default [
         "error",
         {
           // Configura o Prettier diretamente
+          "printWidth": 100,
           singleQuote: false,
           trailingComma: "all",
           tabWidth: 2,
-          useTabs: false,
+          useTabs: false,          
         },
       ],
+      "linebreak-style": ["error", "unix"]
     },
   },
 ];

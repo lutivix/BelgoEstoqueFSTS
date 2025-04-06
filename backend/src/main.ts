@@ -2,6 +2,10 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { DataSource } from "typeorm";
+import * as crypto from "crypto";
+
+// Forçar o crypto globalmente
+global.crypto = crypto as any;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,9 +27,7 @@ async function bootstrap() {
     } catch (error) {
       console.error(`Tentativa ${retryCount + 1}: ${error.message}`);
       if (retryCount >= maxRetries) {
-        console.error(
-          `Falha ao conectar após ${maxRetries} tentativas. Encerrando aplicação.`,
-        );
+        console.error(`Falha ao conectar após ${maxRetries} tentativas. Encerrando aplicação.`);
         await app.close();
         process.exit(1);
       }
@@ -35,6 +37,13 @@ async function bootstrap() {
   };
 
   await checkConnection();
+
+  app.enableCors({
+    origin: "http://localhost:5173", // Permite apenas o frontend em dev
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Métodos permitidos
+    credentials: true, // Se precisar de cookies ou autenticação
+  });
+
   await app.listen(3000);
 }
 

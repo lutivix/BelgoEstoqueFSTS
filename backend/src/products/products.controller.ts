@@ -1,5 +1,5 @@
 // src/products/products.controller.ts
-import { Controller, Get, Query, Param, Res } from "@nestjs/common";
+import { Controller, Get, Query, Param, Res, Post } from "@nestjs/common";
 import { ProductsService } from "./products.service";
 import { ListProductsRequestDto } from "./dto/list-products-request.dto";
 import { ListStockPositionRequestDto } from "./dto/list-stock-position-request.dto";
@@ -19,11 +19,12 @@ export class ProductsController {
     return this.productsService.listProducts(empresa, dto);
   }
 
-  @Get("load-initial/:empresa")
-  async loadInitialProducts(
-    @Param("empresa") empresa: string | null,
-  ): Promise<{ message: string; products: OmieProductFromDb[] }> {
-    return this.productsService.loadInitialProducts(empresa);
+  @Post("load-initial")
+  async loadInitialProducts(): Promise<{
+    message: string;
+    products: OmieProductFromDb[];
+  }> {
+    return this.productsService.loadInitialProducts(null); // Processa todas as empresas
   }
 
   @Get("stock/:empresa")
@@ -35,10 +36,7 @@ export class ProductsController {
   }
 
   @Get("movements/:empresa")
-  async listMovements(
-    @Param("empresa") empresa: string,
-    @Query() dto: ListMovementsRequestDto,
-  ) {
+  async listMovements(@Param("empresa") empresa: string, @Query() dto: ListMovementsRequestDto) {
     return this.productsService.listMovements(empresa, dto);
   }
 
@@ -49,19 +47,24 @@ export class ProductsController {
 
   @Get("export-excel")
   async exportExcel(@Query("empresa") empresa: string, @Res() res: Response) {
-    const buffer = await this.productsService.exportToExcel(
-      empresa || "VITORIA",
-    );
+    const buffer = await this.productsService.exportToExcel(empresa || "VITORIA");
     res.set({
-      "Content-Type":
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       "Content-Disposition": 'attachment; filename="produtos.xlsx"',
     });
     res.send(buffer);
   }
 
   @Get("last-scan")
-  getLastScan(): string {
-    return this.productsService.getLastMovementScan();
+  async getLastScan(): Promise<string> {
+    // Retorna Promise<string>
+    const lastScanDate = await this.productsService.getLastMovementScan();
+    return lastScanDate.toLocaleString("pt-BR");
+  }
+
+  @Get("clear-database")
+  async clearDatabase() {
+    await this.productsService.clearDatabase();
+    return "Tabelas product e stock limpas";
   }
 }

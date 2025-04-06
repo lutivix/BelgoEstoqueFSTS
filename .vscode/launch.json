@@ -13,6 +13,24 @@
       "sourceMaps": true,
       "outFiles": ["${workspaceFolder}/backend/dist/**/*.js"],
       "preLaunchTask": "npm: build - backend"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Vite Frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "${workspaceFolder}/frontend-vite",
+      "console": "integratedTerminal",
+      "sourceMaps": true,
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Debug Fullstack",
+      "configurations": ["Debug NestJS Backend", "Debug Vite Frontend"],
+      "stopAll": true
     }
   ]
 }

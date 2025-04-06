@@ -8,9 +8,18 @@
     "eslint": "^9.23.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-prettier": "^5.2.5"
+    "eslint-plugin-prettier": "^5.2.5",
+    "prettier": "^3.5.3"
   },
   "scripts": {
-    "lint": "eslint \"{backend,frontend}/**/*.ts\" --fix"
+    "lint": "eslint \"{backend,frontend}/**/*.ts\" --fix",
+    "format": "prettier --write \"**/*.{js,ts,tsx,css,json}\"",
+    "format:backend": "prettier --write \"backend/**/*.{js,ts,css}\"",
+    "format:frontend": "prettier --write \"frontend/**/*.{js,ts,tsx,css}\"",
+    "check": "prettier --check \"**/*.{js,ts,tsx,css,json}\""
+  },
+  "dependencies": {
+    "@nestjs/schedule": "^5.0.1",
+    "prettier": "^3.0.0" 
   }
 }

@@ -1,4 +1,12 @@
 {
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
   "typescript.suggest.autoImports": true,
   "autoimport.autoComplete": true,
   //"editor.formatOnSave": true,
@@ -19,5 +27,6 @@
   "prettier.trailingComma": "all",
   "prettier.tabWidth": 2,
   "prettier.useTabs": false,
-  "eslint.format.enable": true
+  "eslint.format.enable": true,
+  "files.eol": "\n"
 }

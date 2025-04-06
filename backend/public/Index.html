@@ -15,6 +15,7 @@
   <button onclick="gerarEstoque()">Gerar Estoque</button>
   <button onclick="testarConexao()">Testar Conexão DB</button>
   <button onclick="gerarExcel()">Gerar Excel</button>
+  <button onclick="clearDatabase()">Zerar Base</button>
   <div class="clock">Hora Atual: <span id="horaAtual"></span></div>
   <div class="clock">Última Varredura: <span id="ultimaVarredura">00/00/00 00:00:00</span></div>
 
@@ -29,12 +30,12 @@
 
     // Funções dos botões (chamadas API)
     async function loadInitial() {
-      const res = await fetch('/products/load-initial?empresa=VITORIA', { method: 'POST' });
+      const res = await fetch('/products/load-initial', { method: 'POST' });
       alert(await res.text());
     }
 
     async function gerarEstoque() {
-      const res = await fetch('/products/stock?empresa=VITORIA');
+      const res = await fetch('/products/stock');
       alert(await res.text());
     }
 
@@ -44,7 +45,12 @@
     }
 
     async function gerarExcel() {
-      window.location.href = '/products/export-excel?empresa=VITORIA';
+      window.location.href = '/products/export-excel';
+    }
+
+    async function clearDatabase() {
+      const res = await fetch('/products/clear-database');
+      alert(await res.text());
     }
 
     // Última Varredura

@@ -1,0 +1,862 @@
+/* Grid básico de consulta */
+.grid {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 16px;
+
+  text-align: center;
+  font-size: 14px;
+  color: #adb5bd;
+  width: 100%;
+  /* background-color: #0cf118; */
+  /* border-radius: 10px 10px 10px 20px; */
+  /* max-height: calc(100% - 48px); */
+  /* display: grid;
+  grid-template-rows: auto 1fr auto; actions, conteúdo, paginação */
+}
+
+.actions {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1;
+  width: 100%;
+  /* height: 40px; */
+  /* margin-bottom: 0; */
+
+  /* background-color: violet; */
+}
+
+/* Container do Grid principal */
+.wrapper-grid {
+  /* align-self: stretch; */
+  background-color: #fff;
+  /* background-color: #e71b1b; */
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 16px;
+  z-index: 0;
+  text-align: left;
+  color: #343a40;
+  width: 100%;
+  min-height: 0;
+
+  border-radius: 16px 16px 0px 0px;
+
+  /*position: relative; /* Necessário para o sticky funcionar corretamente */
+  max-height: 442px;
+  overflow-y: auto; /* ativa rolagem quando necessário */
+}
+
+/* Customização da scrollbar */
+.wrapper-grid::-webkit-scrollbar {
+  width: 8px; /* Largura da barra */
+  height: 8px; /* Para consistência em scroll horizontal, se houver */
+}
+
+.wrapper-grid::-webkit-scrollbar-thumb {
+  background: #7b7575; /* Cor do thumb */
+  border-radius: 99px;
+}
+
+.wrapper-grid::-webkit-scrollbar-thumb:hover {
+  background: #a14949; /* Cor ao passar o mouse */
+}
+
+.grid__table {
+  flex: 1;
+
+  width: 100%;
+  border-collapse: collapse;
+  /*table-layout: fixed; /* Força a tabela a respeitar dimensões definidas */
+
+  /* background-color: #3fb8d6; */
+  height: 100%;
+}
+
+.grid__table thead {
+  position: sticky; /* Fixa o thead no topo */
+  top: 0; /* Alinha ao topo do container pai */
+  background-color: #fff; /* Garante fundo branco para o cabeçalho */
+  z-index: 2; /* Fica acima do tbody durante a rolagem */
+}
+
+.grid__table th,
+.grid__table td {
+  padding: 0px 16px; /* Reduz o padding vertical de 8px para 4px */
+  height: 36px !important; /* Define altura fixa para as células */
+  line-height: 36px; /* Alinha o texto verticalmente */
+  max-height: 36px; /* Garante que não ultrapasse */
+  border: 1px solid #e9ecef;
+  text-align: center;
+  box-sizing: border-box; /* Garante que padding não aumente a altura */
+  font-family: Poppins;
+  font-size: 12px;
+  font-style: bold;
+  overflow-x: hidden;
+  /*display: block; /* Garante que o conteúdo não force expansão */
+  vertical-align: middle;
+  min-height: 0; /* Remove qualquer altura mínima implícita */
+  white-space: nowrap;
+  text-overflow: ellipsis; /* Adicionado pra cortar texto com "..." */
+  min-height: 36px; /* Adicionado pra reforçar altura mínima */
+}
+.grid__table th {
+  font-size: 15px;
+  color: #6c757d;
+  height: 38px !important;
+
+  /* Já tem background-color: #fff no seu CSS, mas reforço aqui */
+  background-color: #fff !important;
+  position: sticky;
+  top: 0;
+  z-index: 1; /* Garante que os th fiquem acima das células do tbody */
+}
+
+.grid__table tbody tr {
+  height: 36px;
+}
+
+.grid__table tbody tr:nth-child(odd) {
+  background-color: #f8f9fa;
+}
+.grid__table tfoot {
+  padding: 8px;
+  text-align: right;
+  height: 0px;
+}
+
+.grid__table tbody tr {
+  height: 32px !important;
+  max-height: 32px; /* Reforça a limitação */
+  overflow: hidden;
+  min-height: 0; /* Remove altura mínima do tr */
+}
+
+/* Ajuste específico para o Tooltip e IconButton */
+.grid__table td .MuiTooltip-tooltip {
+  max-width: 300px; /* Limita o tooltip, mas não afeta a célula */
+}
+
+.grid__table td .MuiIconButton-root {
+  padding: 2px; /* Reduz ainda mais o padding */
+  height: 20px; /* Menor que 32px pra caber com margem */
+  padding: 4px; /* Reduz o padding padrão do IconButton */
+  height: 24px; /* Limita a altura do botão */
+  width: 24px; /* Mantém proporcional */
+  min-height: 0; /* Remove altura mínima do tr */
+}
+
+/* Linha expandida */
+.grid__expanded-row {
+  background-color: #f1f3f5; /* Fundo mais claro pra destacar */
+  height: auto; /* Permite altura variável */
+}
+
+.grid__expanded-content {
+  padding: 8px 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #343a40;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.grid__expanded-content span {
+  white-space: nowrap; /* Impede quebra de texto nos valores */
+}
+
+.grid__edit-button.expanded {
+  background-color: #e9ecef; /* Fundo leve quando expandido */
+  border-radius: 4px;
+}
+
+.grid__stock-input {
+  width: 60px;
+  padding: 4px;
+  font-size: 12px;
+  font-family: Poppins;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  text-align: center;
+  margin-left: 4px;
+}
+
+.grid__expanded-content label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.grid__save-button {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-family: Poppins;
+  background-color: #949daf;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.grid__save-button:hover {
+  background-color: #6c757d;
+}
+
+/* Tela pequena */
+@media (max-width: 800px) {
+  .grid__table--small th:nth-child(3) ~ th,
+  .grid__table--small td:nth-child(3) ~ td {
+    display: none; /* Esconde colunas extras */
+  }
+
+  .grid__table--small th,
+  .grid__table--small td {
+    padding: 4px; /* Reduz padding em telas pequenas */
+    font-size: 12px; /* Ajusta tamanho da fonte */
+  }
+}
+
+/* Botão de edição */
+.grid__edit-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.grid__edit-button img {
+  width: 16px;
+  height: 16px;
+}
+
+/* Pagination (não usada diretamente no DataGrid, mas mantida pra referência) */
+
+.wrapper-pagination {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background-color: #ffffff;
+  border-radius: 0px 0px 16px 16px;
+  height: 48px;
+  flex-shrink: 0; /* Não encolhe */
+
+  position: sticky;
+  align-self: stretch;
+}
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 16px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 0px 0px 8px 8px;
+
+  padding: 2px;
+
+  position: relative;
+}
+
+.pagination-prev {
+  width: 40px;
+  border-radius: 8px;
+  background-color: #e9ecef;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.pagination-item {
+  width: 40px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #949daf;
+  box-sizing: border-box;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: #949daf !important;
+  cursor: pointer;
+}
+
+.pagination-next {
+  width: 40px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  box-sizing: border-box;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.pagination-item--active {
+  background-color: #949daf !important;
+  color: #d7060f !important;
+}
+
+.pagination-prev--disabled,
+.pagination-next--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.select-an-item {
+  appearance: none; /* Remove estilo padrão do select */
+  padding-right: 20px; /* Espaço para o ícone Chevron Down */
+  width: 100%; /* Garante que o select seja clicável em toda a área */
+}
+
+.wrapper4 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  /*flex: 1; /* Permite que cresça */
+}
+
+.wrapper5 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  text-align: left;
+}
+
+.searchbox {
+  width: 320px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #adb5bd;
+  box-sizing: border-box;
+  height: 32px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 12px;
+  gap: 8px;
+}
+
+.searchbox-parent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.searchbox-wrapper {
+  width: 320px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #adb5bd;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 12px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.searchbox-input {
+  flex: 1;
+  height: 100%; /* Ocupa a altura do wrapper */
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: #343a40;
+  font-family: Poppins;
+  padding: 0;
+  margin-left: 8px; /* Espaço entre ícone e texto */
+  outline: none; /* Remove borda de foco padrão */
+}
+
+.searchbox-input::placeholder {
+  color: #adb5bd;
+}
+
+.search-icon {
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.search {
+  position: relative;
+  line-height: 100%;
+  z-index: 0;
+}
+
+.input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.select-comodities {
+  border-radius: 22px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 1px 0;
+}
+
+.button {
+  border-radius: 8px;
+  border: 1px solid #adb5bd;
+  box-sizing: border-box;
+  height: 40px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+}
+
+.searchbox-parent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.button1 {
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #949daf;
+  box-sizing: border-box;
+  height: 40px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  gap: 8px;
+  color: #949daf;
+}
+
+.label {
+  width: 84px;
+  position: relative;
+  letter-spacing: 0.03em;
+  line-height: 24px;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.wrapper3 {
+  width: 100%;
+  height: 100%; /* Garante que o DataGrid use o espaço */
+  max-height: 600px; /* Limita a altura máxima do grid */
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.table .wrapper2 {
+  width: 100%;
+  padding: 0;
+}
+
+.div41 {
+  position: relative;
+  letter-spacing: 0.03em;
+  line-height: 24px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.select {
+  width: 100px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  box-sizing: border-box;
+  height: 40px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 12px;
+  gap: 8px;
+  position: relative; /* Necessário para posicionar o ícone absoluto */
+}
+
+.select-an-item {
+  flex: 1;
+  position: relative;
+  line-height: 132%;
+}
+
+.page {
+  position: relative;
+  line-height: 132%;
+  text-align: center;
+}
+
+/* Ícones e Textos */
+.icon {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.select-icon {
+  position: absolute;
+  right: 20px;
+  pointer-events: none;
+}
+
+.text {
+  transition: opacity 0.3s ease;
+}
+
+/* Elementos Não Usados Diretamente pelo DataGrid (mantidos pra referência) */
+.cd-produto {
+  width: 67px;
+  position: relative;
+  line-height: 132%;
+  font-weight: 500;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.header2 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  height: 40.5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  text-align: center;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.cell {
+  align-self: stretch;
+  background-color: #f8f9fa;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  min-height: 56px;
+}
+
+.cell1 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  min-height: 56px;
+}
+
+.cell9 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  min-height: 56px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.sort-icon {
+  width: 16px;
+  position: relative;
+  height: 16px;
+}
+
+.header3 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  height: 40.5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.cell10 {
+  align-self: stretch;
+  background-color: #f8f9fa;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 48px 8px 24px;
+  min-height: 56px;
+}
+
+.cell11 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 48px 8px 24px;
+  min-height: 56px;
+}
+
+.cell19 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 48px 8px 24px;
+  min-height: 56px;
+}
+
+.col1 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 160px;
+}
+
+.cd-famlia {
+  width: 64px;
+  position: relative;
+  line-height: 132%;
+  font-weight: 500;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.qtd-estoque {
+  width: 65px;
+  position: relative;
+  line-height: 132%;
+  font-weight: 500;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.header7 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  height: 40.5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.header8 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  height: 40.5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.cell60 {
+  align-self: stretch;
+  background-color: #f8f9fa;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 24px;
+  min-height: 56px;
+}
+
+.cell61 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 24px;
+  min-height: 56px;
+}
+
+.cell69 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 24px;
+  min-height: 56px;
+}
+
+.header9 {
+  align-self: stretch;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  height: 40.5px;
+}
+
+.button2 {
+  width: 40px;
+  border-radius: 8px;
+  height: 40px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.cell70 {
+  align-self: stretch;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  gap: 6px;
+}
+
+.cell71 {
+  align-self: stretch;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  gap: 6px;
+}
+
+.cell79 {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  gap: 6px;
+}
+
+/* Botão de Toggle (não usado diretamente, mantido pra referência) */
+.toggle-btn {
+  position: absolute;
+  top: 10px;
+  right: -35px;
+  background-color: white;
+  padding: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+.menu-icon {
+  width: 24px;
+  height: auto;
+  content: url("menu-icon.png");
+}

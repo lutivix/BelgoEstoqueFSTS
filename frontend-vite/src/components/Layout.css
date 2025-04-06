@@ -1,0 +1,472 @@
+/* /src/components/Layout.css */
+
+/* Variáveis */
+:root {
+  --navbar-width: 256px;
+  --navbar-width-min: 80px;
+  font-family: Poppins;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0; /* Remove qualquer padding padrão */
+
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  align-items: center; /* Centraliza o wrapper verticalmente */
+  justify-content: center; /* Centraliza o wrapper horizontalmente */
+
+  /* background-color: black; */
+}
+
+/* Container Principal ou Master Page */
+.principal {
+  width: 98vw;
+  height: 98vh;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  background-color: #f8f9fa;
+  /* background-color: #adc7e2; */
+  text-align: left;
+  font-size: 14px;
+  color: #fff;
+}
+
+/* Sidebar */
+.sidebar {
+  height: 100%;
+  width: var(--navbar-width);
+  z-index: 1;
+
+  border-radius: 16px;
+  background-color: #d7060f;
+
+  transition: width 0.3s ease;
+}
+
+.sidebar__header {
+  align-self: stretch;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 32px 32px 16px;
+  box-sizing: border-box;
+  position: relative;
+  gap: 8px;
+}
+
+.sidebar__navbar {
+  align-self: stretch;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 8px 16px 16px;
+  gap: 64px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Customização da scrollbar */
+.sidebar__navbar::-webkit-scrollbar {
+  width: 8px; /* Largura da barra */
+  height: 8px; /* Para consistência em scroll horizontal, se houver */
+}
+
+.sidebar__navbar::-webkit-scrollbar-thumb {
+  background: #c52424; /* Cor do thumb */
+  border-radius: 99px;
+}
+
+.sidebar__navbar::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Cor ao passar o mouse */
+}
+
+.sidebar__logo-icon {
+  width: 200px;
+  height: 80px;
+  margin-left: -5px;
+  position: relative;
+  top: 40px;
+  content: url("./images/belgo-cercas.png");
+}
+
+.sidebar__collapse-button {
+  width: 20px;
+  margin: 0 !important;
+  position: absolute;
+  top: calc(50% - 20px);
+  right: -10px;
+  box-shadow: 0px 8px 32px rgba(206, 212, 218, 0.15);
+  border-radius: 8px;
+  background-color: #fff;
+  height: 40px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* Sidebar Retrátil */
+#nav-toggle {
+  display: none;
+}
+
+#nav-toggle:checked ~ .sidebar {
+  width: var(--navbar-width-min);
+}
+
+#nav-toggle:checked ~ .main {
+  /* margin-left: calc(var(--navbar-width-min) + 16px); */
+  /* margin-left: calc(var(--navbar-width-min) + 2vh); */
+  width: calc(100% - var(--navbar-width-min) - 2vh);
+}
+
+#nav-toggle:checked ~ .sidebar .sidebar__header .sidebar__logo-icon {
+  content: url("./images/b-cercas.png");
+  width: 40px;
+  height: 80px;
+  margin-left: -9px;
+}
+
+#nav-toggle:checked ~ .sidebar .sidebar__header .arrow-left-icon {
+  content: url("./images/Arrow Right.svg");
+}
+
+#nav-toggle:checked ~ .sidebar .sidebar__nav-item {
+  width: 88px;
+}
+
+#nav-toggle:checked ~ .sidebar .sidebar__nav-item .sidebar__nav-title {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.sidebar__nav-title {
+  flex: 1;
+  position: relative;
+  letter-spacing: 0.03em;
+  line-height: 24px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sidebar__nav-item {
+  width: 100%;
+  border-radius: 8px;
+  height: 48px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  box-sizing: border-box;
+  gap: 8px;
+  /* margin-left: 2px; */
+  transition: background-color 0.2s ease; /* Suaviza o hover */
+  text-decoration: none; /* Remove sublinhado do Link */
+  color: #fff; /* Garante a cor do texto */
+}
+
+.sidebar__nav-item:hover,
+.sidebar__nav-item5:hover {
+  background-color: #c52424; /* Vermelho mais escuro pro hover */
+  cursor: pointer;
+}
+
+#nav-toggle:checked ~ .sidebar .sidebar__nav-item {
+  width: 100%; /* Garante que o item ocupe o espaço disponível */
+  justify-content: center; /* Centraliza o ícone */
+  padding: 0 12px; /* Mantém o padding consistente*/
+}
+
+.sidebar__wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+}
+
+.sidebar__nav-item5 {
+  align-self: stretch;
+  border-radius: 8px;
+  height: 48px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  box-sizing: border-box;
+  gap: 8px;
+}
+
+.sidebar__footer {
+  align-self: stretch;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 32px 6px;
+}
+
+/* Main Content */
+.main {
+  /* margin-left: calc(var(--navbar-width) + 2vh); /* Compensa o left: 1vw da sidebar */
+  /*width: calc(100% - var(--navbar-width) - 2vh); /* O resto da largura */
+  /* height: calc(100% - 2vh); */
+
+  flex: 1;
+  padding: 1vh;
+
+  height: 96vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  color: #343a40;
+  transition: margin-left 0.3s ease;
+  /* border-radius: 8px; */
+
+  /* background-color: #6d5b22; */
+}
+
+.page-header {
+  height: 64px;
+  flex-shrink: 0;
+  align-self: stretch;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 32px 0 56px;
+
+  gap: 8px;
+  /* background-color: rgb(75, 0, 215); */
+}
+
+.page-header__bell-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.page-header__bullet {
+  width: 8px;
+  position: absolute;
+  margin: 0 !important;
+  top: 8px;
+  right: 8px;
+  border-radius: 50%;
+  background-color: #ff1f25;
+  height: 8px;
+  z-index: 1;
+}
+
+.page-header__notification {
+  width: 40px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  box-sizing: border-box;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  gap: 8px;
+}
+
+.page-header__profile-child {
+  width: 24px;
+  border-radius: 2px;
+  height: 24px;
+  object-fit: cover;
+}
+
+.page-header__user {
+  position: relative;
+  line-height: 132%;
+  font-weight: 500;
+}
+
+.page-header__profile {
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  gap: 8px;
+}
+
+.page-header__home-icon {
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-left: -5px;
+}
+
+.body {
+  /* box-sizing: border-box; */
+  gap: 8px;
+  font-size: 46px;
+  color: #000000;
+  /* background-color: #e61ee6; */
+  /* border-radius: 8px; */
+
+  flex: 1;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  /* padding: 2px; */
+  /* height: 32px; */
+  /* background-color: orange; */
+}
+
+.header__title {
+  position: relative;
+  line-height: 100%;
+  font-weight: 500;
+  font-size: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.header__crumbs {
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-size: 14px;
+  color: #6c757d; /* Cor padrão dos itens não ativos */
+}
+
+.header__crumbs-item {
+  appearance: none;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.header__crumb-separator {
+  height: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.header__crumbs-item1 {
+  appearance: none;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: #212529;
+}
+
+.header__crumbs-item .header__link {
+  color: #6c757d; /* Cinza pra itens não ativos */
+  text-decoration: none; /* Remove sublinhado padrão */
+}
+
+.header__crumbs-item .header__link:hover {
+  color: #343a40; /* Escurece no hover */
+  text-decoration: underline;
+}
+
+.header__crumbs-item1 .header__link {
+  color: #212529; /* Preto pro item ativo */
+  text-decoration: none; /* Sem sublinhado no ativo */
+}
+
+.header__crumbs-item1 .header__link:hover {
+  color: #212529; /* Mantém a cor no hover do ativo */
+  text-decoration: underline;
+}
+
+.header__link {
+  position: relative;
+  line-height: 132%;
+  text-decoration: none; /* Reforça a remoção do sublinhado */
+}
+
+/* Remove estilos de visitado/ativo do navegador */
+.header__link:visited,
+.header__link:active {
+  color: inherit; /* Usa a cor definida pelo pai */
+}
+
+.header__link:hover {
+  text-decoration: underline; /* Feedback no hover */
+}
+
+.dinamico {
+  flex: 1;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Centraliza o wrapper verticalmente */
+  justify-content: flex-start; /* Centraliza o wrapper horizontalmente */
+  /* background-color: lightcoral; */
+}
+
+/*Items Globais*/
+.arrow-left-icon {
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  flex-shrink: 0;
+  content: url("./images/Arrow Left.svg");
+}
