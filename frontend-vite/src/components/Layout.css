@@ -556,21 +556,28 @@ body {
     width: 86vw;
     margin-bottom: 0px;
   }
-  .page-header__notification {
-    margin-bottom: 0; /* Remove margem extra */
-  }
+  .page-header__notification,
   .page-header__profile {
     margin-bottom: 0;
   }
+
   .header__crumbs {
     display: none; /* Esconde breadcrumbs */
   }
+
   .header__title {
     font-size: 20px; /* Reduz o tamanho da fonte */
     margin: 5px 0; /* Ajusta margens */
   }
+
   .body {
     font-size: 16px; /* Reduz o tamanho padrão do body */
+  }
+}
+
+@media (max-width: 480px) {
+  .header__title {
+    font-size: 18px;
   }
 }
 

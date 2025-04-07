@@ -67,7 +67,7 @@ const StockGrid = () => {
   const backendUrl = "http://192.168.7.216:3000/products/db";
 
   useEffect(() => {
-    const handleResize = () => setIsSmallScreen(window.innerWidth <= 800);
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -122,197 +122,222 @@ const StockGrid = () => {
     <Layout>
       <div className="grid">
         <div className="actions">
-          <div className="searchbox-parent">
-            <div className="searchbox-wrapper">
-              <img className="search-icon" alt="Pesquisar" src="/images/Search.svg" />
+          <div className="actions__searchbox-wrapper">
+            <div className="actions__searchbox">
+              <img className="actions__search-icon" alt="Pesquisar" src="/images/Search.svg" />
               <input
-                className="searchbox-input"
+                className="actions__search-input"
                 placeholder="Pesquisar"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <div className="select-comodities">
-              <div className="button">
+            <div className="actions__select">
+              <div className="actions__button">
                 <img className="icon" alt="Filtro" src="/images/Filter.svg" />
               </div>
             </div>
           </div>
-          <div className="button1">
-            <img className="icon" alt="Adicionar" src="/images/Plus.svg" />
+          <div className="actions__categoria">
+            <img className="actions_cat-icon" alt="Adicionar" src="/images/Plus.svg" />
             <span className="label">Adicionar</span>
           </div>
         </div>
         <div className="wrapper-grid">
-          <table className="grid__table">
-            <thead>
-              <tr>
-                {isSmallScreen ? (
-                  <>
-                    <th>Código</th>
-                    <th>Nome</th>
-                    <th>Estoque</th>
-                  </>
-                ) : (
-                  <>
-                    <th>Cód. Omie</th>
-                    <th>Nome</th>
-                    <th>Família</th>
-                    <th>Loja</th>
-                    <th>Estoque Total</th>
-                    <th>Data</th>
-                    <th></th>
-                  </>
-                )}
-              </tr>
-            </thead>
-
-            <tbody>
+          {isSmallScreen ? (
+            <div className="grid__list">
               {paginatedProducts.map((product) => (
-                <>
-                  <tr key={product.id}>
-                    {isSmallScreen ? (
-                      <>
-                        <td>{product.codigo_omie}</td>
-                        <td>{product.name}</td>
-                        <td>
-                          <span title={getStockTooltip(product)}>{product.estoque_total}</span>
-                        </td>
-                      </>
-                    ) : (
-                      <>
-                        <td>{product.codigo_omie}</td>
-                        <td>{product.name}</td>
-                        <td>{product.type}</td>
-                        <td>{product.primeira_loja}</td>
-                        <td>
-                          <span title={getStockTooltip(product)}>{product.estoque_total}</span>
-                        </td>
-                        <td>{formatDate(product.D)}</td>
-                        <td>
-                          <button
-                            className="grid__edit-button"
-                            onClick={() => handleEditClick(product.id)}
-                          >
-                            <img
-                              src={
-                                expandedRow === product.id
-                                  ? "/images/Chevron Up.svg"
-                                  : "/images/Edit.svg"
-                              }
-                              alt={expandedRow === product.id ? "Fechar" : "Editar"}
-                            />
-                          </button>
-                        </td>
-                      </>
-                    )}
-                  </tr>
-                  {expandedRow === product.id && !isSmallScreen && (
-                    <tr className="grid__expanded-row">
-                      <td colSpan={7}>
-                        <div className="grid__expanded-content">
-                          <label>
-                            Vitória:
-                            <input
-                              type="number"
-                              value={
-                                editStocks[product.id]?.estoque_vitoria ??
-                                product.estoque_vitoria ??
-                                ""
-                              }
-                              onChange={(e) =>
-                                handleStockChange(product.id, "estoque_vitoria", e.target.value)
-                              }
-                              className="grid__stock-input"
-                            />
-                          </label>
-                          <label>
-                            União:
-                            <input
-                              type="number"
-                              value={
-                                editStocks[product.id]?.estoque_uniao ?? product.estoque_uniao ?? ""
-                              }
-                              onChange={(e) =>
-                                handleStockChange(product.id, "estoque_uniao", e.target.value)
-                              }
-                              className="grid__stock-input"
-                            />
-                          </label>
-                          <label>
-                            Linhares:
-                            <input
-                              type="number"
-                              value={
-                                editStocks[product.id]?.estoque_linhares ??
-                                product.estoque_linhares ??
-                                ""
-                              }
-                              onChange={(e) =>
-                                handleStockChange(product.id, "estoque_linhares", e.target.value)
-                              }
-                              className="grid__stock-input"
-                            />
-                          </label>
-                          <label>
-                            Supertela:
-                            <input
-                              type="number"
-                              value={
-                                editStocks[product.id]?.estoque_supertela ??
-                                product.estoque_supertela ??
-                                ""
-                              }
-                              onChange={(e) =>
-                                handleStockChange(product.id, "estoque_supertela", e.target.value)
-                              }
-                              className="grid__stock-input"
-                            />
-                          </label>
-                          <label>
-                            Telarame:
-                            <input
-                              type="number"
-                              value={
-                                editStocks[product.id]?.estoque_telarame ??
-                                product.estoque_telarame ??
-                                ""
-                              }
-                              onChange={(e) =>
-                                handleStockChange(product.id, "estoque_telarame", e.target.value)
-                              }
-                              className="grid__stock-input"
-                            />
-                          </label>
-                          <label>
-                            Estruturaco:
-                            <input
-                              type="number"
-                              value={
-                                editStocks[product.id]?.estoque_estruturaco ??
-                                product.estoque_estruturaco ??
-                                ""
-                              }
-                              onChange={(e) =>
-                                handleStockChange(product.id, "estoque_estruturaco", e.target.value)
-                              }
-                              className="grid__stock-input"
-                            />
-                          </label>
-                          <button
-                            className="grid__save-button"
-                            onClick={() => handleSaveStocks(product.id)}
-                          >
-                            Salvar
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-                </>
+                <div key={product.id} className="grid__card">
+                  <div>
+                    <strong>Código:</strong> {product.codigo_omie}
+                  </div>
+                  <div>
+                    <strong>Nome:</strong> {product.name}
+                  </div>
+                  <div>
+                    <strong>Estoque:</strong>{" "}
+                    <span title={getStockTooltip(product)}>{product.estoque_total}</span>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          ) : (
+            <table className="grid__table">
+              <thead>
+                <tr>
+                  {isSmallScreen ? (
+                    <>
+                      <th>Código</th>
+                      <th>Nome</th>
+                      <th>Estoque</th>
+                    </>
+                  ) : (
+                    <>
+                      <th>Cód. Omie</th>
+                      <th>Nome</th>
+                      <th>Família</th>
+                      <th>Loja</th>
+                      <th>Estoque Total</th>
+                      <th>Data</th>
+                      <th></th>
+                    </>
+                  )}
+                </tr>
+              </thead>
+
+              <tbody>
+                {paginatedProducts.map((product) => (
+                  <>
+                    <tr key={product.id}>
+                      {isSmallScreen ? (
+                        <>
+                          <td>{product.codigo_omie}</td>
+                          <td>{product.name}</td>
+                          <td>
+                            <span title={getStockTooltip(product)}>{product.estoque_total}</span>
+                          </td>
+                        </>
+                      ) : (
+                        <>
+                          <td>{product.codigo_omie}</td>
+                          <td>{product.name}</td>
+                          <td>{product.type}</td>
+                          <td>{product.primeira_loja}</td>
+                          <td>
+                            <span title={getStockTooltip(product)}>{product.estoque_total}</span>
+                          </td>
+                          <td>{formatDate(product.D)}</td>
+                          <td>
+                            <button
+                              className="grid__edit-button"
+                              onClick={() => handleEditClick(product.id)}
+                            >
+                              <img
+                                src={
+                                  expandedRow === product.id
+                                    ? "/images/Chevron Up.svg"
+                                    : "/images/Edit.svg"
+                                }
+                                alt={expandedRow === product.id ? "Fechar" : "Editar"}
+                              />
+                            </button>
+                          </td>
+                        </>
+                      )}
+                    </tr>
+                    {expandedRow === product.id && !isSmallScreen && (
+                      <tr className="grid__expanded-row">
+                        <td colSpan={7}>
+                          <div className="grid__expanded-content">
+                            <label>
+                              Vitória:
+                              <input
+                                type="number"
+                                value={
+                                  editStocks[product.id]?.estoque_vitoria ??
+                                  product.estoque_vitoria ??
+                                  ""
+                                }
+                                onChange={(e) =>
+                                  handleStockChange(product.id, "estoque_vitoria", e.target.value)
+                                }
+                                className="grid__stock-input"
+                              />
+                            </label>
+                            <label>
+                              União:
+                              <input
+                                type="number"
+                                value={
+                                  editStocks[product.id]?.estoque_uniao ??
+                                  product.estoque_uniao ??
+                                  ""
+                                }
+                                onChange={(e) =>
+                                  handleStockChange(product.id, "estoque_uniao", e.target.value)
+                                }
+                                className="grid__stock-input"
+                              />
+                            </label>
+                            <label>
+                              Linhares:
+                              <input
+                                type="number"
+                                value={
+                                  editStocks[product.id]?.estoque_linhares ??
+                                  product.estoque_linhares ??
+                                  ""
+                                }
+                                onChange={(e) =>
+                                  handleStockChange(product.id, "estoque_linhares", e.target.value)
+                                }
+                                className="grid__stock-input"
+                              />
+                            </label>
+                            <label>
+                              Supertela:
+                              <input
+                                type="number"
+                                value={
+                                  editStocks[product.id]?.estoque_supertela ??
+                                  product.estoque_supertela ??
+                                  ""
+                                }
+                                onChange={(e) =>
+                                  handleStockChange(product.id, "estoque_supertela", e.target.value)
+                                }
+                                className="grid__stock-input"
+                              />
+                            </label>
+                            <label>
+                              Telarame:
+                              <input
+                                type="number"
+                                value={
+                                  editStocks[product.id]?.estoque_telarame ??
+                                  product.estoque_telarame ??
+                                  ""
+                                }
+                                onChange={(e) =>
+                                  handleStockChange(product.id, "estoque_telarame", e.target.value)
+                                }
+                                className="grid__stock-input"
+                              />
+                            </label>
+                            <label>
+                              Estruturaco:
+                              <input
+                                type="number"
+                                value={
+                                  editStocks[product.id]?.estoque_estruturaco ??
+                                  product.estoque_estruturaco ??
+                                  ""
+                                }
+                                onChange={(e) =>
+                                  handleStockChange(
+                                    product.id,
+                                    "estoque_estruturaco",
+                                    e.target.value,
+                                  )
+                                }
+                                className="grid__stock-input"
+                              />
+                            </label>
+                            <button
+                              className="grid__save-button"
+                              onClick={() => handleSaveStocks(product.id)}
+                            >
+                              Salvar
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
         <div className="wrapper-pagination">
           <div className="pagination">
