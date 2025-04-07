@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react"; // Adiciona o import do useState
+import { useState, useEffect } from "react"; // Adiciona o import do useState
 import "./Layout.css";
 import { Link } from "react-router-dom";
 
@@ -24,6 +24,7 @@ const breadcrumbMap: Record<string, string> = {
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
   const getBreadcrumbs = () => {
     const pathnames = location.pathname.split("/").filter((x) => x);
     const crumbs = [{ path: "/", label: "Dashboard" }]; // Sempre começa com Dashboard
@@ -36,6 +37,52 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     return crumbs;
   };
 
+  useEffect(() => {
+    // Tipagem explícita
+    const toggleSidebar = document.querySelector<HTMLInputElement>("#nav-toggle");
+    const mobileToggle = document.querySelector<HTMLInputElement>("#mobile-sidebar-toggle");
+    const collapseToggle = document.querySelector<HTMLInputElement>("#collapse-toggle");
+    let inactivityTimer: number | undefined;
+
+    const handleResize = () => {
+      if (toggleSidebar && mobileToggle) {
+        if (window.innerWidth <= 1024 && window.innerWidth > 768) {
+          toggleSidebar.checked = true; // Encolhe no tablet
+        } else {
+          toggleSidebar.checked = false; // Expande para desktop
+          mobileToggle.checked = false;
+        }
+      }
+    };
+
+    const resetInactivityTimer = () => {
+      clearTimeout(inactivityTimer);
+      if (mobileToggle && mobileToggle.checked && collapseToggle) {
+        inactivityTimer = setTimeout(() => {
+          mobileToggle.checked = false; // Esconde a sidebar
+          collapseToggle.checked = false;
+        }, 3000); // 3 segundos de inatividade
+      }
+    };
+
+    // Adiciona os eventos
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("mousemove", resetInactivityTimer);
+    window.addEventListener("keydown", resetInactivityTimer);
+    window.addEventListener("touchstart", resetInactivityTimer);
+
+    // Configura inicialização
+    handleResize();
+
+    // Remove eventos ao desmontar
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", resetInactivityTimer);
+      window.removeEventListener("keydown", resetInactivityTimer);
+      window.removeEventListener("touchstart", resetInactivityTimer);
+    };
+  }, []);
+
   return (
     <div className="principal">
       <input
@@ -45,6 +92,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         onChange={() => setSidebarCollapsed(!sidebarCollapsed)}
         style={{ display: "none" }}
       />
+
+      <input type="checkbox" id="mobile-sidebar-toggle" style={{ display: "none" }} />
+      <input type="checkbox" id="collapse-toggle" style={{ display: "none" }} />
 
       <div className="sidebar">
         <div className="sidebar__header">
@@ -95,6 +145,16 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       <div className="main">
+        <div className="mobile-menu">
+          <label htmlFor="mobile-sidebar-toggle">
+            <img src="/images/b-cercas.png" alt="Menu" className="mobile-menu-icon" />
+          </label>
+        </div>
+        <div className="mobile-menu">
+          <label htmlFor="collapse-toggle">
+            <img src="/images/menu.png" alt="Menu" className="mobile-arrow-icon" />
+          </label>
+        </div>
         <div className="page-header">
           <div className="page-header__notification">
             <img className="page-header__bell-icon" alt="Notificações" src="/images/Bell.svg" />

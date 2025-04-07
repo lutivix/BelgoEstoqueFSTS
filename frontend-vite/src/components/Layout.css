@@ -48,7 +48,9 @@ body {
   border-radius: 16px;
   background-color: #d7060f;
 
-  transition: width 0.3s ease;
+  transition:
+    width 0.3s ease-in-out,
+    opacity 0.3s ease-in-out; /* Animações */
 }
 
 .sidebar__header {
@@ -133,7 +135,7 @@ body {
 #nav-toggle:checked ~ .main {
   /* margin-left: calc(var(--navbar-width-min) + 16px); */
   /* margin-left: calc(var(--navbar-width-min) + 2vh); */
-  width: calc(100% - var(--navbar-width-min) - 2vh);
+  /* width: calc(100% - var(--navbar-width-min) - 2vh); */
 }
 
 #nav-toggle:checked ~ .sidebar .sidebar__header .sidebar__logo-icon {
@@ -231,6 +233,210 @@ body {
   align-items: flex-start;
   justify-content: flex-start;
   padding: 0 32px 6px;
+}
+
+/* Adiciona o botão de menu para telas pequenas */
+.mobile-menu {
+  display: none; /* Escondido por padrão */
+}
+
+#mobile-sidebar-toggle,
+#collapse-toggle {
+  z-index: 10;
+  pointer-events: auto; /* Garante que o clique seja registrado */
+}
+
+@media (max-width: 768px) {
+  .mobile-menu {
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+  }
+
+  .mobile-menu-icon {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: 10px;
+    top: 22px;
+    cursor: pointer;
+  }
+
+  .mobile-arrow-icon {
+    position: absolute;
+    width: 20px;
+    height: 27px;
+    left: 70px;
+    top: 32px;
+    cursor: pointer;
+    content: url("./images/Arrow Right.svg");
+    display: none;
+    background-color: #fff;
+    border-radius: 4px;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 10px;
+    left: 10px; /* Escondida por padrão */
+    width: 0; /* Ocupa 80% da tela */
+    height: auto;
+    z-index: 3;
+    transition:
+      width 0.3s ease-in-out,
+      opacity 0.3s ease-in-out; /* Animações */
+
+    overflow: hidden;
+    opacity: 0;
+    display: none;
+  }
+
+  #mobile-sidebar-toggle:checked ~ .sidebar {
+    width: 80px; /* Sidebar visível ao ativar menu */
+    opacity: 1; /* Torna visível */
+    display: block;
+  }
+
+  #mobile-sidebar-toggle:checked ~ .sidebar .sidebar__header .sidebar__logo-icon {
+    content: url("./images/b-cercas.png");
+    width: 40px;
+    height: 80px;
+    margin-left: 0px;
+    opacity: 0;
+    display: none;
+  }
+
+  #mobile-sidebar-toggle:checked ~ .sidebar .sidebar__header .sidebar__collapse-button {
+    display: none;
+  }
+
+  #mobile-sidebar-toggle-toggle:checked ~ .sidebar .sidebar__nav-item {
+    width: 88px;
+  }
+
+  #mobile-sidebar-toggle:checked ~ .sidebar .sidebar__nav-item .sidebar__nav-title {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+  }
+
+  #mobile-sidebar-toggle:checked ~ .main .mobile-menu-icon {
+    /*display: none; /* Escondido por padrão */
+    top: 20px;
+    left: 20px;
+    width: 40px;
+    height: 47px;
+    content: url("./images/b-cercas.png");
+  }
+
+  #mobile-sidebar-toggle:checked ~ .main .mobile-arrow-icon {
+    /*display: none; /* Escondido por padrão */
+    display: block;
+  }
+
+  #collapse-toggle:checked ~ .sidebar .sidebar__header .sidebar__logo-icon {
+    width: 160px;
+    height: 75px;
+    margin-left: 0px;
+    position: relative;
+    top: 40px;
+    content: url("./images/belgo-cercas.png");
+  }
+
+  #collapse-toggle:checked ~ .main .mobile-menu-icon {
+    /*display: none; /* Escondido por padrão */
+
+    width: 160px;
+    height: 40px;
+    margin-left: 0px;
+    position: relative;
+    top: 20px;
+    content: url("./images/belgo-cercas.png");
+  }
+
+  #collapse-toggle:checked ~ .main .mobile-arrow-icon {
+    /*display: none; /* Escondido por padrão */
+    left: 190px;
+    content: url("./images/Arrow Left.svg");
+  }
+
+  #collapse-toggle:checked ~ .sidebar {
+    width: 200px; /* Encolher automaticamente no tablet */
+    opacity: 1;
+  }
+
+  #collapse-toggle-toggle:checked ~ .sidebar .sidebar__nav-item {
+    width: auto;
+    opacity: 1;
+  }
+
+  #collapse-toggle:checked ~ .sidebar .sidebar__nav-item .sidebar__nav-title {
+    opacity: 1;
+    width: auto;
+    overflow: hidden;
+  }
+
+  .main {
+    /*width: 100%; /* Ocupa toda a largura */
+    padding: 10px; /* Ajusta padding */
+  }
+
+  /* Ajusta o header da sidebar em telas pequenas */
+  .sidebar__header {
+    padding: 16px;
+  }
+
+  .sidebar__logo-icon {
+    width: 150px; /* Reduz o logo em telas pequenas */
+  }
+
+  .mobile-menu {
+    display: block; /* Ícone de menu visível */
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1000;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 80px; /* Sidebar ocupa toda a tela em celulares pequenos */
+    transition:
+      width 0.3s ease-in-out,
+      opacity 0.3s ease-in-out; /* Animações */
+  }
+
+  #mobile-sidebar-toggle:checked ~ .sidebar {
+    width: 80px; /* Sidebar visível ao ativar menu */
+    opacity: 1; /* Torna visível */
+  }
+
+  #collapse-toggle:checked ~ .sidebar {
+    width: 200px; /* Encolher automaticamente no tablet */
+    opacity: 1;
+  }
+
+  .header__title {
+    font-size: 18px; /* Ainda menor */
+  }
+  .grid__card {
+    font-size: 10px; /* Reduz texto nos cartões */
+  }
+  .searchbox-wrapper {
+    height: 36px; /* Reduz altura do campo de busca */
+  }
+
+  .mobile-menu {
+    display: block; /* Ícone de menu visível */
+    font-size: 20px;
+    top: 5px;
+    left: 5px;
+  }
 }
 
 /* Main Content */
