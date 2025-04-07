@@ -24,6 +24,7 @@ const breadcrumbMap: Record<string, string> = {
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
 
   const getBreadcrumbs = () => {
     const pathnames = location.pathname.split("/").filter((x) => x);
@@ -173,24 +174,26 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <div className="body">
           <div className="header">
             <p className="header__title">{breadcrumbMap[location.pathname] || "Página"}</p>
-            <div className="header__crumbs">
-              {getBreadcrumbs().map((crumb, index) => (
-                <React.Fragment key={crumb.path}>
-                  <div
-                    className={`header__crumbs-item${index === getBreadcrumbs().length - 1 ? "1" : ""}`}
-                  >
-                    <Link to={crumb.path} className="header__link">
-                      {crumb.label}
-                    </Link>
-                  </div>
-                  {index < getBreadcrumbs().length - 1 && (
-                    <div className="header__crumb-separator">
-                      <span className="header__link">/</span>
+            {!isSmallScreen && (
+              <div className="header__crumbs">
+                {getBreadcrumbs().map((crumb, index) => (
+                  <React.Fragment key={crumb.path}>
+                    <div
+                      className={`header__crumbs-item${index === getBreadcrumbs().length - 1 ? "1" : ""}`}
+                    >
+                      <Link to={crumb.path} className="header__link">
+                        {crumb.label}
+                      </Link>
                     </div>
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
+                    {index < getBreadcrumbs().length - 1 && (
+                      <div className="header__crumb-separator">
+                        <span className="header__link">/</span>
+                      </div>
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
+            )}
           </div>
           <div className="dinamico">
             {children} {/* Aqui entra o conteúdo variável */}

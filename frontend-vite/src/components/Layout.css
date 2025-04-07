@@ -260,7 +260,7 @@ body {
     width: 40px;
     height: 40px;
     left: 10px;
-    top: 22px;
+    top: 15px;
     cursor: pointer;
   }
 
@@ -544,6 +544,34 @@ body {
   overflow: hidden;
   flex-shrink: 0;
   margin-left: -5px;
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 25px;
+    height: auto;
+    width: 86vw;
+    margin-bottom: 0px;
+  }
+  .page-header__notification {
+    margin-bottom: 0; /* Remove margem extra */
+  }
+  .page-header__profile {
+    margin-bottom: 0;
+  }
+  .header__crumbs {
+    display: none; /* Esconde breadcrumbs */
+  }
+  .header__title {
+    font-size: 20px; /* Reduz o tamanho da fonte */
+    margin: 5px 0; /* Ajusta margens */
+  }
+  .body {
+    font-size: 16px; /* Reduz o tamanho padrão do body */
+  }
 }
 
 .body {

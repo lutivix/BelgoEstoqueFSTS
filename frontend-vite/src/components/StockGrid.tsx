@@ -35,7 +35,7 @@ const StockGrid = () => {
   const maxPagesToShow = 3; // Mostra apenas 3 números por vez
 
   // Detecta tela pequena com window.matchMedia
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 800);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
 
   //Abrindo visualização de estoque
   const [expandedRow, setExpandedRow] = useState<string | null>(null); // Tipagem explícita
