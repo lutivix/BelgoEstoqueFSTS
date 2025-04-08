@@ -20,6 +20,8 @@
   grid-template-rows: auto 1fr auto; actions, conteúdo, paginação */
 
   box-sizing: border-box; /* Garante que padding/margem não quebre */
+
+  min-height: 0;
 }
 
 .actions {
@@ -411,7 +413,7 @@
 @media (max-width: 768px) {
   .wrapper-grid {
     max-height: none;
-    overflow-y: visible;
+    overflow-y: auto;
     border-radius: 8px;
     width: 100%;
     max-width: 100%;
@@ -505,6 +507,9 @@
 
   position: sticky;
   align-self: stretch;
+
+  bottom: 0;
+  z-index: 1;
 }
 
 .pagination {
