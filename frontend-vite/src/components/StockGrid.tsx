@@ -3,6 +3,7 @@ import axios from "axios";
 import { OmieProductFromDb } from "../types/omie-product-from-db";
 import "./StockGrid.css";
 import Layout from "../components/Layout";
+import { useLayoutWidth, useLayoutHeigth } from "./Layout"; // Importa o hook do contexto
 
 const formatDate = (value: string | undefined): string => {
   if (!value) return "-";
@@ -117,6 +118,14 @@ const StockGrid = () => {
     }
   }, [isSmallScreen]);
 
+  const layoutWidth = useLayoutWidth(); // Acessa a largura do layout
+  const layoutHeight = useLayoutHeigth();
+
+  let alturaGrid = layoutHeight - 226;
+  let largura = layoutWidth;
+
+  console.log(alturaGrid + " " + largura);
+
   // Dentro do return, ajustando o layout
   return (
     <Layout>
@@ -204,7 +213,9 @@ const StockGrid = () => {
                           <td>{product.type}</td>
                           <td>{product.primeira_loja}</td>
                           <td>
-                            <span title={getStockTooltip(product)}>{product.estoque_total}</span>
+                            <span className="tooltip" title={getStockTooltip(product)}>
+                              {product.estoque_total}
+                            </span>
                           </td>
                           <td>{formatDate(product.D)}</td>
                           <td>

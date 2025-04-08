@@ -1,7 +1,14 @@
-import React from "react";
-import { useState, useEffect } from "react"; // Adiciona o import do useState
+import React, { createContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react"; // Adiciona o import do useState
 import "./Layout.css";
 import { Link } from "react-router-dom";
+
+// Contexto para armazenar a largura
+const LayoutWidthContext = createContext<number>(0);
+const LayoutHeightContext = createContext<number>(0);
+
+export const useLayoutWidth = () => useContext(LayoutWidthContext); // Hook para acessar o contexto
+export const useLayoutHeigth = () => useContext(LayoutHeightContext); // Hook para acessar o contexto
 
 const mainSidebarItems = [
   { id: "dashboard", label: "Dashboard", icon: "/images/Home.svg" },
@@ -84,6 +91,37 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
+  const layoutRefWidth = useRef<HTMLDivElement>(null);
+  const layoutRefHeight = useRef<HTMLDivElement>(null); // Corrigido: useRef
+
+  const [layoutWidth, setLayoutWidth] = useState<number>(0);
+  const [layoutHeight, setLayoutHeight] = useState<number>(0);
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      // Atualiza a largura
+      if (layoutRefWidth.current) {
+        setLayoutWidth(layoutRefWidth.current.getBoundingClientRect().width);
+      }
+
+      // Atualiza a altura
+      if (layoutRefHeight.current) {
+        setLayoutHeight(layoutRefHeight.current.getBoundingClientRect().height);
+      }
+    };
+
+    // Adiciona o evento de resize
+    window.addEventListener("resize", updateDimensions);
+    updateDimensions(); // Calcula inicialmente
+
+    // Remove o evento ao desmontar
+    return () => {
+      window.removeEventListener("resize", updateDimensions);
+    };
+  }, []);
+
+  console.log("Layout: " + layoutRefWidth + " " + layoutRefHeight);
+
   return (
     <div className="principal">
       <input
@@ -97,7 +135,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <input type="checkbox" id="mobile-sidebar-toggle" style={{ display: "none" }} />
       <input type="checkbox" id="collapse-toggle" style={{ display: "none" }} />
 
-      <div className="sidebar">
+      <div className="sidebar" ref={layoutRefHeight}>
         <div className="sidebar__header">
           <img
             className="sidebar__logo-icon"
@@ -145,7 +183,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </div>
 
-      <div className="main">
+      <div className="main" ref={layoutRefWidth}>
         <div className="mobile-menu">
           <label htmlFor="mobile-sidebar-toggle">
             <img src="/images/b-cercas.png" alt="Menu" className="mobile-menu-icon" />

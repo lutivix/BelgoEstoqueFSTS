@@ -1,5 +1,7 @@
 /* Grid básico de consulta */
 .grid {
+  height: calc(100vh - 226px);
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -144,6 +146,8 @@
   background-color: #fff;
   /* background-color: #e71b1b; */
 
+  flex: 1;
+
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -157,7 +161,8 @@
   border-radius: 16px 16px 0px 0px;
 
   /*position: relative; /* Necessário para o sticky funcionar corretamente */
-  max-height: 442px;
+  /* max-height: 442px; */
+  /* max-height: calc(100% - 226px); */
   overflow-y: auto; /* ativa rolagem quando necessário */
 }
 
@@ -181,10 +186,10 @@
 
   width: 100%;
   border-collapse: collapse;
-  /*table-layout: fixed; /* Força a tabela a respeitar dimensões definidas */
+  table-layout: fixed; /* Força a tabela a respeitar dimensões definidas */
 
   /* background-color: #3fb8d6; */
-  height: 100%;
+  height: auto;
 }
 
 .grid__table thead {
@@ -247,8 +252,9 @@
 }
 
 /* Ajuste específico para o Tooltip e IconButton */
-.grid__table td .MuiTooltip-tooltip {
+.grid__table td .tooltip {
   max-width: 300px; /* Limita o tooltip, mas não afeta a célula */
+  max-height: 80px;
 }
 
 .grid__table td .MuiIconButton-root {

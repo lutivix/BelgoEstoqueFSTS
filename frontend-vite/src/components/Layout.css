@@ -246,7 +246,19 @@ body {
   pointer-events: auto; /* Garante que o clique seja registrado */
 }
 
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 80px;
+  }
+}
+
 @media (max-width: 768px) {
+  html,
+  body {
+    width: 100dvw;
+    height: 100dvh;
+  }
+
   .mobile-menu {
     display: block;
     position: absolute;
