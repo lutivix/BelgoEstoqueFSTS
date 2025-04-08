@@ -1,6 +1,6 @@
 /* Grid básico de consulta */
 .grid {
-  height: calc(100vh - 226px);
+  height: calc(100vh - 180px);
 
   display: flex;
   flex-direction: column;
@@ -12,11 +12,14 @@
   font-size: 14px;
   color: #adb5bd;
   width: 100%;
+  max-width: 100%;
   /* background-color: #0cf118; */
   /* border-radius: 10px 10px 10px 20px; */
   /* max-height: calc(100% - 48px); */
   /* display: grid;
   grid-template-rows: auto 1fr auto; actions, conteúdo, paginação */
+
+  box-sizing: border-box; /* Garante que padding/margem não quebre */
 }
 
 .actions {
@@ -164,6 +167,7 @@
   /* max-height: 442px; */
   /* max-height: calc(100% - 226px); */
   overflow-y: auto; /* ativa rolagem quando necessário */
+  max-width: 100%; /* Remove qualquer limite implícito */
 }
 
 /* Customização da scrollbar */
@@ -359,8 +363,10 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: 100%;
   padding: 8px;
+  width: 100%; /* Já está assim, mas reforça */
+  max-width: 100%; /* Evita larguras fixas implícitas */
+  box-sizing: border-box; /* Inclui padding na largura */
 }
 
 .grid__card {
@@ -373,6 +379,11 @@
   gap: 4px;
   font-size: 12px;
   color: #343a40;
+
+  width: 100%; /* Força o cartão a ocupar o espaço disponível */
+  max-width: 100%; /* Remove qualquer limite fixo */
+  box-sizing: border-box; /* Garante que padding não cause transbordo */
+  overflow-x: hidden; /* Evita transbordo horizontal */
 }
 
 .grid__card div {
@@ -389,19 +400,30 @@
     max-height: none;
     overflow-y: visible;
     border-radius: 8px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   .grid__table {
     display: none;
   }
+  .grid__card {
+    width: 100%; /* Força o cartão a ocupar o espaço disponível */
+    max-width: 100%; /* Remove qualquer limite fixo */
+    box-sizing: border-box; /* Garante que padding não cause transbordo */
+    overflow-x: hidden; /* Evita transbordo horizontal */
+  }
   .grid__list {
-    display: flex; /* Garante que a lista apareça */
+    width: 100%; /* Já está assim, mas reforça */
+    max-width: 100%; /* Evita larguras fixas implícitas */
+    box-sizing: border-box; /* Inclui padding na largura */
   }
   .actions {
     /* flex-direction: column; */
     gap: 8px;
     align-items: center;
   }
-  .searchbox-wrapper {
+  .actions__search-wrapper {
     width: 100%;
   }
   .select-comodities,
@@ -428,10 +450,16 @@
 }
 
 @media (max-width: 480px) {
+  .grid {
+    width: 98dvw;
+    height: 98dvh;
+  }
   .grid__card {
     font-size: 10px;
+    padding: 4px; /* Ainda menor em telas pequenas */
+    min-width: none;
   }
-  .searchbox-wrapper {
+  .actions__search-wrapper {
     height: 36px;
   }
 }

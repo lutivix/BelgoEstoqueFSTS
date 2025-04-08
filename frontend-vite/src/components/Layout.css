@@ -39,6 +39,13 @@ body {
   color: #fff;
 }
 
+@media (max-width: 480px) {
+  .principal {
+    width: 98dvw;
+    height: 98dvh;
+  }
+}
+
 /* Sidebar */
 .sidebar {
   height: 100%;
