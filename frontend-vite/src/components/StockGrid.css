@@ -384,15 +384,28 @@
   max-width: 100%; /* Remove qualquer limite fixo */
   box-sizing: border-box; /* Garante que padding não cause transbordo */
   overflow-x: hidden; /* Evita transbordo horizontal */
+
+  padding: 10px 12px; /* Mais espaço interno, mas sem exagerar */
+  gap: 4px; /* Aumenta o espaço entre linhas pra respirar */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra suave pra destacar */
+  transition: box-shadow 0.2s ease; /* Transição pra hover */
+}
+
+.grid__card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Efeito sutil ao passar o mouse */
 }
 
 .grid__card div {
   display: flex;
   justify-content: space-between;
+  align-items: center; /* Centraliza verticalmente */
+  width: 100%;
 }
 
 .grid__card strong {
-  font-weight: 500;
+  font-weight: 600; /* Mais contraste no rótulo */
+  color: #495057; /* Tom escuro pra destacar */
+  font-family: Poppins; /* Consistência com o resto */
 }
 
 @media (max-width: 768px) {
@@ -408,6 +421,8 @@
     display: none;
   }
   .grid__card {
+    padding: 8px 10px; /* Reduz um pouco */
+
     width: 100%; /* Força o cartão a ocupar o espaço disponível */
     max-width: 100%; /* Remove qualquer limite fixo */
     box-sizing: border-box; /* Garante que padding não cause transbordo */
@@ -451,16 +466,26 @@
 
 @media (max-width: 480px) {
   .grid {
-    width: 98dvw;
+    width: 95dvw;
     height: 98dvh;
+
+    justify-content: center;
+    /* background-color: #a14949; */
   }
   .grid__card {
     font-size: 10px;
-    padding: 4px; /* Ainda menor em telas pequenas */
+    /*padding: 4px; /* Ainda menor em telas pequenas */
     min-width: none;
+
+    padding: 4px 6px; /* Compacto, mas legível */
   }
+
   .actions__search-wrapper {
     height: 36px;
+  }
+
+  .grid__card strong {
+    font-weight: 500; /* Um pouco mais leve pra não pesar */
   }
 }
 
