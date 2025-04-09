@@ -56,9 +56,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       if (toggleSidebar && mobileToggle) {
         if (window.innerWidth <= 1024 && window.innerWidth > 768) {
           toggleSidebar.checked = true; // Encolhe no tablet
+          //console.log("Encolhendo sidebar (tablet)");
         } else {
           toggleSidebar.checked = false; // Expande para desktop
           mobileToggle.checked = false;
+          //console.log("Expandindo sidebar (desktop/mobile)");
         }
       }
     };
@@ -120,18 +122,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  console.log("Layout: " + layoutRefWidth + " " + layoutRefHeight);
+  //console.log("Layout: " + layoutRefWidth + " " + layoutRefHeight);
 
   return (
     <div className="principal">
-      <input
-        id="nav-toggle"
-        type="checkbox"
-        checked={sidebarCollapsed}
-        onChange={() => setSidebarCollapsed(!sidebarCollapsed)}
-        style={{ display: "none" }}
-      />
-
+      <input id="nav-toggle" type="checkbox" style={{ display: "none" }} />
       <input type="checkbox" id="mobile-sidebar-toggle" style={{ display: "none" }} />
       <input type="checkbox" id="collapse-toggle" style={{ display: "none" }} />
 

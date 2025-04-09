@@ -73,6 +73,8 @@ const StockGrid = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const [errorMsg, setErrorMsg] = useState<string>("");
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -85,6 +87,7 @@ const StockGrid = () => {
         setFilteredProducts(validProducts);
         setLoading(false);
       } catch (error) {
+        setErrorMsg(`Erro: ${error.message}`);
         console.error("Erro ao buscar produtos:", error);
         setLoading(false);
       }
@@ -129,6 +132,7 @@ const StockGrid = () => {
   // Dentro do return, ajustando o layout
   return (
     <Layout>
+      {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
       <div className="grid">
         <div className="actions">
           <div className="actions__searchbox-wrapper">

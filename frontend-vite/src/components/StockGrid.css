@@ -335,18 +335,6 @@
 }
 
 /* Tela pequena */
-@media (max-width: 768px) {
-  .grid__table--small th:nth-child(3) ~ th,
-  .grid__table--small td:nth-child(3) ~ td {
-    display: none; /* Esconde colunas extras */
-  }
-
-  .grid__table--small th,
-  .grid__table--small td {
-    padding: 4px; /* Reduz padding em telas pequenas */
-    font-size: 12px; /* Ajusta tamanho da fonte */
-  }
-}
 
 /* Botão de edição */
 .grid__edit-button {
@@ -408,87 +396,6 @@
   font-weight: 600; /* Mais contraste no rótulo */
   color: #495057; /* Tom escuro pra destacar */
   font-family: Poppins; /* Consistência com o resto */
-}
-
-@media (max-width: 768px) {
-  .wrapper-grid {
-    max-height: none;
-    overflow-y: auto;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-  .grid__table {
-    display: none;
-  }
-  .grid__card {
-    padding: 8px 10px; /* Reduz um pouco */
-
-    width: 100%; /* Força o cartão a ocupar o espaço disponível */
-    max-width: 100%; /* Remove qualquer limite fixo */
-    box-sizing: border-box; /* Garante que padding não cause transbordo */
-    overflow-x: hidden; /* Evita transbordo horizontal */
-  }
-  .grid__list {
-    width: 100%; /* Já está assim, mas reforça */
-    max-width: 100%; /* Evita larguras fixas implícitas */
-    box-sizing: border-box; /* Inclui padding na largura */
-  }
-  .actions {
-    /* flex-direction: column; */
-    gap: 8px;
-    align-items: center;
-  }
-  .actions__search-wrapper {
-    width: 100%;
-  }
-  .select-comodities,
-  .button1 {
-    width: 100%;
-    justify-content: center;
-  }
-  .wrapper-pagination {
-    height: auto;
-    padding: 8px;
-  }
-  .pagination {
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
-  }
-  .wrapper4 {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .wrapper5 {
-    justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .grid {
-    width: 95dvw;
-    height: 98dvh;
-
-    justify-content: center;
-    /* background-color: #a14949; */
-  }
-  .grid__card {
-    font-size: 10px;
-    /*padding: 4px; /* Ainda menor em telas pequenas */
-    min-width: none;
-
-    padding: 4px 6px; /* Compacto, mas legível */
-  }
-
-  .actions__search-wrapper {
-    height: 36px;
-  }
-
-  .grid__card strong {
-    font-weight: 500; /* Um pouco mais leve pra não pesar */
-  }
 }
 
 /* Pagination (não usada diretamente no DataGrid, mas mantida pra referência) */
@@ -1014,4 +921,111 @@
   width: 24px;
   height: auto;
   content: url("menu-icon.png");
+}
+
+@media (max-width: 768px) {
+  .grid__table--small th:nth-child(3) ~ th,
+  .grid__table--small td:nth-child(3) ~ td {
+    display: none; /* Esconde colunas extras */
+  }
+
+  .grid__table--small th,
+  .grid__table--small td {
+    padding: 4px; /* Reduz padding em telas pequenas */
+    font-size: 12px; /* Ajusta tamanho da fonte */
+  }
+
+  .wrapper-grid {
+    max-height: none;
+    overflow-y: auto;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .grid__table {
+    display: none;
+  }
+  .grid__card {
+    padding: 8px 10px; /* Reduz um pouco */
+
+    width: 100%; /* Força o cartão a ocupar o espaço disponível */
+    max-width: 100%; /* Remove qualquer limite fixo */
+    box-sizing: border-box; /* Garante que padding não cause transbordo */
+    overflow-x: hidden; /* Evita transbordo horizontal */
+  }
+  .grid__list {
+    width: 100%; /* Já está assim, mas reforça */
+    max-width: 100%; /* Evita larguras fixas implícitas */
+    box-sizing: border-box; /* Inclui padding na largura */
+  }
+  .actions {
+    /* flex-direction: column; */
+    gap: 8px;
+    align-items: center;
+  }
+  .actions__search-wrapper {
+    width: 100%;
+  }
+  .select-comodities,
+  .button1 {
+    width: 100%;
+    justify-content: center;
+  }
+  .wrapper-pagination {
+    height: auto;
+    padding: 8px;
+  }
+  .pagination {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+  .wrapper4 {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .wrapper5 {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    width: 97dvw;
+    height: 93dvh;
+
+    justify-content: center;
+    /* background-color: #a14949; */
+  }
+  .grid__card {
+    font-size: 10px;
+    /*padding: 4px; /* Ainda menor em telas pequenas */
+    min-width: none;
+
+    padding: 4px 6px; /* Compacto, mas legível */
+  }
+
+  .actions {
+    /* flex-direction: column; */
+    gap: 4px;
+    align-items: center;
+  }
+
+  .actions__searchbox-wrapper {
+    height: 36px;
+    padding-left: 4px;
+  }
+
+  .actions__categoria {
+    padding-right: 12px;
+  }
+
+  .actions__searchbox {
+    width: 180px;
+  }
+
+  .grid__card strong {
+    font-weight: 500; /* Um pouco mais leve pra não pesar */
+  }
 }
