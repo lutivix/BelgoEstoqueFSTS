@@ -398,6 +398,116 @@
   font-family: Poppins; /* Consistência com o resto */
 }
 
+.grid__card {
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #343a40;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
+}
+
+.grid__card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.card-code {
+  font-weight: 600;
+  color: #495057;
+  background-color: #f1f3f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  min-width: 60px; /* Espaço fixo pro código */
+  text-align: center;
+}
+
+.card-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #343a40;
+}
+
+.card-stocks {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.stock-total {
+  font-size: 11px;
+  color: #6c757d;
+  white-space: nowrap;
+  font-weight: 800;
+}
+
+.stock-total strong {
+  font-weight: 700;
+  color: #d7060f; /* Vermelho pra destacar */
+}
+
+.stock-tags {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto; /* Scroll horizontal se precisar */
+  -webkit-overflow-scrolling: touch; /* Suaviza scroll no mobile */
+  padding-bottom: 2px; /* Evita corte no scroll */
+}
+
+.stock-tag {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 12px;
+  color: #607d8b;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+/* Cores específicas pra cada loja */
+.stock-tag.vit {
+  background-color: #4caf50;
+  background-color: #fff;
+} /* Verde */
+.stock-tag.uni {
+  background-color: #2196f3;
+  background-color: #fff;
+} /* Azul */
+.stock-tag.lin {
+  background-color: #ff9800;
+  background-color: #fff;
+} /* Laranja */
+.stock-tag.sup {
+  background-color: #9c27b0;
+  background-color: #fff;
+} /* Roxo */
+.stock-tag.tel {
+  background-color: #f44336;
+  background-color: #fff;
+} /* Vermelho */
+.stock-tag.est {
+  background-color: #fff;
+} /* Cinza-azulado */
 /* Pagination (não usada diretamente no DataGrid, mas mantida pra referência) */
 
 .wrapper-pagination {
@@ -936,6 +1046,8 @@
   }
 
   .wrapper-grid {
+    flex: 1;
+
     max-height: none;
     overflow-y: auto;
     border-radius: 8px;
@@ -977,9 +1089,9 @@
     padding: 8px;
   }
   .pagination {
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
+    flex-direction: row;
+    gap: 4px;
+    align-items: flex-start;
   }
   .wrapper4 {
     flex-wrap: wrap;
@@ -993,7 +1105,7 @@
 @media (max-width: 480px) {
   .grid {
     width: 97dvw;
-    height: 93dvh;
+    height: 85dvh;
 
     justify-content: center;
     /* background-color: #a14949; */
@@ -1027,5 +1139,62 @@
 
   .grid__card strong {
     font-weight: 500; /* Um pouco mais leve pra não pesar */
+  }
+
+  .grid__card {
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+  .card-code {
+    min-width: 50px;
+    padding: 2px 4px;
+    font-size: 10px;
+  }
+  .card-name {
+    font-size: 11px;
+  }
+  .card-stocks {
+    gap: 6px;
+  }
+  .stock-total {
+    font-size: 10px;
+  }
+  .stock-tag {
+    font-size: 9px;
+    padding: 2px 4px;
+  }
+  .pagination-prev {
+    width: 36px;
+    height: 36px;
+  }
+
+  .pagination-item {
+    width: 36px;
+    height: 36px;
+  }
+
+  .pagination-next {
+    width: 36px;
+    height: 36px;
+  }
+
+  .select {
+    padding: 0px;
+    padding-left: 8px;
+    width: 45px;
+    height: 36px;
+  }
+  .select-an-item {
+    padding: 0px;
+    width: 45px;
+    height: 36px;
+  }
+
+  .select-icon {
+    position: absolute;
+    right: 5px;
+    pointer-events: none;
+    width: 15px;
+    height: 15px;
   }
 }

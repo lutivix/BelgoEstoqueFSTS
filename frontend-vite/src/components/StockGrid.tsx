@@ -161,15 +161,34 @@ const StockGrid = () => {
             <div className="grid__list">
               {paginatedProducts.map((product) => (
                 <div key={product.id} className="grid__card">
-                  <div>
-                    <strong>Código:</strong> {product.codigo_omie}
+                  <div className="card-header">
+                    <span className="card-code">{product.codigo_omie}</span>
+                    <span className="card-name">{product.name}</span>
+                    <span className="stock-total">
+                      Total: <strong>{product.estoque_total}</strong>
+                    </span>
                   </div>
-                  <div>
-                    <strong>Nome:</strong> {product.name}
-                  </div>
-                  <div>
-                    <strong>Estoque:</strong>{" "}
-                    <span title={getStockTooltip(product)}>{product.estoque_total}</span>
+                  <div className="card-stocks">
+                    <div className="stock-tags">
+                      <span className="stock-tag vit" title="Vitória">
+                        V:{product.estoque_vitoria ?? "-"}
+                      </span>
+                      <span className="stock-tag uni" title="União">
+                        U:{product.estoque_uniao ?? "-"}
+                      </span>
+                      <span className="stock-tag lin" title="Linhares">
+                        L:{product.estoque_linhares ?? "-"}
+                      </span>
+                      <span className="stock-tag sup" title="Supertela">
+                        S:{product.estoque_supertela ?? "-"}
+                      </span>
+                      <span className="stock-tag tel" title="Telarame">
+                        T:{product.estoque_telarame ?? "-"}
+                      </span>
+                      <span className="stock-tag est" title="Estruturaco">
+                        E:{product.estoque_estruturaco ?? "-"}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}
