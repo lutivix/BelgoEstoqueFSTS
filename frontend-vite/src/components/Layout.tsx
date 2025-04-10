@@ -16,7 +16,7 @@ const mainSidebarItems = [
 ];
 
 const secondarySidebarItems = [
-  { id: "messages", label: "Mensagens", icon: "/images/Mail.svg" },
+  { id: "reports", label: "Relatórios", icon: "/images/Mail.svg" },
   { id: "settings", label: "Configurações", icon: "/images/Setting.svg" },
   { id: "help", label: "Help Centre", icon: "/images/Help.svg" },
 ];
@@ -124,6 +124,15 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   //console.log("Layout: " + layoutRefWidth + " " + layoutRefHeight);
 
+  // No início do Layout.tsx, adiciona estados
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const handleLogout = () => {
+    console.log("Usuário desconectado"); // Garante que aparece antes do redirecionamento
+    window.location.href = "/"; // Redireciona pro Dashboard
+  };
+
   return (
     <div className="principal">
       <input id="nav-toggle" type="checkbox" style={{ display: "none" }} />
@@ -162,16 +171,21 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <div className="col">
             <div className="sidebar__wrapper">
               {secondarySidebarItems.map((item) => (
-                <div key={item.id} className="sidebar__nav-item">
+                <Link
+                  key={item.id}
+                  to={`/${item.id}`}
+                  className="sidebar__nav-item"
+                  title="Funcionalidade em desenvolvimento"
+                >
                   <img className="home-icon" alt={item.label} src={item.icon} />
                   <span className="sidebar__nav-title">{item.label}</span>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
         </div>
         <div className="sidebar__footer">
-          <div className="sidebar__nav-item5">
+          <div className="sidebar__nav-item5" onClick={handleLogout} style={{ cursor: "pointer" }}>
             <img className="home-icon" alt={footerItem.label} src={footerItem.icon} />
             <span className="sidebar__nav-title">{footerItem.label}</span>
           </div>
@@ -191,8 +205,20 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         </div>
         <div className="page-header">
           <div className="page-header__notification">
-            <img className="page-header__bell-icon" alt="Notificações" src="/images/Bell.svg" />
+            <img
+              className="page-header__bell-icon"
+              alt="Notificações"
+              src="/images/Bell.svg"
+              onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+              style={{ cursor: "pointer" }}
+            />
             <div className="page-header__bullet" />
+            {isNotificationOpen && (
+              <div className="notification-dropdown">
+                <h3>Notificações</h3>
+                <p>Nenhuma nova notificação no momento.</p>
+              </div>
+            )}
           </div>
           <div className="page-header__profile">
             <img
@@ -200,8 +226,28 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               alt="Avatar"
               src="/images/Rectangle 1.png"
             />
-            <span className="page-header__user">Luciana</span>
-            <img className="page-header__home-icon" alt="Dropdown" src="/images/Chevron Down.svg" />
+            <span
+              className="page-header__user"
+              onClick={() => setIsProfileOpen(!isProfileOpen)}
+              style={{ cursor: "pointer" }}
+            >
+              Luciana
+            </span>
+            <img
+              className="page-header__home-icon"
+              alt="Dropdown"
+              src="/images/Chevron Down.svg"
+              onClick={() => setIsProfileOpen(!isProfileOpen)}
+              style={{ cursor: "pointer" }}
+            />
+            {isProfileOpen && (
+              <div className="profile-menu">
+                <button>Meu Perfil</button>
+                <button>Trocar Senha</button>
+                <button>Configurações</button>
+                <button onClick={handleLogout}>Sair</button>
+              </div>
+            )}
           </div>
         </div>
         <div className="body">

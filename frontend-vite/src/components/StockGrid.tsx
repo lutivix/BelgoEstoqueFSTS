@@ -124,10 +124,11 @@ const StockGrid = () => {
   const layoutWidth = useLayoutWidth(); // Acessa a largura do layout
   const layoutHeight = useLayoutHeigth();
 
-  let alturaGrid = layoutHeight - 226;
-  let largura = layoutWidth;
+  //console.log(alturaGrid + " " + largura);
 
-  console.log(alturaGrid + " " + largura);
+  // No início do StockGrid.tsx, adiciona estados (já tinha sugerido antes, só mantendo)
+  const [isFilterTooltipOpen, setIsFilterTooltipOpen] = useState(false);
+  const [isAddTooltipOpen, setIsAddTooltipOpen] = useState(false);
 
   // Dentro do return, ajustando o layout
   return (
@@ -146,15 +147,31 @@ const StockGrid = () => {
               />
             </div>
             <div className="actions__select">
-              <div className="actions__button">
+              <div
+                className="actions__button"
+                onClick={() => setIsFilterTooltipOpen(!isFilterTooltipOpen)}
+              >
                 <img className="icon" alt="Filtro" src="/images/Filter.svg" />
               </div>
             </div>
+            {isFilterTooltipOpen && (
+              <div className="actions__custom-tooltip actions__filter-tooltip">
+                Filtrar categorias (em desenvolvimento)
+              </div>
+            )}
           </div>
-          <div className="actions__categoria">
+          <div
+            className="actions__categoria"
+            onClick={() => setIsAddTooltipOpen(!isAddTooltipOpen)}
+          >
             <img className="actions_cat-icon" alt="Adicionar" src="/images/Plus.svg" />
             <span className="label">Adicionar</span>
           </div>
+          {isAddTooltipOpen && (
+            <div className="actions__custom-tooltip actions__add-tooltip">
+              Adicionar produto (em desenvolvimento)
+            </div>
+          )}
         </div>
         <div className="wrapper-grid">
           {isSmallScreen ? (

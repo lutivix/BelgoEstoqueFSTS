@@ -327,6 +327,8 @@ body {
   padding: 8px;
   position: relative;
   gap: 8px;
+  position: relative;
+  display: inline-block; /* Garante que o container tenha tamanho */
 }
 
 .page-header__profile-child {
@@ -361,6 +363,63 @@ body {
   overflow: hidden;
   flex-shrink: 0;
   margin-left: -5px;
+}
+
+/* Notificações */
+.notification-dropdown {
+  position: fixed; /* Muda pra fixed pra ignorar o pai */
+  top: 60px; /* Ajusta manualmente pro header */
+  right: 32px;
+  width: 250px;
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 2000;
+  text-align: left;
+  font-size: 14px;
+  color: #343a40;
+}
+
+.notification-dropdown h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: #495057;
+}
+
+.notification-dropdown p {
+  margin: 0;
+  color: #6c757d;
+}
+
+/* Menu de perfil */
+.profile-menu {
+  position: absolute;
+  top: 60px; /* Ajusta pra ficar abaixo do perfil */
+  right: 32px;
+  width: 150px;
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 8px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.profile-menu button {
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 14px;
+  color: #343a40;
+  cursor: pointer;
+}
+
+.profile-menu button:hover {
+  background-color: #f8f9fa;
 }
 
 .body {
@@ -492,6 +551,22 @@ body {
   overflow: hidden;
   flex-shrink: 0;
   content: url("./images/Arrow Left.svg");
+}
+
+.page-placeholder {
+  padding: 16px;
+  text-align: center;
+  color: #6c757d;
+  font-family: Poppins;
+  font-size: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin: 16px;
+}
+
+.page-placeholder h2 {
+  color: #343a40;
+  margin-bottom: 8px;
 }
 
 @media (max-width: 768px) {
