@@ -172,7 +172,7 @@
 
 .actions__filter-tooltip {
   top: 48px; /* Ajusta pra ficar abaixo do botão de filtro */
-  left: 260px; /* Posiciona relativo ao wrapper, ajuste conforme necessário */
+  left: 80px; /* Posiciona relativo ao wrapper, ajuste conforme necessário */
 }
 
 .actions__add-tooltip {
@@ -1262,7 +1262,7 @@
   }
 
   .actions__button .actions__custom-tooltip {
-    left: 8px;
+    left: -18px;
     right: 8px;
     transform: none;
     max-width: calc(100vw - 16px);
