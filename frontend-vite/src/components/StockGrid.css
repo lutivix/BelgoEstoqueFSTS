@@ -274,6 +274,16 @@
   text-overflow: ellipsis; /* Adicionado pra cortar texto com "..." */
   min-height: 36px; /* Adicionado pra reforçar altura mínima */
 }
+
+/* Coluna Estoque Total (5ª coluna) */
+.grid__table th:nth-child(5),
+.grid__table td:nth-child(5) {
+  width: auto; /* Permite crescer se necessário */
+  padding: 0 8px; /* Reduz padding lateral pra aproveitar espaço */
+  width: 200px;
+  min-width: 420px; /* Tamanho mínimo pra caber o conteúdo */
+}
+
 .grid__table th {
   font-size: 15px;
   color: #6c757d;
@@ -398,6 +408,7 @@
   height: 16px;
 }
 
+/*  Grid List para o celular ao invés da tabela para desktop */
 .grid__list {
   display: flex;
   flex-direction: column;
@@ -415,6 +426,8 @@
   padding: 8px;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
   gap: 4px;
   font-size: 12px;
   color: #343a40;
@@ -428,18 +441,21 @@
   gap: 4px; /* Aumenta o espaço entre linhas pra respirar */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra suave pra destacar */
   transition: box-shadow 0.2s ease; /* Transição pra hover */
+
+  white-space: nowrap;
+  text-overflow: ellipsis; /* Adicionado pra cortar texto com "..." */
 }
 
 .grid__card:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Efeito sutil ao passar o mouse */
 }
 
-.grid__card div {
+/* .grid__card div {
   display: flex;
   justify-content: space-between;
   align-items: center; /* Centraliza verticalmente */
-  width: 100%;
-}
+/* width: 100%;
+} */
 
 .grid__card strong {
   font-weight: 600; /* Mais contraste no rótulo */
@@ -447,39 +463,23 @@
   font-family: Poppins; /* Consistência com o resto */
 }
 
-.grid__card {
-  background-color: #fff;
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
-  padding: 8px 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  font-size: 12px;
-  color: #343a40;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.2s ease;
-}
-
 .grid__card:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.card-header {
+.grid__card-header {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 8px;
   white-space: nowrap;
-  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden; /* Adiciona overflow pra cortar excessos */
 }
 
-.card-code {
+.grid__card-code {
   font-weight: 600;
   color: #495057;
   background-color: #f1f3f5;
@@ -489,42 +489,85 @@
   text-align: center;
 }
 
-.card-name {
+.grid__card-name {
   flex: 1;
-  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #343a40;
+  width: 100%;
+  /* max-width: 100%; */
+  /*max-width: calc(100% - 130px); /* 60px do código + 50px do wrapper + margens */
+  text-wrap: nowrap;
+  padding-right: 8px;
+  overflow: hidden; /* Adiciona overflow pra cortar excessos */
 }
 
-.card-stocks {
+.grid__stock-total-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px; /* Espaço entre ícone e "Total" */
+  justify-content: flex-end; /* Mantém o conjunto "Editar + Total" à direita */
+  min-width: 50px;
+  flex-shrink: 0;
+}
+
+.grid__edit-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.grid__edit-button img {
+  width: 16px;
+  height: 16px;
+}
+
+.grid__card-stocks {
+  flex: 1;
+  align-self: stretch;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
-  overflow: hidden;
+  width: 100%;
 }
 
-.stock-total {
+.grid__stock-total {
   font-size: 11px;
   color: #6c757d;
   white-space: nowrap;
   font-weight: 800;
+  flex-shrink: 0;
 }
 
-.stock-total strong {
+.grid__stock-total strong {
   font-weight: 700;
   color: #d7060f; /* Vermelho pra destacar */
 }
 
-.stock-tags {
+.grid__stock-input {
+  width: 30px;
+  padding: 2px;
+  font-size: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.grid__stock-tags {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 4px;
   overflow-x: auto; /* Scroll horizontal se precisar */
   -webkit-overflow-scrolling: touch; /* Suaviza scroll no mobile */
   padding-bottom: 2px; /* Evita corte no scroll */
+  width: 100%;
 }
 
-.stock-tag {
+.grid__stock-tag {
   font-size: 10px;
   padding: 2px 6px;
   border-radius: 12px;
@@ -534,31 +577,62 @@
 }
 
 /* Cores específicas pra cada loja */
-.stock-tag.vit {
+.grid__stock-tag.vit {
   background-color: #4caf50;
   background-color: #fff;
 } /* Verde */
-.stock-tag.uni {
+.grid__stock-tag.uni {
   background-color: #2196f3;
   background-color: #fff;
 } /* Azul */
-.stock-tag.lin {
+.grid__stock-tag.lin {
   background-color: #ff9800;
   background-color: #fff;
 } /* Laranja */
-.stock-tag.sup {
+.grid__stock-tag.sup {
   background-color: #9c27b0;
   background-color: #fff;
 } /* Roxo */
-.stock-tag.tel {
+.grid__stock-tag.tel {
   background-color: #f44336;
   background-color: #fff;
 } /* Vermelho */
-.stock-tag.est {
+.grid__stock-tag.est {
   background-color: #fff;
 } /* Cinza-azulado */
-/* Pagination (não usada diretamente no DataGrid, mas mantida pra referência) */
 
+/* Atualizações para semi-card no grid */
+/* Estoque Total no Grid */
+.grid__stock-total-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 100%;
+  width: 100%;
+  min-width: 200px;
+}
+
+.grid__stock-total-value {
+  padding-left: 8px;
+  font-weight: 600;
+  color: #343a40;
+}
+
+.grid__stock-mini-table {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 10px;
+  color: #6c757d;
+}
+
+.grid__stock-mini-table span {
+  display: block;
+  line-height: 1.2;
+}
+
+/* Pagination (não usada diretamente no DataGrid, mas mantida pra referência) */
 .wrapper-pagination {
   width: 100%;
 
@@ -1083,6 +1157,14 @@
 }
 
 @media (max-width: 768px) {
+  .grid {
+    width: 97dvw;
+    height: 85dvh;
+
+    justify-content: center;
+    /* background-color: #a14949; */
+  }
+
   .grid__table--small th:nth-child(3) ~ th,
   .grid__table--small td:nth-child(3) ~ td {
     display: none; /* Esconde colunas extras */
@@ -1111,10 +1193,27 @@
     padding: 8px 10px; /* Reduz um pouco */
 
     width: 100%; /* Força o cartão a ocupar o espaço disponível */
-    max-width: 100%; /* Remove qualquer limite fixo */
     box-sizing: border-box; /* Garante que padding não cause transbordo */
-    overflow-x: hidden; /* Evita transbordo horizontal */
+    text-overflow: ellipsis;
+    overflow-x: hidden;
   }
+
+  .grid__card-name {
+    font-size: 11px;
+    max-width: 200px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+
+    max-width: calc(100% - 130px); /* 60px código + 50px wrapper + 20px buffer */
+    flex: 1;
+  }
+
+  .grid__card-header {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden; /* Adiciona overflow pra cortar excessos */
+  }
+
   .grid__list {
     width: 100%; /* Já está assim, mas reforça */
     max-width: 100%; /* Evita larguras fixas implícitas */
@@ -1159,13 +1258,6 @@
     justify-content: center;
     /* background-color: #a14949; */
   }
-  .grid__card {
-    font-size: 10px;
-    /*padding: 4px; /* Ainda menor em telas pequenas */
-    min-width: none;
-
-    padding: 4px 6px; /* Compacto, mas legível */
-  }
 
   .actions {
     /* flex-direction: column; */
@@ -1191,24 +1283,30 @@
   }
 
   .grid__card {
-    padding: 6px 8px;
+    font-size: 10px;
+    /*padding: 4px; /* Ainda menor em telas pequenas */
+    min-width: none;
+
+    padding: 4px 6px; /* Compacto, mas legível */
     font-size: 11px;
   }
-  .card-code {
+  .grid__card-code {
     min-width: 50px;
     padding: 2px 4px;
     font-size: 10px;
   }
-  .card-name {
+  .grid__card-name {
     font-size: 11px;
+    /* max-width: 200px; */
+    text-overflow: ellipsis;
   }
   .card-stocks {
     gap: 6px;
   }
-  .stock-total {
+  .grid__stock-total {
     font-size: 10px;
   }
-  .stock-tag {
+  .grid__stock-tag {
     font-size: 9px;
     padding: 2px 4px;
   }

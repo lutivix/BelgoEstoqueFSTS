@@ -3,7 +3,6 @@ import axios from "axios";
 import { OmieProductFromDb } from "../types/omie-product-from-db";
 import "./StockGrid.css";
 import Layout from "../components/Layout";
-import { useLayoutWidth, useLayoutHeigth } from "./Layout"; // Importa o hook do contexto
 
 const formatDate = (value: string | undefined): string => {
   if (!value) return "-";
@@ -121,14 +120,22 @@ const StockGrid = () => {
     }
   }, [isSmallScreen]);
 
-  const layoutWidth = useLayoutWidth(); // Acessa a largura do layout
-  const layoutHeight = useLayoutHeigth();
+  //const layoutWidth = useLayoutWidth(); // Acessa a largura do layout
+  //const layoutHeight = useLayoutHeigth();
 
   //console.log(alturaGrid + " " + largura);
 
   // No início do StockGrid.tsx, adiciona estados (já tinha sugerido antes, só mantendo)
   const [isFilterTooltipOpen, setIsFilterTooltipOpen] = useState(false);
   const [isAddTooltipOpen, setIsAddTooltipOpen] = useState(false);
+
+  // Estado pra controlar edição nos cartões do celular
+  const [editingCard, setEditingCard] = useState<string | null>(null);
+
+  // Função pra toggle da edição no celular
+  const handleCardEditClick = (productId: string) => {
+    setEditingCard(editingCard === productId ? null : productId);
+  };
 
   // Dentro do return, ajustando o layout
   return (
@@ -178,33 +185,63 @@ const StockGrid = () => {
             <div className="grid__list">
               {paginatedProducts.map((product) => (
                 <div key={product.id} className="grid__card">
-                  <div className="card-header">
-                    <span className="card-code">{product.codigo_omie}</span>
-                    <span className="card-name">{product.name}</span>
-                    <span className="stock-total">
-                      Total: <strong>{product.estoque_total}</strong>
-                    </span>
+                  <div className="grid__card-header">
+                    <span className="grid__card-code">{product.codigo_omie}</span>
+                    <span className="grid__card-name">{product.name}</span>
+                    <div className="grid__stock-total-wrapper">
+                      <button
+                        className="grid__edit-button"
+                        onClick={() => handleCardEditClick(product.id)}
+                      >
+                        <img
+                          src={
+                            editingCard === product.id
+                              ? "/images/Chevron Up.svg"
+                              : "/images/Edit.svg"
+                          }
+                          alt={editingCard === product.id ? "Fechar" : "Editar"}
+                        />
+                      </button>
+                      <span className="grid__stock-total">
+                        Total: <strong>{product.estoque_total}</strong>
+                      </span>
+                    </div>
                   </div>
-                  <div className="card-stocks">
-                    <div className="stock-tags">
-                      <span className="stock-tag vit" title="Vitória">
-                        V:{product.estoque_vitoria ?? "-"}
-                      </span>
-                      <span className="stock-tag uni" title="União">
-                        U:{product.estoque_uniao ?? "-"}
-                      </span>
-                      <span className="stock-tag lin" title="Linhares">
-                        L:{product.estoque_linhares ?? "-"}
-                      </span>
-                      <span className="stock-tag sup" title="Supertela">
-                        S:{product.estoque_supertela ?? "-"}
-                      </span>
-                      <span className="stock-tag tel" title="Telarame">
-                        T:{product.estoque_telarame ?? "-"}
-                      </span>
-                      <span className="stock-tag est" title="Estruturaco">
-                        E:{product.estoque_estruturaco ?? "-"}
-                      </span>
+                  <div className="grid__card-stocks">
+                    <div className="grid__stock-tags">
+                      {["vitoria", "uniao", "linhares", "supertela", "telarame", "estruturaco"].map(
+                        (store) => {
+                          const storeKey = `estoque_${store}` as keyof OmieProductFromDb;
+                          const storeInitial = store.charAt(0).toUpperCase();
+                          return editingCard === product.id ? (
+                            <input
+                              key={store}
+                              type="number"
+                              className="grid__stock-input"
+                              value={editStocks[product.id]?.[storeKey] ?? product[storeKey] ?? ""}
+                              onChange={(e) =>
+                                handleStockChange(product.id, storeKey, e.target.value)
+                              }
+                            />
+                          ) : (
+                            <span
+                              key={store}
+                              className={`grid__stock-tag grid__stock-tag--${store}`}
+                              title={store.charAt(0).toUpperCase() + store.slice(1)}
+                            >
+                              {storeInitial}:{product[storeKey] ?? "-"}
+                            </span>
+                          );
+                        },
+                      )}
+                      {editingCard === product.id && (
+                        <button
+                          className="grid__save-button"
+                          onClick={() => handleSaveStocks(product.id)}
+                        >
+                          Salvar
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -214,67 +251,55 @@ const StockGrid = () => {
             <table className="grid__table">
               <thead>
                 <tr>
-                  {isSmallScreen ? (
-                    <>
-                      <th>Código</th>
-                      <th>Nome</th>
-                      <th>Estoque</th>
-                    </>
-                  ) : (
-                    <>
-                      <th>Cód. Omie</th>
-                      <th>Nome</th>
-                      <th>Família</th>
-                      <th>Loja</th>
-                      <th>Estoque Total</th>
-                      <th>Data</th>
-                      <th></th>
-                    </>
-                  )}
+                  <th>Cód. Omie</th>
+                  <th>Nome</th>
+                  <th>Família</th>
+                  <th>Loja</th>
+                  <th>Estoque Total</th>
+                  <th>Data</th>
                 </tr>
               </thead>
-
               <tbody>
                 {paginatedProducts.map((product) => (
                   <>
                     <tr key={product.id}>
-                      {isSmallScreen ? (
-                        <>
-                          <td>{product.codigo_omie}</td>
-                          <td>{product.name}</td>
-                          <td>
-                            <span title={getStockTooltip(product)}>{product.estoque_total}</span>
-                          </td>
-                        </>
-                      ) : (
-                        <>
-                          <td>{product.codigo_omie}</td>
-                          <td>{product.name}</td>
-                          <td>{product.type}</td>
-                          <td>{product.primeira_loja}</td>
-                          <td>
-                            <span className="tooltip" title={getStockTooltip(product)}>
-                              {product.estoque_total}
-                            </span>
-                          </td>
-                          <td>{formatDate(product.D)}</td>
-                          <td>
-                            <button
-                              className="grid__edit-button"
-                              onClick={() => handleEditClick(product.id)}
-                            >
-                              <img
-                                src={
-                                  expandedRow === product.id
-                                    ? "/images/Chevron Up.svg"
-                                    : "/images/Edit.svg"
-                                }
-                                alt={expandedRow === product.id ? "Fechar" : "Editar"}
-                              />
-                            </button>
-                          </td>
-                        </>
-                      )}
+                      <td>{product.codigo_omie}</td>
+                      <td>{product.name}</td>
+                      <td>{product.type}</td>
+                      <td>{product.primeira_loja}</td>
+                      <td>
+                        <div className="grid__stock-total-container">
+                          <div className="grid__stock-mini-table">
+                            <span>V:{product.estoque_vitoria ?? "-"}</span>
+                            <span>U:{product.estoque_uniao ?? "-"}</span>
+                          </div>
+                          <div className="grid__stock-mini-table">
+                            <span>L:{product.estoque_linhares ?? "-"}</span>
+                            <span>S:{product.estoque_supertela ?? "-"}</span>
+                          </div>
+                          <div className="grid__stock-mini-table">
+                            <span>T:{product.estoque_telarame ?? "-"}</span>
+                            <span>E:{product.estoque_estruturaco ?? "-"}</span>
+                          </div>
+                          <span className="grid__stock-total-value">
+                            Tot: {product.estoque_total}
+                          </span>
+                          <button
+                            className="grid__edit-button"
+                            onClick={() => handleEditClick(product.id)}
+                          >
+                            <img
+                              src={
+                                expandedRow === product.id
+                                  ? "/images/Chevron Up.svg"
+                                  : "/images/Edit.svg"
+                              }
+                              alt={expandedRow === product.id ? "Fechar" : "Editar"}
+                            />
+                          </button>
+                        </div>
+                      </td>
+                      <td>{formatDate(product.D)}</td>
                     </tr>
                     {expandedRow === product.id && !isSmallScreen && (
                       <tr className="grid__expanded-row">

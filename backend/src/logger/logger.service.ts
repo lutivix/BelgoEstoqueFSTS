@@ -3,6 +3,7 @@ import { Injectable } from "@nestjs/common";
 import { createLogger, format, transports } from "winston";
 import * as fs from "fs";
 import * as path from "path";
+import * as DailyRotateFile from "winston-daily-rotate-file";
 
 @Injectable()
 export class LoggerService {
@@ -27,8 +28,11 @@ export class LoggerService {
         ),
       ),
       transports: [
-        new transports.File({
-          filename: `${logDir}/BelgoEstoqueBackend${today}.log`,
+        new DailyRotateFile({
+          filename: `${logDir}/BelgoEstoqueBackend%DATE%.log`,
+          datePattern: "YYYYMMDD", // Formato da data no nome do arquivo
+          zippedArchive: false, // Se quiser compactar logs antigos, mude para true
+          maxFiles: "30d", // Mantém logs por 30 dias, ajuste conforme necessário
         }),
         new transports.Console({ level: "info" }),
       ],

@@ -11,8 +11,8 @@
       "console": "integratedTerminal",
       "autoAttachChildProcesses": true,
       "sourceMaps": true,
-      "outFiles": ["${workspaceFolder}/backend/dist/**/*.js"],
-      "preLaunchTask": "npm: build - backend"
+      "outFiles": ["${workspaceFolder}/backend/dist/**/*.js"]
+      // "preLaunchTask": "npm: build - backend"
     },
     {
       "type": "node",

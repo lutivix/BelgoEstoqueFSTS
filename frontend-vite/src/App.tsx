@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import StockGrid from "./components/StockGrid"; // Ajuste o caminho
@@ -8,7 +7,7 @@ import Settings from "./Pages/Settings"; // Novo
 import HelpCentre from "./Pages/Help"; // Novo
 
 function App() {
-  const [count, setCount] = useState(0);
+  //const [count, setCount] = useState(0);
 
   return (
     //   <>
