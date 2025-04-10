@@ -1,13 +1,12 @@
-/* Grid básico de consulta */
+/* #region GRID PRINCIPAL */
+
 .grid {
   height: calc(100vh - 180px);
-
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 16px;
-
   text-align: center;
   font-size: 14px;
   color: #adb5bd;
@@ -18,12 +17,13 @@
   /* max-height: calc(100% - 48px); */
   /* display: grid;
   grid-template-rows: auto 1fr auto; actions, conteúdo, paginação */
-
   box-sizing: border-box; /* Garante que padding/margem não quebre */
-
   min-height: 0;
 }
 
+/* #endregion */
+
+/* #region ACTIONS */
 .actions {
   align-self: stretch;
 
@@ -194,6 +194,11 @@
   left: auto; /* Evita conflito com centralização */
 }
 
+/* #endregion */
+
+/* #region TABELA */
+
+/* #region GRID MAIOR */
 /* Container do Grid principal */
 .wrapper-grid {
   /* align-self: stretch; */
@@ -393,9 +398,6 @@
   background-color: #6c757d;
 }
 
-/* Tela pequena */
-
-/* Botão de edição */
 .grid__edit-button {
   border: none;
   background: none;
@@ -408,6 +410,9 @@
   height: 16px;
 }
 
+/* #endregion */
+
+/* #region GRID MENOR */
 /*  Grid List para o celular ao invés da tabela para desktop */
 .grid__list {
   display: flex;
@@ -632,6 +637,9 @@
   line-height: 1.2;
 }
 
+/* #endregion */
+
+/* #region PAGINATION */
 /* Pagination (não usada diretamente no DataGrid, mas mantida pra referência) */
 .wrapper-pagination {
   width: 100%;
@@ -743,6 +751,9 @@
   text-align: left;
 }
 
+/* #endregion */
+
+/* #region SEM CLASSIFICAÇÃO */
 .searchbox-parent {
   display: flex;
   flex-direction: row;
@@ -1156,6 +1167,11 @@
   content: url("menu-icon.png");
 }
 
+/* #endregion */
+
+/* #endregion */
+
+/* #region MEDIA 768 - 1024 PX */
 @media (max-width: 768px) {
   .grid {
     width: 97dvw;
@@ -1249,6 +1265,10 @@
     justify-content: center;
   }
 }
+
+/* #endregion */
+
+/* #region MEDIA <= 480 PX */
 
 @media (max-width: 480px) {
   .grid {
@@ -1367,3 +1387,5 @@
     text-align: center;
   }
 }
+
+/* #endregion */
