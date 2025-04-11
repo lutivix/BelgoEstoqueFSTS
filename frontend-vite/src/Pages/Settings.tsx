@@ -4,7 +4,7 @@ import Layout from "../components/Layout";
 const Settings = () => (
   <Layout>
     <div className="dashboard">
-      <h2>Configurações</h2>
+      <h1>Configurações</h1>
       <p>Funcionalidade em desenvolvimento...</p>
     </div>
   </Layout>
