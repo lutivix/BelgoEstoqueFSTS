@@ -31,7 +31,9 @@ const StockGrid = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // Estado pra sidebar retrátil
   //const isSmallScreen = useMediaQuery("(max-width: 800px)");
   const [page, setPage] = useState(1);
-  const itemsPerPage = 15; // Fixo em 10, ou ajuste conforme necessário
+  //const itemsPerPage = 15; // Fixo em 10, ou ajuste conforme necessário
+  const [itemsPerPage, setItemsPerPage] = useState(15); // Estado dinâmico
+  const itemsPerPageOptions = [10, 15, 25, 50, 100]; // Opções disponíveis
   const maxPagesToShow = 3; // Mostra apenas 3 números por vez
 
   // Detecta tela pequena com window.matchMedia
@@ -64,7 +66,7 @@ const StockGrid = () => {
     setExpandedRow(null); // Fecha a linha após salvar
   };
 
-  const backendUrl = "http://192.168.7.216:3000/products/db";
+  const backendUrl = "http://192.168.100.57:3000/products/db";
 
   useEffect(() => {
     const handleResize = () => setIsSmallScreen(window.innerWidth <= 768);
@@ -111,6 +113,18 @@ const StockGrid = () => {
   }, [filteredProducts, page, itemsPerPage]);
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  // Função pra lidar com mudança de itemsPerPage
+  const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newItemsPerPage = Number(e.target.value);
+    setItemsPerPage(newItemsPerPage);
+
+    // Ajustar a página atual se necessário
+    const newTotalPages = Math.ceil(filteredProducts.length / newItemsPerPage);
+    if (page > newTotalPages) {
+      setPage(newTotalPages || 1); // Volta pra última página válida ou 1
+    }
+  };
 
   useEffect(() => {
     if (isSmallScreen) {
@@ -490,6 +504,37 @@ const StockGrid = () => {
                 />
               </div>
               <span className="page">Page</span>
+            </div>
+            {/* Nova seção para Itens por Página */}
+            <div className="wrapper5">
+              <div className="select">
+                <select
+                  className="select-an-item"
+                  value={itemsPerPage}
+                  onChange={handleItemsPerPageChange}
+                  style={{
+                    border: "none",
+                    background: "transparent",
+                    fontFamily: "Poppins",
+                    fontSize: "14px",
+                    width: "100%",
+                    paddingRight: "24px",
+                    appearance: "none",
+                  }}
+                >
+                  {itemsPerPageOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+                <img
+                  className="icon select-icon"
+                  alt="Selecionar itens por página"
+                  src="./images/Chevron Down.svg"
+                />
+              </div>
+              <span className="page">Itens</span>
             </div>
           </div>
         </div>

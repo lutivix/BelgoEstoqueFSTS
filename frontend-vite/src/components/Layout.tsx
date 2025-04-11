@@ -16,7 +16,7 @@ const mainSidebarItems = [
 ];
 
 const secondarySidebarItems = [
-  { id: "reports", label: "Relatórios", icon: "/images/Mail.svg" },
+  { id: "reports", label: "Relatórios", icon: "/images/reports.png" },
   { id: "settings", label: "Configurações", icon: "/images/Setting.svg" },
   { id: "help", label: "Help Centre", icon: "/images/Help.svg" },
 ];
@@ -26,12 +26,24 @@ const footerItem = { id: "logout", label: "Sair", icon: "/images/Arrow Left.svg"
 const breadcrumbMap: Record<string, string> = {
   "/": "Dashboard",
   "/products": "Produtos",
+  "/reports": "Relatórios",
+  "/settings": "Configurações",
+  "/help": "Suporte",
   // Adicione mais rotas aqui se precisar (ex.: "/messages": "Mensagens")
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  // Inicializar sidebarCollapsed com o valor do localStorage, se disponível
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    const saved = localStorage.getItem("sidebarCollapsed");
+    return saved !== null ? JSON.parse(saved) : false;
+  });
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
+
+  // Salvar sidebarCollapsed no localStorage sempre que mudar
+  useEffect(() => {
+    localStorage.setItem("sidebarCollapsed", JSON.stringify(sidebarCollapsed));
+  }, [sidebarCollapsed]);
 
   const getBreadcrumbs = () => {
     const pathnames = location.pathname.split("/").filter((x) => x);
@@ -53,12 +65,17 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     let inactivityTimer: number | undefined;
 
     const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 768);
       if (toggleSidebar && mobileToggle) {
+        // Respeitar o estado salvo do sidebarCollapsed, se disponível
+        const savedCollapsed = JSON.parse(localStorage.getItem("sidebarCollapsed") || "false");
         if (window.innerWidth <= 1024 && window.innerWidth > 768) {
           toggleSidebar.checked = true; // Encolhe no tablet
+          setSidebarCollapsed(true);
           //console.log("Encolhendo sidebar (tablet)");
         } else {
           toggleSidebar.checked = false; // Expande para desktop
+          setSidebarCollapsed(false);
           mobileToggle.checked = false;
           //console.log("Expandindo sidebar (desktop/mobile)");
         }
@@ -75,6 +92,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
+    // Sincronizar nav-toggle com sidebarCollapsed
+    const handleToggleChange = () => {
+      if (toggleSidebar) {
+        setSidebarCollapsed(toggleSidebar.checked);
+      }
+    };
+
     // Adiciona os eventos
     window.addEventListener("resize", handleResize);
     window.addEventListener("mousemove", resetInactivityTimer);
@@ -86,6 +110,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
     // Remove eventos ao desmontar
     return () => {
+      if (toggleSidebar) {
+        toggleSidebar.removeEventListener("change", handleToggleChange);
+      }
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", resetInactivityTimer);
       window.removeEventListener("keydown", resetInactivityTimer);
@@ -135,11 +162,16 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="principal">
-      <input id="nav-toggle" type="checkbox" style={{ display: "none" }} />
+      <input
+        id="nav-toggle"
+        type="checkbox"
+        style={{ display: "none" }}
+        defaultChecked={sidebarCollapsed}
+      />
       <input type="checkbox" id="mobile-sidebar-toggle" style={{ display: "none" }} />
       <input type="checkbox" id="collapse-toggle" style={{ display: "none" }} />
 
-      <div className="sidebar" ref={layoutRefHeight}>
+      <div className={`sidebar ${sidebarCollapsed ? "collapsed" : ""}`} ref={layoutRefHeight}>
         <div className="sidebar__header">
           <img
             className="sidebar__logo-icon"
