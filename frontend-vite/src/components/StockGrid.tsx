@@ -66,7 +66,7 @@ const StockGrid = () => {
     setExpandedRow(null); // Fecha a linha após salvar
   };
 
-  const backendUrl = "http://192.168.100.57:3000/products/db";
+  const backendUrl = "http://192.168.7.216:3000/products/db";
 
   useEffect(() => {
     const handleResize = () => setIsSmallScreen(window.innerWidth <= 768);
@@ -481,15 +481,6 @@ const StockGrid = () => {
                   className="select-an-item"
                   value={page}
                   onChange={(e) => setPage(Number(e.target.value))} // Muda a página diretamente
-                  style={{
-                    border: "none",
-                    background: "transparent",
-                    fontFamily: "Poppins",
-                    fontSize: "14px",
-                    width: "100%",
-                    paddingRight: "24px",
-                    appearance: "none",
-                  }}
                 >
                   {Array.from({ length: totalPages }, (_, index) => (
                     <option key={index + 1} value={index + 1}>
@@ -512,15 +503,6 @@ const StockGrid = () => {
                   className="select-an-item"
                   value={itemsPerPage}
                   onChange={handleItemsPerPageChange}
-                  style={{
-                    border: "none",
-                    background: "transparent",
-                    fontFamily: "Poppins",
-                    fontSize: "14px",
-                    width: "100%",
-                    paddingRight: "24px",
-                    appearance: "none",
-                  }}
                 >
                   {itemsPerPageOptions.map((option) => (
                     <option key={option} value={option}>

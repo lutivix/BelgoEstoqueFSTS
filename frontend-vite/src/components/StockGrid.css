@@ -194,6 +194,22 @@
   left: auto; /* Evita conflito com centralização */
 }
 
+.page-placeholder {
+  padding: 16px;
+  text-align: center;
+  color: #6c757d;
+  font-family: Poppins;
+  font-size: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin: 16px;
+}
+
+.page-placeholder h2 {
+  color: #343a40;
+  margin-bottom: 8px;
+}
+
 /* #endregion */
 
 /* #region TABELA */
@@ -669,9 +685,7 @@
   text-align: center;
   background-color: #fff;
   border-radius: 0px 0px 8px 8px;
-
   padding: 2px;
-
   position: relative;
 }
 
@@ -727,12 +741,6 @@
   cursor: not-allowed;
 }
 
-.select-an-item {
-  appearance: none; /* Remove estilo padrão do select */
-  padding-right: 20px; /* Espaço para o ícone Chevron Down */
-  width: 100%; /* Garante que o select seja clicável em toda a área */
-}
-
 .wrapper4 {
   display: flex;
   flex-direction: row;
@@ -749,6 +757,54 @@
   justify-content: flex-start;
   gap: 8px;
   text-align: left;
+}
+
+.select {
+  width: 100px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  box-sizing: border-box;
+  height: 40px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 12px;
+  gap: 8px;
+  position: relative; /* Necessário para posicionar o ícone absoluto */
+}
+
+.select-an-item {
+  flex: 1;
+  position: relative;
+  line-height: 132%;
+  appearance: none; /* Remove estilo padrão do select */
+  padding-right: 20px; /* Espaço para o ícone Chevron Down */
+  width: 100%; /* Garante que o select seja clicável em toda a área */
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* Limitar a altura do dropdown usando um hack para navegadores que suportam */
+.select-an-item::-webkit-scrollbar {
+  display: none; /* Remove barra de rolagem feia no Chrome */
+}
+
+.select-an-item {
+  /* Estimar altura para ~5 opções ou 50px */
+  max-height: 120px; /* Aproximadamente 5 opções de ~24px cada */
+  overflow-y: auto; /* Adiciona rolagem se necessário */
+  display: block;
+}
+
+.page {
+  position: relative;
+  line-height: 132%;
+  text-align: center;
 }
 
 /* #endregion */
@@ -819,36 +875,6 @@
   line-height: 24px;
   text-transform: uppercase;
   font-weight: 500;
-}
-
-.select {
-  width: 100px;
-  border-radius: 8px;
-  background-color: #fff;
-  border: 1px solid #ced4da;
-  box-sizing: border-box;
-  height: 40px;
-  overflow: hidden;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 0 12px;
-  gap: 8px;
-  position: relative; /* Necessário para posicionar o ícone absoluto */
-}
-
-.select-an-item {
-  flex: 1;
-  position: relative;
-  line-height: 132%;
-}
-
-.page {
-  position: relative;
-  line-height: 132%;
-  text-align: center;
 }
 
 /* Ícones e Textos */

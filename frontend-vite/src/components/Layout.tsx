@@ -2,6 +2,8 @@ import React, { createContext } from "react";
 import { useState, useEffect, useContext, useRef } from "react"; // Adiciona o import do useState
 import "./Layout.css";
 import { Link } from "react-router-dom";
+import * as faIcons from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // Contexto para armazenar a largura
 const LayoutWidthContext = createContext<number>(0);
@@ -11,14 +13,14 @@ export const useLayoutWidth = () => useContext(LayoutWidthContext); // Hook para
 export const useLayoutHeigth = () => useContext(LayoutHeightContext); // Hook para acessar o contexto
 
 const mainSidebarItems = [
-  { id: "dashboard", label: "Dashboard", icon: "/images/Home.svg" },
-  { id: "products", label: "Produtos", icon: "/images/Spinner.svg" },
+  { id: "dashboard", label: "Dashboard", icon: faIcons.faHouse },
+  { id: "products", label: "Produtos", icon: faIcons.faBoxesStacked },
 ];
 
 const secondarySidebarItems = [
-  { id: "reports", label: "Relatórios", icon: "/images/reports.png" },
-  { id: "settings", label: "Configurações", icon: "/images/Setting.svg" },
-  { id: "help", label: "Help Centre", icon: "/images/Help.svg" },
+  { id: "reports", label: "Relatórios", icon: faIcons.faFileAlt },
+  { id: "settings", label: "Configurações", icon: faIcons.faCog },
+  { id: "help", label: "Help Centre", icon: faIcons.faQuestionCircle },
 ];
 
 const footerItem = { id: "logout", label: "Sair", icon: "/images/Arrow Left.svg" };
@@ -72,12 +74,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         if (window.innerWidth <= 1024 && window.innerWidth > 768) {
           toggleSidebar.checked = true; // Encolhe no tablet
           setSidebarCollapsed(true);
-          //console.log("Encolhendo sidebar (tablet)");
+          console.log("Encolhendo sidebar (tablet)");
         } else {
           toggleSidebar.checked = false; // Expande para desktop
           setSidebarCollapsed(false);
           mobileToggle.checked = false;
-          //console.log("Expandindo sidebar (desktop/mobile)");
+          console.log("Expandindo sidebar (desktop/mobile)");
         }
       }
     };
@@ -98,6 +100,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         setSidebarCollapsed(toggleSidebar.checked);
       }
     };
+
+    // Adiciona evento de change explicitamente
+    toggleSidebar?.addEventListener("change", handleToggleChange);
 
     // Adiciona os eventos
     window.addEventListener("resize", handleResize);
@@ -167,6 +172,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         type="checkbox"
         style={{ display: "none" }}
         defaultChecked={sidebarCollapsed}
+        checked={sidebarCollapsed} // Controla diretamente com o estado
+        onChange={(e) => setSidebarCollapsed(e.target.checked)} // Adiciona onChange
       />
       <input type="checkbox" id="mobile-sidebar-toggle" style={{ display: "none" }} />
       <input type="checkbox" id="collapse-toggle" style={{ display: "none" }} />
@@ -176,7 +183,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <img
             className="sidebar__logo-icon"
             alt="Logo"
-            src={sidebarCollapsed ? "/images/b-cercas.png" : "/images/belgo-cercas.png"}
+            src={sidebarCollapsed ? "/images/b-cercas.png" : "/brand/LG-BELGO-CERCAS-BRANCO.png"}
           />
           <hr />
           <label htmlFor="nav-toggle" className="sidebar__collapse-button">
@@ -195,7 +202,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 to={item.id === "dashboard" ? "/" : "/products"}
                 className="sidebar__nav-item"
               >
-                <img className="home-icon" alt={item.label} src={item.icon} />
+                {/* <img className={item.iconClass} alt={item.label} /> */}
+                <FontAwesomeIcon icon={item.icon} className="sidebar__icon" />
                 <span className="sidebar__nav-title">{item.label}</span>
               </Link>
             ))}
@@ -209,7 +217,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   className="sidebar__nav-item"
                   title="Funcionalidade em desenvolvimento"
                 >
-                  <img className="home-icon" alt={item.label} src={item.icon} />
+                  {/* <img className="home-icon" alt={item.label} src={item.icon} /> */}
+                  <FontAwesomeIcon icon={item.icon} className="sidebar__icon" />
                   <span className="sidebar__nav-title">{item.label}</span>
                 </Link>
               ))}
@@ -218,7 +227,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         </div>
         <div className="sidebar__footer">
           <div className="sidebar__nav-item5" onClick={handleLogout} style={{ cursor: "pointer" }}>
-            <img className="home-icon" alt={footerItem.label} src={footerItem.icon} />
+            {/* <img className="sidebar__icon" alt={footerItem.label} src={footerItem.icon} /> */}
+            <FontAwesomeIcon icon={faIcons.faArrowLeft} className="sidebar__icon" />
             <span className="sidebar__nav-title">{footerItem.label}</span>
           </div>
         </div>
@@ -236,6 +246,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           </label>
         </div>
         <div className="page-header">
+          <div className="page-header__title">
+            <span>
+              TEXTO DE ALGUMA COISA??? DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+              DDDDDDDDDDDDDDDDDDD
+            </span>
+          </div>
           <div className="page-header__notification">
             <img
               className="page-header__bell-icon"
@@ -278,6 +294,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <button>Trocar Senha</button>
                 <button>Configurações</button>
                 <button onClick={handleLogout}>Sair</button>
+                <button>(Em Desenv.)</button>
               </div>
             )}
           </div>
