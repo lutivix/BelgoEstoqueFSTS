@@ -225,6 +225,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             </div>
           </div>
         </div>
+        <div id="nav-content-highlight"></div>
         <div className="sidebar__footer">
           <div className="sidebar__nav-item5" onClick={handleLogout} style={{ cursor: "pointer" }}>
             {/* <img className="sidebar__icon" alt={footerItem.label} src={footerItem.icon} /> */}
