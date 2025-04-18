@@ -1041,4 +1041,110 @@ export class ProductsService {
       throw error;
     }
   }
+
+  async getEstoquePorLoja(
+    familia?: string,
+    dataStr?: string,
+  ): Promise<
+    {
+      name: string;
+      type: string;
+      estoque_total: number;
+      estoque_minimo: number;
+      emFalta: number;
+      porLoja: {
+        vitoria: number;
+        uniao: number;
+        linhares: number;
+        supertela: number;
+        telarame: number;
+        estruturaco: number;
+      };
+    }[]
+  > {
+    const produtos = await this.loadProductsFromDb();
+
+    return produtos
+      .filter((p) => {
+        const familiaOk = !familia || familia.toLowerCase() === (p.type || "").toLowerCase();
+        const dataOk = !dataStr || (p.D && p.D.toISOString().startsWith(dataStr));
+        return familiaOk && dataOk;
+      })
+      .map((p) => {
+        const porLoja = {
+          vitoria: p.estoque_vitoria ?? 0,
+          uniao: p.estoque_uniao ?? 0,
+          linhares: p.estoque_linhares ?? 0,
+          supertela: p.estoque_supertela ?? 0,
+          telarame: p.estoque_telarame ?? 0,
+          estruturaco: p.estoque_estruturaco ?? 0,
+        };
+
+        const estoque_total = Object.values(porLoja).reduce((soma, val) => soma + val, 0);
+        const estoque_minimo = 6 * 40; // 40 por loja
+        const emFalta = Number(((estoque_total / estoque_minimo) * 100).toFixed(2));
+
+        return {
+          name: p.name,
+          type: p.type ?? "", // Aqui está a família
+          estoque_total,
+          estoque_minimo,
+          emFalta, // Percentual
+          porLoja,
+        };
+      })
+      .sort((a, b) => a.estoque_total - b.estoque_total); // Ordena do menor pro maior
+  }
+
+  async getEstoqueDetalhado(dataStr?: string): Promise<
+    {
+      name: string;
+      type: string;
+      D: string;
+      estoque_total: number;
+      estoque_minimo: number;
+      emFalta: number;
+      porLoja: {
+        vitoria: number;
+        uniao: number;
+        linhares: number;
+        supertela: number;
+        telarame: number;
+        estruturaco: number;
+      };
+    }[]
+  > {
+    const produtos = await this.loadProductsFromDb();
+
+    return produtos
+      .filter((p) => {
+        const dataOk = !dataStr || (p.D && p.D.toISOString().startsWith(dataStr));
+        return dataOk;
+      })
+      .map((p) => {
+        const porLoja = {
+          vitoria: p.estoque_vitoria ?? 0,
+          uniao: p.estoque_uniao ?? 0,
+          linhares: p.estoque_linhares ?? 0,
+          supertela: p.estoque_supertela ?? 0,
+          telarame: p.estoque_telarame ?? 0,
+          estruturaco: p.estoque_estruturaco ?? 0,
+        };
+
+        const estoque_total = Object.values(porLoja).reduce((soma, val) => soma + val, 0);
+        const estoque_minimo = 6 * 40;
+        const emFalta = Number(((estoque_total / estoque_minimo) * 100).toFixed(2));
+
+        return {
+          name: p.name,
+          type: p.type ?? "Sem Família",
+          D: p.D?.toISOString().split("T")[0] ?? "",
+          estoque_total,
+          estoque_minimo,
+          emFalta,
+          porLoja,
+        };
+      })
+      .sort((a, b) => a.emFalta - b.emFalta);
+  }
 }
