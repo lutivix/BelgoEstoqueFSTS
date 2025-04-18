@@ -1,65 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Painel Admin - Belgo Estoque</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    button { padding: 10px 20px; margin: 5px; }
-    .clock { font-size: 18px; margin-top: 10px; }
-  </style>
-</head>
-<body>
-  <h1>Painel Admin</h1>
-  <button onclick="loadInitial()">Load Initial</button>
-  <button onclick="gerarEstoque()">Gerar Estoque</button>
-  <button onclick="testarConexao()">Testar Conexão DB</button>
-  <button onclick="gerarExcel()">Gerar Excel</button>
-  <button onclick="clearDatabase()">Zerar Base</button>
-  <div class="clock">Hora Atual: <span id="horaAtual"></span></div>
-  <div class="clock">Última Varredura: <span id="ultimaVarredura">00/00/00 00:00:00</span></div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Painel Admin - Belgo Estoque</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      button {
+        padding: 10px 20px;
+        margin: 5px;
+      }
+      .clock {
+        font-size: 18px;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Painel Admin</h1>
+    <button onclick="loadInitial()">Load Initial</button>
+    <button onclick="gerarEstoque()">Gerar Estoque</button>
+    <button onclick="testarConexao()">Testar Conexão DB</button>
+    <button onclick="gerarExcel()">Gerar Excel</button>
+    <button onclick="clearDatabase()">Zerar Base</button>
+    <div class="clock">Hora Atual: <span id="horaAtual"></span></div>
+    <div class="clock">Última Varredura: <span id="ultimaVarredura">00/00/00 00:00:00</span></div>
 
-  <script>
-    // Hora Atual
-    function updateClock() {
-      const now = new Date().toLocaleString('pt-BR');
-      document.getElementById('horaAtual').innerText = now;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
+    <script>
+      // Hora Atual
+      function updateClock() {
+        const now = new Date().toLocaleString("pt-BR");
+        document.getElementById("horaAtual").innerText = now;
+      }
+      setInterval(updateClock, 1000);
+      updateClock();
 
-    // Funções dos botões (chamadas API)
-    async function loadInitial() {
-      const res = await fetch('/products/load-initial', { method: 'POST' });
-      alert(await res.text());
-    }
+      // Funções dos botões (chamadas API)
+      async function loadInitial() {
+        const res = await fetch("/api/products/load-initial", { method: "POST" });
+        alert(await res.text());
+      }
 
-    async function gerarEstoque() {
-      const res = await fetch('/products/stock');
-      alert(await res.text());
-    }
+      async function gerarEstoque() {
+        const res = await fetch("/api/products/stock");
+        alert(await res.text());
+      }
 
-    async function testarConexao() {
-      const res = await fetch('/database/test');
-      alert(await res.text());
-    }
+      async function testarConexao() {
+        const res = await fetch("/api/database/test");
+        alert(await res.text());
+      }
 
-    async function gerarExcel() {
-      window.location.href = '/products/export-excel';
-    }
+      async function gerarExcel() {
+        window.location.href = "/api/products/export-excel";
+      }
 
-    async function clearDatabase() {
-      const res = await fetch('/products/clear-database');
-      alert(await res.text());
-    }
+      async function clearDatabase() {
+        const res = await fetch("/api/products/clear-database");
+        alert(await res.text());
+      }
 
-    // Última Varredura
-  async function updateLastScan() {
-    const res = await fetch('/products/last-scan');
-    document.getElementById('ultimaVarredura').innerText = await res.text();
-  }
-  setInterval(updateLastScan, 5000); // Atualiza a cada 5s
-  updateLastScan();
-  </script>
-</body>
+      // Última Varredura
+      async function updateLastScan() {
+        const res = await fetch("/api/products/last-scan");
+        document.getElementById("ultimaVarredura").innerText = await res.text();
+      }
+      setInterval(updateLastScan, 5000); // Atualiza a cada 5s
+      updateLastScan();
+    </script>
+  </body>
 </html>

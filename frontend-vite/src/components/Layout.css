@@ -573,6 +573,7 @@ body {
 /* #region HEADER */
 .header {
   width: 100%;
+  height: 70px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -677,6 +678,8 @@ body {
   align-items: flex-start; /* Centraliza o wrapper verticalmente */
   justify-content: flex-start; /* Centraliza o wrapper horizontalmente */
   /* background-color: lightcoral; */
+
+  border: 2px dotted yellowgreen;
 }
 
 /* #endregion */

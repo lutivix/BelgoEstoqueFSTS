@@ -3,6 +3,7 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { DataSource } from "typeorm";
 import * as crypto from "crypto";
+// Redireciona "/" ou "/index" para o index.html manual da pasta public
 
 // Forçar o crypto globalmente
 global.crypto = crypto as any;
@@ -44,6 +45,8 @@ async function bootstrap() {
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Métodos permitidos
     credentials: true, // Se precisar de cookies ou autenticação
   });
+
+  app.setGlobalPrefix("api");
 
   await app.listen(3000);
 }

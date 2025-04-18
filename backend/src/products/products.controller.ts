@@ -95,7 +95,10 @@ export class ProductsController {
   }
 
   @Get("dashboard/estoque-detalhado")
-  async getEstoqueDetalhado(@Query("data") dataStr: string): Promise<
+  async getEstoqueDetalhado(
+    @Query("data") dataStr: string,
+    @Query("familia") familia: string,
+  ): Promise<
     {
       name: string;
       type: string;
@@ -113,6 +116,14 @@ export class ProductsController {
       };
     }[]
   > {
-    return this.productsService.getEstoqueDetalhado(dataStr);
+    return this.productsService.getEstoqueDetalhado(dataStr, familia);
   }
+
+  // @Post("frontend-log")
+  // logFrontend(@Body() body: { message: string; level: string; data?: any }) {
+  //   this.LoggerService.log(
+  //     `[FRONTEND] ${body.message} | ${JSON.stringify(body.data)}`,
+  //     body.level as any,
+  //   );
+  // }
 }

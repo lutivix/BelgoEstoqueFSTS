@@ -190,6 +190,30 @@ const Reports = () => {
     }
   };
 
+  const downloadFrontendLogs = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("http://localhost:3000/api/logger/download-frontend-logs");
+      if (!response.ok) {
+        throw new Error("Erro ao baixar logs do frontend");
+      }
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${reportName}_${new Date().toLocaleDateString("pt-BR").replace(/\//g, "-")}.zip`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Layout>
       <div className="reports">
@@ -206,6 +230,23 @@ const Reports = () => {
             />
             <button className="reports__export-button" onClick={downloadExcel} disabled={loading}>
               {loading ? "Baixando..." : "Baixar Excel"}
+            </button>
+          </div>
+          <div className="reports__download-section">
+            <label>Relatório de Logs - Nome:</label>
+            <input
+              type="text"
+              value={reportName}
+              onChange={(e) => setReportName(e.target.value)}
+              className="reports__report-name"
+              disabled={loading}
+            />
+            <button
+              className="reports__export-button"
+              onClick={downloadFrontendLogs}
+              disabled={loading}
+            >
+              {loading ? "Baixando..." : "📦 Baixar Logs Frontend"}
             </button>
           </div>
           {error && <p className="reports__error">{error}</p>}

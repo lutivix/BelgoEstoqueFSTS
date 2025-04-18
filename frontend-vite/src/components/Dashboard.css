@@ -1,10 +1,45 @@
 /* #region DASHBOARD */
 
-/* #region TABELA DEMO */
-.dashboard__table {
+.dashboard {
   width: 100%;
+  height: calc(100vh - 190px);
+
+  display: flex;
+  flex-direction: column;
+  border: 2px solid blue;
+  overflow: hidden;
+
+  box-sizing: border-box;
+}
+
+.dashboard__wrapper {
+  flex: 1;
+  overflow: auto;
+  padding-right: 1rem;
+
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  border: 2px dashed green;
+
+  min-height: 0;
+  max-height: 100%;
+}
+
+/* #region TABELA DEMO */
+.dashboard__table-wrapper {
+  min-width: 100%;
+  overflow: hidden;
+
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.dashboard__table {
+  min-width: 100%; /* ou 100% se preferir forçar ela a caber */
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .dashboard__table th,
@@ -21,7 +56,6 @@
 .dashboard__title {
   margin-bottom: 1rem;
 }
-
 /*#endregion*/
 
 /*#endregion*/

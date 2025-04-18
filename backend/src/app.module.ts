@@ -25,6 +25,7 @@ import { ScheduleModule } from "@nestjs/schedule"; // Importe o ScheduleModule
     ServeStaticModule.forRoot({
       // rootPath: join(__dirname, "..", "public"), // Pasta public no backend
       rootPath: join(process.cwd(), "public"),
+      exclude: ["/logger*", "/products*", "/api*"], // ← API permanece funcional
     }),
   ],
   controllers: [AppController],

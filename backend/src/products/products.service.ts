@@ -1096,7 +1096,10 @@ export class ProductsService {
       .sort((a, b) => a.estoque_total - b.estoque_total); // Ordena do menor pro maior
   }
 
-  async getEstoqueDetalhado(dataStr?: string): Promise<
+  async getEstoqueDetalhado(
+    dataStr?: string,
+    familia?: string,
+  ): Promise<
     {
       name: string;
       type: string;
@@ -1119,7 +1122,23 @@ export class ProductsService {
     return produtos
       .filter((p) => {
         const dataOk = !dataStr || (p.D && p.D.toISOString().startsWith(dataStr));
-        return dataOk;
+        // const familiaOk = !familia || p.type?.toLowerCase().includes(familia.toLowerCase());
+        const normalize = (str: string) =>
+          str
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase()
+            .trim();
+
+        const familiaOk = !familia || (p.type && normalize(p.type).includes(normalize(familia)));
+
+        // console.log("familia:", familia);
+        // console.log(
+        //   "Tipos filtrados:",
+        //   produtos.map((p) => p.type),
+        // );
+
+        return dataOk && familiaOk;
       })
       .map((p) => {
         const porLoja = {
