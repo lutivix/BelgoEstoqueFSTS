@@ -33,9 +33,10 @@
   --input-height: 32px;
 
   /* Fontes */
-  --fonte-primaria-belgo: Cresta Medium;
+  --fonte-primaria-belgo: Cresta Black;
   /* --fonte-secundaria-belgo: Poppins;   */
-  --fonte-secundaria-belgo: Cresta;
+  --fonte-secundaria-belgo: Cresta Medium;
+  --fonte-terciaria-belgo: Cresta;
   --fonte-manuscrita-belgo: Bahagia;
 
   /* Tamanhos de Fontes */
@@ -50,8 +51,7 @@
   --fonte-texto-menor: 10px;
   --fonte-texto-sheader: 12px;
 
-  font-family: Cresta Medium;
-  font-family: var(--fonte-primaria-belgo);
+  font-family: var(--fonte-terciaria-belgo);
 }
 
 html,
@@ -106,6 +106,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+  gap: 16px;
 }
 
 .sidebar.collapsed {
@@ -198,10 +199,10 @@ body {
 }
 
 #nav-toggle:checked ~ .sidebar .sidebar__header .sidebar__logo-icon {
-  content: url("./images/b-cercas.png");
-  width: 40px;
-  height: 80px;
-  margin-left: -9px;
+  content: url("./brand/LG-BELGO-CERCAS-SEMI-NEGATICVO-CMYK_B.png");
+  width: 30px;
+  height: 60px;
+  margin-left: -10px;
 }
 
 #nav-toggle:checked ~ .sidebar .sidebar__header .arrow-left-icon {
@@ -240,7 +241,7 @@ body {
 
   /* color: var(--accent-color); */
   font-size: var(--fonte-label-large);
-  font-family: var(--fonte-primaria-belgo);
+  font-family: var(--fonte-secundaria-belgo-belgo);
 }
 
 .sidebar__icon {
@@ -321,7 +322,8 @@ body {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 0 32px 6px;
+  padding: 0 16px 6px;
+  color: var(--accent-color);
 }
 
 /* #endregion */
@@ -364,7 +366,7 @@ body {
 
 /* #region PAGE-HEADER */
 .page-header {
-  height: 64px;
+  height: 60px;
   flex-shrink: 0;
   align-self: stretch;
 
@@ -373,8 +375,6 @@ body {
   align-items: center;
   justify-content: flex-end;
   padding: 12px;
-
-  font-family: var(--fonte-primaria-belgo);
 
   gap: 8px;
   /* background-color: rgb(75, 0, 215); */
@@ -392,6 +392,11 @@ body {
 
   text-align: left; /* Garante que o texto comece da esquerda */
   direction: ltr; /* Força direção esquerda pra direita */
+
+  /* color: var(--primary-bg); */
+  font-family: var(--fonte-primaria-belgo);
+
+  overflow: hidden; /* Corta tudo fora do container */
 }
 
 .page-header__title span {
@@ -400,6 +405,19 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 100%; /* Limita ao espaço do pai */
+  animation: marquee 20s linear infinite; /* Animação do letreiro */
+  /*padding-right: 20px; /* Espaço pra evitar lacunas */
+  will-change: transform;
+}
+
+/* Define a animação do letreiro */
+@keyframes marquee {
+  0% {
+    transform: translateX(100%); /* Começa fora da tela, à direita */
+  }
+  100% {
+    transform: translateX(-100%); /* Termina fora da tela, à esquerda */
+  }
 }
 
 .page-header__bell-icon {
@@ -567,10 +585,11 @@ body {
 .header__title {
   position: relative;
   line-height: 100%;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 30px;
   margin-top: 10px;
   margin-bottom: 10px;
+  font-family: var(--fonte-secundaria-belgo);
 }
 
 .header__crumbs {
@@ -676,6 +695,52 @@ body {
 
 /* #endregion */
 
+/* #region RODAPE */
+.footer {
+  position: absolute;
+  width: 200px;
+  height: 8px;
+  /* background: var(--primary-bg); */
+  border-radius: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+
+  transition:
+    width 0.2s,
+    height 0.2s;
+  /* margin-top: 0; */
+  right: 1vw;
+  color: var(--primary-bg);
+  padding: 15px;
+  bottom: 2vh;
+  z-index: 9;
+  text-wrap: nowrap;
+  gap: 10px;
+  font-size: var(--fonte-texto-menor);
+}
+
+.footer__img {
+  display: flex;
+  width: 100px;
+  height: 20px;
+  padding: 1px;
+  /* background-color: white; */
+  border-radius: var(--radius-sm);
+}
+
+.footer__mini-stack {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  font-size: 8px;
+  /* color: #6c757d; */
+}
+
+/* #endregion */
+
 /* #region MEDIA <768 */
 @media (max-width: 768px) {
   /* #region GLOBAIS */
@@ -715,9 +780,9 @@ body {
   }
 
   #mobile-sidebar-toggle:checked ~ .sidebar .sidebar__header .sidebar__logo-icon {
-    content: url("./images/b-cercas.png");
-    width: 40px;
-    height: 80px;
+    content: url("./brand/LG-BELGO-CERCAS-SEMI-NEGATICVO-CMYK_B.png");
+    width: 30px;
+    height: 60px;
     margin-left: 0px;
     opacity: 0;
     display: none;
@@ -743,7 +808,7 @@ body {
     left: 20px;
     width: 40px;
     height: 47px;
-    content: url("./images/b-cercas.png");
+    content: url("./brand/LG-BELGO-CERCAS-SEMI-NEGATICVO-CMYK_B.png");
   }
 
   #mobile-sidebar-toggle:checked ~ .main .mobile-arrow-icon {
@@ -757,7 +822,7 @@ body {
     margin-left: 0px;
     position: relative;
     top: 40px;
-    content: url("./images/belgo-cercas.png");
+    content: url("./brand/LG-BELGO-CERCAS-SEMI-NEGATICVO-CMYK.png");
   }
 
   #collapse-toggle:checked ~ .main .mobile-menu-icon {
@@ -768,7 +833,7 @@ body {
     margin-left: 0px;
     position: relative;
     top: 20px;
-    content: url("./images/belgo-cercas.png");
+    content: url("./brand/LG-BELGO-CERCAS-SEMI-NEGATICVO-CMYK.png");
   }
 
   #collapse-toggle:checked ~ .main .mobile-arrow-icon {

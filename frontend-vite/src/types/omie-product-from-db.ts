@@ -1,3 +1,4 @@
+/* frontend-vite/src/types/omie-product-from-db.ts */
 export interface OmieProductFromDb {
   codigo_produto: string;
   codigo_omie: string;

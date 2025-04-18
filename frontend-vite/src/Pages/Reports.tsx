@@ -193,9 +193,7 @@ const Reports = () => {
   return (
     <Layout>
       <div className="reports">
-        <div className="reports__header">
-          <h1>Relatórios</h1>
-        </div>
+        <div className="reports__header">{/* <h1>Relatórios</h1> */}</div>
         <div className="reports__content">
           <div className="reports__download-section">
             <label>Relatório de Estoque - Nome:</label>

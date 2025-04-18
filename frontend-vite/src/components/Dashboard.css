@@ -1,0 +1,27 @@
+/* #region DASHBOARD */
+
+/* #region TABELA DEMO */
+.dashboard__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.dashboard__table th,
+.dashboard__table td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.dashboard__table th {
+  background-color: #f5f5f5;
+}
+
+.dashboard__title {
+  margin-bottom: 1rem;
+}
+
+/*#endregion*/
+
+/*#endregion*/

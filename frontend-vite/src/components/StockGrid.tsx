@@ -284,17 +284,23 @@ const StockGrid = () => {
                       <td>
                         <div className="grid__stock-total-container">
                           <div className="grid__stock-mini-table">
-                            <span>V:{product.estoque_vitoria ?? "-"}</span>
                             <span>U:{product.estoque_uniao ?? "-"}</span>
-                          </div>
-                          <div className="grid__stock-mini-table">
                             <span>L:{product.estoque_linhares ?? "-"}</span>
-                            <span>S:{product.estoque_supertela ?? "-"}</span>
                           </div>
                           <div className="grid__stock-mini-table">
+                            <span>
+                              CD:
+                              {product.estoque_supertela +
+                                product.estoque_telarame +
+                                product.estoque_estruturaco +
+                                product.estoque_vitoria}
+                            </span>
+                            <span>R:RS</span>
+                          </div>
+                          {/* <div className="grid__stock-mini-table">
                             <span>T:{product.estoque_telarame ?? "-"}</span>
                             <span>E:{product.estoque_estruturaco ?? "-"}</span>
-                          </div>
+                          </div> */}
                           <span className="grid__stock-total-value">
                             Tot: {product.estoque_total}
                           </span>
@@ -317,7 +323,7 @@ const StockGrid = () => {
                     </tr>
                     {expandedRow === product.id && !isSmallScreen && (
                       <tr className="grid__expanded-row">
-                        <td colSpan={7}>
+                        <td colSpan={6}>
                           <div className="grid__expanded-content">
                             <label>
                               Vitória:

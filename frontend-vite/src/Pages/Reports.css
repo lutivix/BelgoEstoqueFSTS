@@ -1,6 +1,6 @@
 /* #region REPORTS*/
 .reports {
-  height: calc(100vh - 180px);
+  height: calc(100vh - 190px);
   display: flex;
   flex-direction: column;
   gap: 16px;

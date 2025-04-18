@@ -180,11 +180,17 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
       <div className={`sidebar ${sidebarCollapsed ? "collapsed" : ""}`} ref={layoutRefHeight}>
         <div className="sidebar__header">
-          <img
-            className="sidebar__logo-icon"
-            alt="Logo"
-            src={sidebarCollapsed ? "/images/b-cercas.png" : "/brand/LG-BELGO-CERCAS-BRANCO.png"}
-          />
+          <a className="sidebar__logo-icon" href="https://belgocercases.com.br/" target="_blank">
+            <img
+              className="sidebar__logo-icon"
+              alt="Logo"
+              src={
+                sidebarCollapsed
+                  ? "/brand/LG-BELGO-CERCAS-SEMI-NEGATICVO-CMYK_B.png"
+                  : "/brand/LG-BELGO-CERCAS-SEMI-NEGATICVO-CMYK.png"
+              }
+            />
+          </a>
           <hr />
           <label htmlFor="nav-toggle" className="sidebar__collapse-button">
             <img
@@ -248,10 +254,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         </div>
         <div className="page-header">
           <div className="page-header__title">
-            <span>
-              TEXTO DE ALGUMA COISA??? DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
-              DDDDDDDDDDDDDDDDDDD
-            </span>
+            <span>CONTEÚDO OPCIONAL AQUI?...</span>
           </div>
           <div className="page-header__notification">
             <img
@@ -328,6 +331,15 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             {children} {/* Aqui entra o conteúdo variável */}
           </div>
         </div>
+      </div>
+
+      <div className="footer">
+        {/* <div className="footer__mini-stack">
+          <span>Developed by </span>
+          <span>0.0.0.0.</span>
+        </div> */}
+        <div>Developed by </div>
+        <img className="footer__img" src="/images/lf.png"></img>
       </div>
     </div>
   );

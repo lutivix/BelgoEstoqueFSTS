@@ -1,12 +1,12 @@
 /* #region GRID PRINCIPAL */
 
 .grid {
-  height: calc(100vh - 180px);
+  height: calc(100vh - 190px);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 16px;
+  gap: 8px;
   text-align: center;
   font-size: 14px;
   color: #adb5bd;
@@ -359,7 +359,7 @@
 }
 
 .grid__expanded-content {
-  padding: 8px 16px;
+  padding: 4px 8px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -367,7 +367,7 @@
   font-size: 12px;
   color: #343a40;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 4px;
 }
 
 .grid__expanded-content span {
@@ -380,7 +380,7 @@
 }
 
 .grid__stock-input {
-  width: 60px;
+  width: 55px;
   padding: 4px;
   font-size: 12px;
   font-family: Poppins;
@@ -396,6 +396,7 @@
   align-items: center;
   gap: 4px;
   font-size: 12px;
+  width: 60px;
 }
 
 .grid__save-button {
@@ -569,7 +570,7 @@
 }
 
 .grid__stock-input {
-  width: 30px;
+  width: 55px;
   padding: 2px;
   font-size: 10px;
   border: 1px solid #ced4da;
@@ -631,7 +632,7 @@
   gap: 8px;
   height: 100%;
   width: 100%;
-  min-width: 200px;
+  min-width: 170px;
 }
 
 .grid__stock-total-value {
