@@ -1,0 +1,38 @@
+.dashboard__chart-total {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  min-width: 0;
+
+  font-family: 1.4rem;
+}
+
+.dashboard__chart-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+
+  width: 100%;
+  font-family: Cresta;
+}
+
+.dashboard__chart-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #252f4a;
+  margin-top: 0.5rem;
+}
+
+.dashboard__chart-subtitle {
+  font-size: 1.4rem;
+  color: #99a1b7;
+  margin-bottom: 1rem;
+  margin-bottom: 30px;
+}

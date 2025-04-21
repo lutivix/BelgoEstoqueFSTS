@@ -1,15 +1,21 @@
 /* #region DASHBOARD */
 
+html {
+  font-size: 8px;
+}
+
 .dashboard {
   width: 100%;
   height: calc(100vh - 190px);
 
   display: flex;
   flex-direction: column;
-  border: 2px solid blue;
+  /* border: 2px solid blue; */
   overflow: hidden;
 
   box-sizing: border-box;
+
+  font-size: 10px;
 }
 
 .dashboard__wrapper {
@@ -25,6 +31,163 @@
   min-height: 0;
   max-height: 100%;
 }
+
+/* #region FILTROS */
+
+.dashboard__filters {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  /* flex-wrap: wrap; */
+  gap: 8px;
+
+  margin-bottom: 1.5rem;
+  background-color: #f8f9fa;
+  padding: 4px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+.dashboard__filters .filter-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+  width: 180px;
+}
+
+.dashboard__filters div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  /* justify-content: space-between; */
+  gap: 10px;
+}
+
+.dashboard__filters label {
+  font-weight: 500;
+  margin-right: 0.5rem;
+}
+
+.dashboard__filters input,
+.dashboard__filters select {
+  padding: 4px 8px;
+  font-size: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  min-width: 0px;
+  height: 16px;
+  width: 100px;
+
+  align-items: center;
+}
+
+.dashboard__button {
+  padding: 4px 8px;
+  background-color: #dee2e6;
+  color: #212529;
+  border: 1px solid #adb5bd;
+  border-radius: 4px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  height: 24px;
+  /* align-self: flex-end; */
+}
+
+.dashboard__button:hover {
+  background-color: #ced4da;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .dashboard__filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dashboard__filters .filter-group {
+    width: 100%;
+  }
+
+  .dashboard__filters input,
+  .dashboard__filters select {
+    width: 100%;
+  }
+}
+
+/* #region CHECKBOXES */
+.dashboard__checkbox-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  /* flex-wrap: wrap; */
+  gap: 8px;
+  margin-bottom: 1rem;
+  width: 500px;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  padding-left: 20px;
+  cursor: pointer;
+  font-size: 10px;
+  user-select: none;
+}
+
+.checkbox-wrapper input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.custom-checkbox {
+  position: absolute;
+  left: 0;
+  top: 2px;
+  height: 12px;
+  width: 12px;
+  background-color: #eee;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.checkbox-wrapper input:checked ~ .custom-checkbox {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.custom-checkbox::after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-wrapper input:checked ~ .custom-checkbox::after {
+  display: block;
+  left: 6px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/*#endregion*/
+
+/* #endregion */
 
 /* #region TABELA DEMO */
 .dashboard__table-wrapper {
@@ -56,6 +219,60 @@
 .dashboard__title {
   margin-bottom: 1rem;
 }
+/*#endregion*/
+
+/* #region CARDS */
+/* Espaço para os KPIs ou cards */
+.dashboard__cards-placeholder {
+  height: 90px;
+  width: 100%;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px dashed #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-style: italic;
+}
+
+/*#endregion*/
+
+/* #region GRAFICOS */
+
+/* Grid dos gráficos */
+.dashboard__charts {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Gráfico mínimo: 30% */
+.dashboard__chart-minimo {
+  width: 30%;
+  min-width: 300px;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Gráfico total: 70% */
+.dashboard__chart-total {
+  width: 70%;
+  background: #f1f3f5;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.dashboard__chart-placeholder {
+  color: #adb5bd;
+  font-size: 1rem;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+}
+
 /*#endregion*/
 
 /*#endregion*/

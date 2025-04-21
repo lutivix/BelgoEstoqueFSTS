@@ -7,6 +7,8 @@ import { ProductsModule } from "./products/products.module";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
 import { ScheduleModule } from "@nestjs/schedule"; // Importe o ScheduleModule
+import { LoggerService } from "./logger/logger.service";
+import { LoggerController } from "./logger/logger.controller";
 
 @Module({
   imports: [
@@ -28,8 +30,8 @@ import { ScheduleModule } from "@nestjs/schedule"; // Importe o ScheduleModule
       exclude: ["/logger*", "/products*", "/api*"], // ← API permanece funcional
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, LoggerController],
+  providers: [AppService, LoggerService],
 })
 export class AppModule {}
 

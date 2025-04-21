@@ -88,8 +88,12 @@ const StockGrid = () => {
         setFilteredProducts(validProducts);
         setLoading(false);
       } catch (error) {
-        setErrorMsg(`Erro: ${error.message}`);
-        console.error("Erro ao buscar produtos:", error);
+        if (error instanceof Error) {
+          console.error("Erro ao buscar produtos:", error);
+          setErrorMsg(`Erro: ${error.message}`);
+        } else {
+          console.error("Erro ao buscar produtos (desconhecido):", error);
+        }
         setLoading(false);
       }
     };

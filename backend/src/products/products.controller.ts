@@ -98,6 +98,7 @@ export class ProductsController {
   async getEstoqueDetalhado(
     @Query("data") dataStr: string,
     @Query("familia") familia: string,
+    @Query("produto") produto: string,
   ): Promise<
     {
       name: string;
@@ -116,7 +117,7 @@ export class ProductsController {
       };
     }[]
   > {
-    return this.productsService.getEstoqueDetalhado(dataStr, familia);
+    return this.productsService.getEstoqueDetalhado(dataStr, familia, produto);
   }
 
   // @Post("frontend-log")

@@ -1099,6 +1099,7 @@ export class ProductsService {
   async getEstoqueDetalhado(
     dataStr?: string,
     familia?: string,
+    produto?: string,
   ): Promise<
     {
       name: string;
@@ -1132,13 +1133,15 @@ export class ProductsService {
 
         const familiaOk = !familia || (p.type && normalize(p.type).includes(normalize(familia)));
 
+        const produtoOk = !produto || p.name?.toLowerCase().includes(produto.toLowerCase());
+
         // console.log("familia:", familia);
         // console.log(
         //   "Tipos filtrados:",
         //   produtos.map((p) => p.type),
         // );
 
-        return dataOk && familiaOk;
+        return dataOk && familiaOk && produtoOk;
       })
       .map((p) => {
         const porLoja = {

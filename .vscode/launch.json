@@ -12,25 +12,34 @@
       "autoAttachChildProcesses": true,
       "sourceMaps": true,
       "outFiles": ["${workspaceFolder}/backend/dist/**/*.js"]
-      // "preLaunchTask": "npm: build - backend"
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Debug Vite Frontend",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": ["run", "start:debug"],
       "cwd": "${workspaceFolder}/frontend-vite",
       "console": "integratedTerminal",
       "sourceMaps": true,
       "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Debug Frontend Vite via Chrome",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/frontend-vite/src",
+      "sourceMaps": true,
+      "trace": true
     }
   ],
   "compounds": [
     {
       "name": "Debug Fullstack",
       "configurations": ["Debug NestJS Backend", "Debug Vite Frontend"],
-      "stopAll": true
+      "stopAll": true,
+      "preLaunchTask": "build - fullstack"
     }
   ]
 }
