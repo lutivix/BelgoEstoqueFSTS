@@ -694,6 +694,12 @@ body {
   flex-shrink: 0;
   content: url("./images/Arrow Left.svg");
 }
+
+p {
+  font-family: va(--fonte-secundaria-belgo);
+  font-size: 2rem;
+}
+
 /* #endregion */
 
 /* #endregion */
@@ -717,7 +723,7 @@ body {
   right: 1vw;
   color: var(--primary-bg);
   padding: 15px;
-  bottom: 2vh;
+  bottom: 1.7vh;
   z-index: 9;
   text-wrap: nowrap;
   gap: 10px;

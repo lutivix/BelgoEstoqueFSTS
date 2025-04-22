@@ -14,6 +14,7 @@
 }
 
 .dashboard__chart-content {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,5 +35,5 @@
   font-size: 1.4rem;
   color: #99a1b7;
   margin-bottom: 1rem;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }

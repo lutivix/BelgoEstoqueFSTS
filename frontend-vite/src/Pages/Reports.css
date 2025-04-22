@@ -8,7 +8,7 @@
   max-width: 100%;
   box-sizing: border-box;
   padding: 16px;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-family: Poppins;
 }
 
@@ -31,15 +31,15 @@
   align-items: center;
   justify-content: flex-start;
   gap: 16px;
-  border: 1px solid #819aab;
+  /* border: 1px solid #d9dfe3; */
   border-radius: 8px;
   padding: 2px;
 }
 
 .reports__report-name {
   padding: 8px;
-  font-size: 14px;
-  font-family: Poppins;
+  font-size: 1.4rem;
+
   border: 1px solid #ced4da;
   border-radius: 4px;
   width: 300px;
@@ -97,7 +97,7 @@
 
   .reports__download-section {
     gap: 4px;
-    border: 1px solid #819aab;
+    /* border: 1px solid #819aab; */
     border-radius: 8px;
     padding: 2px;
   }

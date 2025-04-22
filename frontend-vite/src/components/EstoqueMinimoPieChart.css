@@ -23,7 +23,7 @@
 
 .dashboard__chart-center-label {
   position: absolute;
-  top: 168px;
+  top: 148px;
   font-size: 1.2rem;
   font-weight: bold;
   color: #343a40;
@@ -34,15 +34,17 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 6px;
+  gap: 4px;
   margin-top: 1rem;
   width: 100%;
   font-size: 1.2rem;
 }
 
-/* .legend-column {
-  width: 100%;
-} */
+.legend-column {
+  /* width: 100%; */
+  gap: 2px;
+  padding: 0;
+}
 
 .legend-item {
   display: flex;
@@ -52,7 +54,7 @@
   font-size: 1.2rem;
   color: #495057;
   /* background-color: #f8f9fa; */
-  padding: 6px 10px;
+  padding: 4px 8px;
   border-radius: 6px;
 }
 

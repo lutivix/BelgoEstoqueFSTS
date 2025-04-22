@@ -32,6 +32,7 @@ const Dashboard = () => {
   const [filtroFamilia, setFiltroFamilia] = useState("");
   const [filtroData, setFiltroData] = useState("");
   const [filtroLoja, setFiltroLoja] = useState<string[]>([]);
+  const [showLojas, setShowLojas] = useState("");
 
   const getEstoqueTotalFiltrado = (item: EstoqueDetalhado): number => {
     const lojas = filtroLoja.length > 0 ? filtroLoja : Object.keys(item.porLoja);
@@ -100,21 +101,19 @@ const Dashboard = () => {
         <div className="dashboard__wrapper">
           {/* <h2 className="dashboard__title">Estoque Detalhado</h2> */}
 
-          <form
-            onSubmit={handleSubmit}
-            className="dashboard__filters"
-            // style={{ marginBottom: "1rem", display: "flex", gap: "1rem", flexWrap: "wrap" }}
-          >
-            <div>
+          {/* 📌Filtros */}
+          <form onSubmit={handleSubmit} className="dashboard__filters">
+            <div className="dashboard__filters-row">
               <div className="filter-group">
                 <label>Produto:</label>
                 <input
                   type="text"
                   value={filtroProduto}
                   onChange={(e) => setFiltroProduto(e.target.value)}
-                  placeholder="Ex: Tela Soldada Galvanizada"
+                  placeholder="Ex: Telas Soldadas"
                 />
               </div>
+
               <div className="filter-group">
                 <label>Família:</label>
                 <input
@@ -133,9 +132,29 @@ const Dashboard = () => {
                   onChange={(e) => setFiltroData(e.target.value)}
                 />
               </div>
+
+              <div className="filter-group">
+                <label>Lojas:</label>
+                <button
+                  type="button"
+                  className="dashboard__button"
+                  onClick={() => setShowLojas(!showLojas)}
+                >
+                  {showLojas ? "Ocultar" : "Selecionar"}
+                </button>
+              </div>
+
+              <div className="filter-group filter-group--buttons">
+                <button className="dashboard__button" type="submit">
+                  Aplicar
+                </button>
+                <button className="dashboard__button" onClick={handleLimparFiltros}>
+                  Limpar
+                </button>
+              </div>
             </div>
-            <div>
-              <label>Lojas:</label>
+
+            {showLojas && (
               <div className="dashboard__checkbox-group">
                 {["vitoria", "uniao", "linhares", "supertela", "telarame", "estruturaco"].map(
                   (loja) => (
@@ -159,20 +178,16 @@ const Dashboard = () => {
                   ),
                 )}
               </div>
-
-              <button className="dashboard__button" type="submit">
-                Aplicar Filtros
-              </button>
-
-              <button className="dashboard__button" onClick={handleLimparFiltros}>
-                Limpar Filtros
-              </button>
-            </div>
+            )}
           </form>
 
           {/* 📌 Espaço reservado para KPIs/cards */}
           <div className="dashboard__cards-placeholder">
             {/* Aqui você vai encaixar os cards futuros */}
+
+            <div className="cartoes-info">Estoque total de Matéria Prima</div>
+            <div className="cartoes-info">Demanda por Segmento</div>
+            <div className="cartoes-info">Baixa Rotação</div>
           </div>
 
           {loading ? (

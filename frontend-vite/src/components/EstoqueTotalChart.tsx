@@ -56,7 +56,7 @@ const EstoqueTotalChart = ({ data }: Props) => {
       {/* <div className="dashboard__chart-title">Estoque Total por Loja</div> */}
       <h4 className="dashboard__chart-title">Estoque Total</h4>
       <div className="dashboard__chart-subtitle">Distribuição de estoque por Loja</div>
-      <ResponsiveContainer width="100%" height={260}>
+      <ResponsiveContainer width="100%" height={300}>
         <BarChart data={estoquePorLoja} margin={{ top: 10, right: 20, left: 0, bottom: 20 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="loja" />
@@ -65,7 +65,7 @@ const EstoqueTotalChart = ({ data }: Props) => {
           <Legend />
           <Bar
             dataKey="total"
-            name="Total"
+            name="Total por loja"
             fill="#003b4a"
             radius={[6, 6, 0, 0]} // Arredondado só no topo
             barSize={40}
