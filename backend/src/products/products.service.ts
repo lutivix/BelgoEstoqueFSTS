@@ -1100,6 +1100,7 @@ export class ProductsService {
     dataStr?: string,
     familia?: string,
     produto?: string,
+    lojas?: string[],
   ): Promise<
     {
       name: string;
@@ -1108,22 +1109,22 @@ export class ProductsService {
       estoque_total: number;
       estoque_minimo: number;
       emFalta: number;
-      porLoja: {
-        vitoria: number;
-        uniao: number;
-        linhares: number;
-        supertela: number;
-        telarame: number;
-        estruturaco: number;
-      };
+      porLoja: Record<string, number>;
     }[]
   > {
     const produtos = await this.loadProductsFromDb();
 
+    const todasAsLojas = ["vitoria", "uniao", "linhares", "supertela", "telarame", "estruturaco"];
+
+    const lojasArray = Array.isArray(lojas) ? lojas : lojas ? [lojas] : [];
+    const lojasFiltradas = lojasArray.length ? lojasArray : todasAsLojas;
+
+    // this.logger.logFrontend("🔍 Lojas filtradas: " + lojasFiltradas);
+
     return produtos
       .filter((p) => {
         const dataOk = !dataStr || (p.D && p.D.toISOString().startsWith(dataStr));
-        // const familiaOk = !familia || p.type?.toLowerCase().includes(familia.toLowerCase());
+
         const normalize = (str: string) =>
           str
             .normalize("NFD")
@@ -1132,27 +1133,26 @@ export class ProductsService {
             .trim();
 
         const familiaOk = !familia || (p.type && normalize(p.type).includes(normalize(familia)));
-
         const produtoOk = !produto || p.name?.toLowerCase().includes(produto.toLowerCase());
 
-        // console.log("familia:", familia);
-        // console.log(
-        //   "Tipos filtrados:",
-        //   produtos.map((p) => p.type),
-        // );
+        const lojaOk =
+          lojasArray.length === 0 ||
+          lojasFiltradas.some((loja) => (p[`estoque_${loja}`] ?? 0) !== 0);
 
-        return dataOk && familiaOk && produtoOk;
+        return dataOk && familiaOk && produtoOk && lojaOk;
       })
-      .map((p) => {
-        const porLoja = {
-          vitoria: p.estoque_vitoria ?? 0,
-          uniao: p.estoque_uniao ?? 0,
-          linhares: p.estoque_linhares ?? 0,
-          supertela: p.estoque_supertela ?? 0,
-          telarame: p.estoque_telarame ?? 0,
-          estruturaco: p.estoque_estruturaco ?? 0,
-        };
 
+      .map((p) => {
+        const porLoja = Object.fromEntries(
+          lojasFiltradas.map((loja) => [loja, p[`estoque_${loja}`] ?? 0]),
+        ) as {
+          vitoria: number;
+          uniao: number;
+          linhares: number;
+          supertela: number;
+          telarame: number;
+          estruturaco: number;
+        };
         const estoque_total = Object.values(porLoja).reduce((soma, val) => soma + val, 0);
         const estoque_minimo = 6 * 40;
         const emFalta = Number(((estoque_total / estoque_minimo) * 100).toFixed(2));

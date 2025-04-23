@@ -99,6 +99,7 @@ export class ProductsController {
     @Query("data") dataStr: string,
     @Query("familia") familia: string,
     @Query("produto") produto: string,
+    @Query("lojas") lojas?: string[], // <- array de lojas
   ): Promise<
     {
       name: string;
@@ -107,17 +108,10 @@ export class ProductsController {
       estoque_total: number;
       estoque_minimo: number;
       emFalta: number;
-      porLoja: {
-        vitoria: number;
-        uniao: number;
-        linhares: number;
-        supertela: number;
-        telarame: number;
-        estruturaco: number;
-      };
+      porLoja: Record<string, number>;
     }[]
   > {
-    return this.productsService.getEstoqueDetalhado(dataStr, familia, produto);
+    return this.productsService.getEstoqueDetalhado(dataStr, familia, produto, lojas);
   }
 
   // @Post("frontend-log")

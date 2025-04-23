@@ -32,7 +32,7 @@ const Dashboard = () => {
   const [filtroFamilia, setFiltroFamilia] = useState("");
   const [filtroData, setFiltroData] = useState("");
   const [filtroLoja, setFiltroLoja] = useState<string[]>([]);
-  const [showLojas, setShowLojas] = useState("");
+  const [showLojas, setShowLojas] = useState<boolean>(false);
 
   const getEstoqueTotalFiltrado = (item: EstoqueDetalhado): number => {
     const lojas = filtroLoja.length > 0 ? filtroLoja : Object.keys(item.porLoja);
@@ -49,6 +49,9 @@ const Dashboard = () => {
       if (filtroFamilia) queryParams.append("familia", filtroFamilia);
       if (filtroData) queryParams.append("data", filtroData);
       if (filtroProduto) queryParams.append("produto", filtroProduto);
+      if (filtroLoja.length) {
+        filtroLoja.forEach((loja) => queryParams.append("lojas", loja));
+      }
 
       const response = await fetch(
         `http://localhost:3000/api/products/dashboard/estoque-detalhado?${queryParams}`,
@@ -133,18 +136,46 @@ const Dashboard = () => {
                 />
               </div>
 
-              <div className="filter-group">
+              <div className="filter-group-button">
                 <label>Lojas:</label>
-                <button
-                  type="button"
-                  className="dashboard__button"
-                  onClick={() => setShowLojas(!showLojas)}
-                >
-                  {showLojas ? "Ocultar" : "Selecionar"}
-                </button>
+                <div className="dropdown-wrapper">
+                  <button
+                    type="button"
+                    className="dashboard__button"
+                    onClick={() => setShowLojas(!showLojas)}
+                  >
+                    {showLojas ? "Ocultar" : "Selecionar"}
+                  </button>
+
+                  {showLojas && (
+                    <div className="dashboard__checkbox-group floating">
+                      {["vitoria", "uniao", "linhares", "supertela", "telarame", "estruturaco"].map(
+                        (loja) => (
+                          <label key={loja} className="checkbox-wrapper">
+                            <input
+                              type="checkbox"
+                              value={loja}
+                              checked={filtroLoja.includes(loja)}
+                              onChange={(e) => {
+                                const checked = e.target.checked;
+                                if (checked) {
+                                  setFiltroLoja([...filtroLoja, loja]);
+                                } else {
+                                  setFiltroLoja(filtroLoja.filter((l) => l !== loja));
+                                }
+                              }}
+                            />
+                            <span className="custom-checkbox" />
+                            {loja.charAt(0).toUpperCase() + loja.slice(1)}
+                          </label>
+                        ),
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div className="filter-group filter-group--buttons">
+              <div className="filter-group filter-group-buttons">
                 <button className="dashboard__button" type="submit">
                   Aplicar
                 </button>
@@ -153,32 +184,6 @@ const Dashboard = () => {
                 </button>
               </div>
             </div>
-
-            {showLojas && (
-              <div className="dashboard__checkbox-group">
-                {["vitoria", "uniao", "linhares", "supertela", "telarame", "estruturaco"].map(
-                  (loja) => (
-                    <label key={loja} className="checkbox-wrapper">
-                      <input
-                        type="checkbox"
-                        value={loja}
-                        checked={filtroLoja.includes(loja)}
-                        onChange={(e) => {
-                          const checked = e.target.checked;
-                          if (checked) {
-                            setFiltroLoja([...filtroLoja, loja]);
-                          } else {
-                            setFiltroLoja(filtroLoja.filter((l) => l !== loja));
-                          }
-                        }}
-                      />
-                      <span className="custom-checkbox" />
-                      {loja.charAt(0).toUpperCase() + loja.slice(1)}
-                    </label>
-                  ),
-                )}
-              </div>
-            )}
           </form>
 
           {/* 📌 Espaço reservado para KPIs/cards */}
