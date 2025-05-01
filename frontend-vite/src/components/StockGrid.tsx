@@ -66,7 +66,7 @@ const StockGrid = () => {
     setExpandedRow(null); // Fecha a linha após salvar
   };
 
-  const backendUrl = "http://192.168.7.216:3000/api/products/db";
+  const backendUrl = "http://192.168.7.14:3000/api/products/db";
 
   useEffect(() => {
     const handleResize = () => setIsSmallScreen(window.innerWidth <= 768);

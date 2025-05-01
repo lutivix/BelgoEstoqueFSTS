@@ -41,14 +41,14 @@ const EstoqueMinimoPieChart = ({ data }: Props) => {
     <div className="dashboard__chart-content">
       <h4 className="dashboard__chart-title">Estoque Mínimo</h4>
       <div className="dashboard__chart-subtitle">Distribuição por faixa de cobertura</div>
-      <ResponsiveContainer width="100%" height={190}>
+      <ResponsiveContainer width="100%" minHeight={170}>
         <PieChart>
           <Pie
             data={agrupado}
             dataKey="qtd"
             nameKey="label"
             innerRadius={45}
-            outerRadius={90}
+            outerRadius={85}
             paddingAngle={3}
             cornerRadius={6}
           >

@@ -70,7 +70,7 @@ const Dashboard = () => {
     fetchEstoque();
   }, []); // Primeiro carregamento (sem filtros)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e?: React.FormEvent) => {
     log("Aplicando filtros", "info", "P", {
       filtroData,
       filtroFamilia,
@@ -78,7 +78,7 @@ const Dashboard = () => {
       filtroProduto,
     });
 
-    e.preventDefault();
+    e?.preventDefault();
     fetchEstoque(); // 🔁 isso precisa estar aqui
   };
 
@@ -97,6 +97,28 @@ const Dashboard = () => {
       emFalta: Math.max(0, p.emFalta),
     }));
   }, [data]);
+
+  const handleRemoverProduto = () => {
+    setFiltroProduto("");
+    handleSubmit(); // dispara nova consulta
+  };
+
+  const handleRemoverFamilia = () => {
+    setFiltroFamilia("");
+    handleSubmit(); // dispara nova consulta
+  };
+
+  const handleRemoverData = () => {
+    setFiltroData("");
+    handleSubmit(); // dispara nova consulta
+  };
+
+  const handleRemoverLoja = (loja: string) => {
+    const novaLista = filtroLoja.filter((l) => l !== loja);
+    setFiltroLoja(novaLista);
+    // Aguarda o estado atualizar logicamente, aplicando com nova lista
+    setTimeout(() => handleSubmit(), 0); // gambitech confiável 😅
+  };
 
   return (
     <Layout>
@@ -176,6 +198,7 @@ const Dashboard = () => {
               </div>
 
               <div className="filter-group filter-group-buttons">
+                {/* <label>Ações:</label> */}
                 <button className="dashboard__button" type="submit">
                   Aplicar
                 </button>
@@ -184,13 +207,50 @@ const Dashboard = () => {
                 </button>
               </div>
             </div>
+            {/* Só para o caso de precisar colocar 2 linhas nos celulares */}
+            {/* <div className="dashboard__filters-row"></div> */}
           </form>
+
+          <div className="dashboard__active-filters">
+            {filtroProduto && (
+              <div className="chip">
+                {filtroProduto}
+                <span onClick={handleRemoverProduto}>×</span>
+              </div>
+            )}
+            {filtroFamilia && (
+              <div className="chip">
+                {filtroFamilia}
+                <span onClick={handleRemoverFamilia}>×</span>
+              </div>
+            )}
+            {filtroData && (
+              <div className="chip">
+                {new Date(filtroData).toLocaleDateString("pt-BR")}
+                <span onClick={handleRemoverData}>×</span>
+              </div>
+            )}
+            {filtroLoja.map((loja) => (
+              <div className="chip" key={loja}>
+                {loja}
+                <span onClick={() => handleRemoverLoja(loja)}>❌</span>
+              </div>
+            ))}
+          </div>
 
           {/* 📌 Espaço reservado para KPIs/cards */}
           <div className="dashboard__cards-placeholder">
             {/* Aqui você vai encaixar os cards futuros */}
 
-            <div className="cartoes-info">Estoque total de Matéria Prima</div>
+            <div className="cartoes-info">
+              <div>
+                <span>Estoque total de Matéria Prima</span>
+                <p>1500</p>
+                <span>Teste 3</span>
+              </div>
+
+              <div>Teste 2</div>
+            </div>
             <div className="cartoes-info">Demanda por Segmento</div>
             <div className="cartoes-info">Baixa Rotação</div>
           </div>

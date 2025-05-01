@@ -1,3 +1,5 @@
+/* #regino GRAFICO TOTAL */
+
 .dashboard__chart-total {
   flex: 1;
   display: flex;
@@ -8,7 +10,7 @@
   padding: 1rem;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  min-width: 0;
+  min-width: 50rem;
 
   font-family: 1.4rem;
 }
@@ -37,3 +39,11 @@
   margin-bottom: 1rem;
   margin-bottom: 20px;
 }
+
+@media (max-width: 680px) {
+  .dashboard__chart-total {
+    width: 100%;
+  }
+}
+
+/* #endregion */
