@@ -9,7 +9,7 @@ import {
   CartesianGrid,
   Legend,
 } from "recharts";
-import "./EstoqueTotalChart.css";
+import "../Styles/EstoqueTotalChart.css";
 
 interface EstoqueDetalhado {
   name: string;

@@ -5,6 +5,9 @@
 :root {
   --navbar-width: 256px;
   --navbar-width-min: 80px;
+
+  /* Fontes */
+  --fonte-base: 10px;
   font-family: Poppins;
 
   /* Cores */
@@ -16,21 +19,21 @@
   --accent-color: #949daf;
   --error-color: #d7060f;
 
-  /* Espaçamentos */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
+  /* Espaçamento */
+  --space-xs: 0.4rem;
+  --space-sm: 0.8rem;
+  --space-md: 1.6rem;
+  --space-lg: 2.4rem;
 
   /* Bordas */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
+  --radius-sm: 0.4rem;
+  --radius-md: 0.8rem;
+  --radius-lg: 1.6rem;
 
   /* Tamanhos */
-  --header-height: 40px;
-  --row-height: 36px;
-  --input-height: 32px;
+  --header-height: 4rem;
+  --row-height: 3.6rem;
+  --input-height: 3.2rem;
 
   /* Fontes */
   --fonte-primaria-belgo: Cresta Black;
@@ -40,16 +43,17 @@
   --fonte-manuscrita-belgo: Bahagia;
 
   /* Tamanhos de Fontes */
-  --fonte-h1: 60px;
-  --fonte-h2: 40px;
-  --fonte-p: 32px;
-  --fonte-span: 28px;
-  --fonte-label: 14px;
-  --fonte-label-large: 16px;
-  --fonte-texto: 12px;
-  --fonte-texto-header: 14px;
-  --fonte-texto-menor: 10px;
-  --fonte-texto-sheader: 12px;
+  --fonte-h1: 6rem;
+  --fonte-h2: 4rem;
+  --fonte-p: 3.2rem;
+  --fonte-span: 2.8rem;
+  --fonte-span-sm: 2rem;
+  --fonte-label-lg: 1.6rem;
+  --fonte-label: 1.4rem;
+  --fonte-texto-lg: 1.2rem;
+  --fonte-texto: 1rem;
+  --fonte-texto-sm: 0.8rem;
+  --fonte-text-xs: 0.6rem;
 
   font-family: var(--fonte-terciaria-belgo);
 }
@@ -67,7 +71,7 @@ body {
   justify-content: center; /* Centraliza o wrapper horizontalmente */
 
   /* background-color: black; */
-  font-size: 10px;
+  font-size: var(--fonte-base);
 }
 
 /* Container Principal ou Master Page */

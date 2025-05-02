@@ -1,7 +1,7 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import StockGrid from "./components/StockGrid"; // Ajuste o caminho
-import Dashboard from "./components/Dashboard"; // Ajuste o caminho
+import StockGrid from "./Pages/StockGrid"; // Ajuste o caminho
+import Dashboard from "./Pages/Dashboard"; // Ajuste o caminho
 import Reports from "./Pages/Reports"; // Novo
 import Settings from "./Pages/Settings"; // Novo
 import HelpCentre from "./Pages/Help"; // Novo

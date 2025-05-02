@@ -1,11 +1,11 @@
 // src/components/Dashboard.tsx
 import { useEffect, useState, useMemo } from "react";
-import Layout from "./Layout";
+import Layout from "../components/Layout";
 import { log } from "../utils/logger";
 //import { EstoqueMinimoPieChart } from "./EstoqueMinimoPieChart"; // (vamos criar depois)
-import EstoqueMinimoPieChart from "./EstoqueMinimoPieChart";
-import "./Dashboard.css"; // já considerando que seu CSS tá centralizado
-import EstoqueTotalChart from "./EstoqueTotalChart";
+import EstoqueMinimoPieChart from "../components/EstoqueMinimoPieChart";
+import "../Styles/Dashboard.css"; // já considerando que seu CSS tá centralizado
+import EstoqueTotalChart from "../components/EstoqueTotalChart";
 
 interface EstoqueDetalhado {
   name: string;
@@ -233,7 +233,8 @@ const Dashboard = () => {
             {filtroLoja.map((loja) => (
               <div className="chip" key={loja}>
                 {loja}
-                <span onClick={() => handleRemoverLoja(loja)}>❌</span>
+                {/* <span onClick={() => handleRemoverLoja(loja)}>❌</span> */}
+                <span onClick={() => handleRemoverLoja(loja)}>x</span>
               </div>
             ))}
           </div>
@@ -243,16 +244,29 @@ const Dashboard = () => {
             {/* Aqui você vai encaixar os cards futuros */}
 
             <div className="cartoes-info">
-              <div>
-                <span>Estoque total de Matéria Prima</span>
-                <p>1500</p>
-                <span>Teste 3</span>
+              <div>Estoque total de Matéria Prima</div>
+              <div className="cartoes-info__subcol">
+                <div className="cartoes-info__title">1500</div>
+                <div>vs Último Semestre</div>
               </div>
 
-              <div>Teste 2</div>
+              {/* <div>Teste 2</div> */}
             </div>
-            <div className="cartoes-info">Demanda por Segmento</div>
-            <div className="cartoes-info">Baixa Rotação</div>
+            <div className="cartoes-info">
+              <div>Demanda por Segmento</div>
+              <div className="cartoes-info__demandas">
+                <div>AGRO: 30%</div>
+                <div>CONSTRUÇÃO: 30%</div>
+                <div>RESIDENCIAL: 30%</div>
+              </div>
+            </div>
+            <div className="cartoes-info">
+              <div>Baixa Rotação</div>
+              <div className="cartoes-info__subcol">
+                <div className="cartoes-info__title">Telas</div>
+                <div>Parado a 60 dias</div>
+              </div>
+            </div>
           </div>
 
           {loading ? (

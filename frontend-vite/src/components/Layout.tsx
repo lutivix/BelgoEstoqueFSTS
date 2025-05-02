@@ -1,6 +1,6 @@
 import React, { createContext } from "react";
 import { useState, useEffect, useContext, useRef } from "react"; // Adiciona o import do useState
-import "./Layout.css";
+import "../Styles/Layout.css";
 import { Link } from "react-router-dom";
 import * as faIcons from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

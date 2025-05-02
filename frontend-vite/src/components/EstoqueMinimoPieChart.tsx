@@ -1,5 +1,5 @@
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
-import "./EstoqueMinimoPieChart.css";
+import "../Styles/EstoqueMinimoPieChart.css";
 
 interface ProdutoEstoque {
   name: string;

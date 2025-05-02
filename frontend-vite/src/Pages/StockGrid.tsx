@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { OmieProductFromDb } from "../types/omie-product-from-db";
-import "./StockGrid.css";
+import "../Styles/StockGrid.css";
 import Layout from "../components/Layout";
 
 const formatDate = (value: string | undefined): string => {
