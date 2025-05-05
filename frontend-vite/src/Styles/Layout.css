@@ -1,0 +1,1042 @@
+/* /src/components/Layout.css */
+
+/* #region GLOBAIS */
+/* Variáveis */
+:root {
+  --navbar-width: 256px;
+  --navbar-width-min: 80px;
+
+  /* Fontes */
+  --fonte-base: 10px;
+  font-family: Poppins;
+
+  /* Cores */
+  --primary-bg: #003b4a;
+  --secondary-bg: #ed1c24;
+  --border-color: #003b4a;
+  --text-primary: #343a40;
+  --text-secondary: #6c757d;
+  --accent-color: #949daf;
+  --error-color: #d7060f;
+
+  /* Espaçamento */
+  --space-xs: 0.4rem;
+  --space-sm: 0.8rem;
+  --space-md: 1.6rem;
+  --space-lg: 2.4rem;
+
+  /* Bordas */
+  --radius-sm: 0.4rem;
+  --radius-md: 0.8rem;
+  --radius-lg: 1.6rem;
+
+  /* Tamanhos */
+  --header-height: 4rem;
+  --row-height: 3.6rem;
+  --input-height: 3.2rem;
+
+  /* Fontes */
+  --fonte-primaria-belgo: Cresta Black;
+  /* --fonte-secundaria-belgo: Poppins;   */
+  --fonte-secundaria-belgo: Cresta Medium;
+  --fonte-terciaria-belgo: Cresta;
+  --fonte-manuscrita-belgo: Bahagia;
+
+  /* Tamanhos de Fontes */
+  --fonte-h1: 6rem;
+  --fonte-h2: 4rem;
+  --fonte-p: 3.2rem;
+  --fonte-span: 2.8rem;
+  --fonte-span-sm: 2rem;
+  --fonte-label-lg: 1.6rem;
+  --fonte-label: 1.4rem;
+  --fonte-texto-lg: 1.2rem;
+  --fonte-texto: 1rem;
+  --fonte-texto-sm: 0.8rem;
+  --fonte-text-xs: 0.6rem;
+
+  font-family: var(--fonte-terciaria-belgo);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0; /* Remove qualquer padding padrão */
+
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  align-items: center; /* Centraliza o wrapper verticalmente */
+  justify-content: center; /* Centraliza o wrapper horizontalmente */
+
+  /* background-color: black; */
+  font-size: var(--fonte-base);
+}
+
+/* Container Principal ou Master Page */
+.principal {
+  width: 98vw;
+  height: 98vh;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  background-color: #f8f9fa;
+  /* background-color: #adc7e2; */
+  text-align: left;
+  font-size: var(--fonte-label);
+  color: #fff;
+}
+
+/* #endregion */
+
+/* #region SIDEBAR */
+.sidebar {
+  height: 100%;
+  width: var(--navbar-width);
+  z-index: 1;
+
+  border-radius: 16px;
+  /* background-color: #d7060f; */
+  background-color: var(--primary-bg);
+
+  transition:
+    width 0.3s ease-in-out,
+    opacity 0.3s ease-in-out; /* Animações */
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 16px;
+}
+
+.sidebar.collapsed {
+  width: 80px; /* Ou o tamanho desejado */
+}
+
+.sidebar__header {
+  align-self: stretch;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 32px 32px 16px;
+  box-sizing: border-box;
+  position: relative;
+  gap: 8px;
+}
+
+.sidebar__navbar {
+  align-self: stretch;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 8px 16px 16px;
+  gap: 64px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Customização da scrollbar */
+.sidebar__navbar::-webkit-scrollbar {
+  width: 8px; /* Largura da barra */
+  height: 8px; /* Para consistência em scroll horizontal, se houver */
+}
+
+.sidebar__navbar::-webkit-scrollbar-thumb {
+  background: #c52424; /* Cor do thumb */
+  border-radius: 99px;
+}
+
+.sidebar__navbar::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Cor ao passar o mouse */
+}
+
+.sidebar__logo-icon {
+  width: 200px;
+  height: 80px;
+  margin-left: -5px;
+  position: relative;
+  top: 40px;
+  content: url("./brand/LG-BELGO-CERCAS-SEMI-NEGATICVO-CMYK.png");
+}
+
+.sidebar__collapse-button {
+  width: 20px;
+  margin: 0 !important;
+  position: absolute;
+  top: calc(50% - 20px);
+  right: -10px;
+  box-shadow: 0px 8px 32px rgba(206, 212, 218, 0.15);
+  border-radius: 8px;
+  background-color: #fff;
+  height: 40px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* Sidebar Retrátil */
+#nav-toggle {
+  display: none;
+}
+
+#nav-toggle:checked ~ .sidebar {
+  width: var(--navbar-width-min);
+}
+
+#nav-toggle:checked ~ .main {
+  /* margin-left: calc(var(--navbar-width-min) + 16px); */
+  /* margin-left: calc(var(--navbar-width-min) + 2vh); */
+  /* width: calc(100% - var(--navbar-width-min) - 2vh); */
+}
+
+#nav-toggle:checked ~ .sidebar .sidebar__header .sidebar__logo-icon {
+  content: url("./brand/LG-BELGO-CERCAS-SEMI-NEGATICVO-CMYK_B.png");
+  width: 30px;
+  height: 60px;
+  margin-left: -10px;
+}
+
+#nav-toggle:checked ~ .sidebar .sidebar__header .arrow-left-icon {
+  content: url("./images/Arrow Right.svg");
+}
+
+#nav-toggle:checked ~ .sidebar .sidebar__nav-item {
+  width: 88px;
+}
+
+#nav-toggle:checked ~ .sidebar .sidebar__nav-item .sidebar__nav-title {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+#nav-toggle:checked ~ .sidebar .col .sidebar__wrapper .sidebar__nav-item {
+  width: 88px;
+}
+
+#nav-toggle:checked ~ .sidebar .col .sidebar__wrapper .sidebar__nav-item .sidebar__nav-title {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.sidebar__nav-title {
+  flex: 1;
+  position: relative;
+  letter-spacing: 0.03em;
+  line-height: 24px;
+  /* font-weight: 540; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  /* color: var(--accent-color); */
+  font-size: var(--fonte-label-large);
+  font-family: var(--fonte-secundaria-belgo-belgo);
+}
+
+.sidebar__icon {
+  width: 24px;
+  height: 24px;
+  /* color: var(--accent-color); */
+  /* background-color: white; */
+  /* border: 1px solid white; */
+}
+
+.sidebar__nav-item:hover ~ sidebar__nav-title,
+.sidebar__nav-item:hover sidebar__icon {
+  color: white;
+}
+
+.sidebar__nav-item {
+  width: 100%;
+  border-radius: 8px;
+  height: 48px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  box-sizing: border-box;
+  gap: 8px;
+  /* margin-left: 2px; */
+  transition: background-color 0.2s ease; /* Suaviza o hover */
+  text-decoration: none; /* Remove sublinhado do Link */
+  /*color: #fff; /* Garante a cor do texto */
+  color: var(--accent-color);
+}
+
+.sidebar__nav-item:hover,
+.sidebar__nav-item5:hover {
+  /*background-color: #c52424; /* Vermelho mais escuro pro hover */
+  background-color: var(--secondary-bg);
+  color: white;
+  cursor: pointer;
+}
+
+#nav-toggle:checked ~ .sidebar .sidebar__nav-item {
+  width: 100%; /* Garante que o item ocupe o espaço disponível */
+  justify-content: center; /* Centraliza o ícone */
+  padding: 0 12px; /* Mantém o padding consistente*/
+}
+
+.sidebar__wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+}
+
+.sidebar__nav-item5 {
+  align-self: stretch;
+  border-radius: 8px;
+  height: 48px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  box-sizing: border-box;
+  gap: 8px;
+}
+
+.sidebar__footer {
+  align-self: stretch;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 16px 6px;
+  color: var(--accent-color);
+}
+
+/* #endregion */
+
+/* #region MAIN */
+/* Adiciona o botão de menu para telas pequenas */
+.mobile-menu {
+  display: none; /* Escondido por padrão */
+}
+
+#mobile-sidebar-toggle,
+#collapse-toggle {
+  z-index: 10;
+  pointer-events: auto; /* Garante que o clique seja registrado */
+}
+
+/* Main Content */
+.main {
+  /* margin-left: calc(var(--navbar-width) + 2vh); /* Compensa o left: 1vw da sidebar */
+  /*width: calc(100% - var(--navbar-width) - 2vh); /* O resto da largura */
+  /* height: calc(100% - 2vh); */
+
+  flex: 1;
+  padding: 1vh;
+
+  height: 96vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  color: #343a40;
+  transition: margin-left 0.3s ease;
+  /* border-radius: 8px; */
+
+  /* background-color: #6d5b22; */
+  width: calc(100% - var(--navbar-width));
+}
+
+/* #region PAGE-HEADER */
+.page-header {
+  height: 60px;
+  flex-shrink: 0;
+  align-self: stretch;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 12px;
+
+  gap: 8px;
+  /* background-color: rgb(75, 0, 215); */
+}
+
+.page-header__title {
+  width: calc(100% - 200px);
+  align-self: flex-end;
+  font-size: var(--fonte-p);
+  line-height: 64px;
+  /* max-width: 200px; */
+  max-height: 64px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  text-align: left; /* Garante que o texto comece da esquerda */
+  direction: ltr; /* Força direção esquerda pra direita */
+
+  /* color: var(--primary-bg); */
+  font-family: var(--fonte-primaria-belgo);
+
+  overflow: hidden; /* Corta tudo fora do container */
+}
+
+.page-header__title span {
+  display: inline-block; /* Garante que o span respeite o nowrap */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%; /* Limita ao espaço do pai */
+  animation: marquee 20s linear infinite; /* Animação do letreiro */
+  /*padding-right: 20px; /* Espaço pra evitar lacunas */
+  will-change: transform;
+}
+
+/* Define a animação do letreiro */
+@keyframes marquee {
+  0% {
+    transform: translateX(100%); /* Começa fora da tela, à direita */
+  }
+  100% {
+    transform: translateX(-100%); /* Termina fora da tela, à esquerda */
+  }
+}
+
+.page-header__bell-icon {
+  width: 24px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.page-header__bullet {
+  width: 8px;
+  position: absolute;
+  margin: 0 !important;
+  top: 8px;
+  right: 8px;
+  border-radius: 50%;
+  background-color: #ff1f25;
+  height: 8px;
+  z-index: 1;
+}
+
+.page-header__notification {
+  width: 40px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  box-sizing: border-box;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  gap: 8px;
+  position: relative;
+  display: inline-block; /* Garante que o container tenha tamanho */
+}
+
+.page-header__profile-child {
+  width: 24px;
+  border-radius: 2px;
+  height: 24px;
+  object-fit: cover;
+}
+
+.page-header__user {
+  position: relative;
+  line-height: 132%;
+  font-weight: 500;
+}
+
+.page-header__profile {
+  width: 130px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.page-header__home-icon {
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-left: -5px;
+}
+
+/* Notificações */
+.notification-dropdown {
+  position: fixed; /* Muda pra fixed pra ignorar o pai */
+  top: 60px; /* Ajusta manualmente pro header */
+  right: 32px;
+  width: 250px;
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 2000;
+  text-align: left;
+  font-size: 14px;
+  color: #343a40;
+}
+
+.notification-dropdown h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: #495057;
+}
+
+.notification-dropdown p {
+  margin: 0;
+  color: #6c757d;
+}
+
+/* Menu de perfil */
+.profile-menu {
+  position: absolute;
+  top: 60px; /* Ajusta pra ficar abaixo do perfil */
+  right: 32px;
+  width: 150px;
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 8px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.profile-menu button {
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 14px;
+  color: #343a40;
+  cursor: pointer;
+}
+
+.profile-menu button:hover {
+  background-color: #f8f9fa;
+}
+
+/* #endregion  */
+
+/* #region BODY */
+.body {
+  /* box-sizing: border-box; */
+  gap: 8px;
+  font-size: 46px;
+  color: #000000;
+  /* background-color: #e61ee6; */
+  /* border-radius: 8px; */
+
+  flex: 1;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* #region HEADER */
+.header {
+  width: 100%;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  /* padding: 2px; */
+  /* height: 32px; */
+  /* background-color: orange; */
+}
+
+.header__title {
+  position: relative;
+  line-height: 100%;
+  font-weight: 600;
+  font-size: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: var(--fonte-secundaria-belgo);
+}
+
+.header__crumbs {
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-size: 14px;
+  color: #6c757d; /* Cor padrão dos itens não ativos */
+}
+
+.header__crumbs-item {
+  appearance: none;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.header__crumb-separator {
+  height: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.header__crumbs-item1 {
+  appearance: none;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: #212529;
+}
+
+.header__crumbs-item .header__link {
+  color: #6c757d; /* Cinza pra itens não ativos */
+  text-decoration: none; /* Remove sublinhado padrão */
+}
+
+.header__crumbs-item .header__link:hover {
+  color: #343a40; /* Escurece no hover */
+  text-decoration: underline;
+}
+
+.header__crumbs-item1 .header__link {
+  color: #212529; /* Preto pro item ativo */
+  text-decoration: none; /* Sem sublinhado no ativo */
+}
+
+.header__crumbs-item1 .header__link:hover {
+  color: #212529; /* Mantém a cor no hover do ativo */
+  text-decoration: underline;
+}
+
+.header__link {
+  position: relative;
+  line-height: 132%;
+  text-decoration: none; /* Reforça a remoção do sublinhado */
+}
+
+/* Remove estilos de visitado/ativo do navegador */
+.header__link:visited,
+.header__link:active {
+  color: inherit; /* Usa a cor definida pelo pai */
+}
+
+.header__link:hover {
+  text-decoration: underline; /* Feedback no hover */
+}
+/* #endregion */
+
+/*  #region DINAMICO */
+.dinamico {
+  flex: 1;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Centraliza o wrapper verticalmente */
+  justify-content: flex-start; /* Centraliza o wrapper horizontalmente */
+  /* background-color: lightcoral; */
+
+  /* border: 2px dotted yellowgreen; */
+}
+
+/* #endregion */
+
+/* #endregion */
+
+/* #region GLOBAIS*/
+.arrow-left-icon {
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  flex-shrink: 0;
+  content: url("./images/Arrow Left.svg");
+}
+
+p {
+  font-family: va(--fonte-secundaria-belgo);
+  font-size: 2rem;
+}
+
+/* #endregion */
+
+/* #endregion */
+
+/* #region RODAPE */
+.footer {
+  position: absolute;
+  width: 200px;
+  height: 8px;
+  /* background: var(--primary-bg); */
+  border-radius: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+
+  transition:
+    width 0.2s,
+    height 0.2s;
+  /* margin-top: 0; */
+  right: 1vw;
+  color: var(--primary-bg);
+  padding: 15px;
+  bottom: 1.7vh;
+  z-index: 9;
+  text-wrap: nowrap;
+  gap: 10px;
+  font-size: var(--fonte-texto-menor);
+}
+
+.footer__img {
+  display: flex;
+  width: 100px;
+  height: 20px;
+  padding: 1px;
+  /* background-color: white; */
+  border-radius: var(--radius-sm);
+}
+
+.footer__mini-stack {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  font-size: 8px;
+  /* color: #6c757d; */
+}
+
+/* #endregion */
+
+/* #region MEDIA <768 */
+@media (max-width: 768px) {
+  /* #region GLOBAIS */
+  .html,
+  body {
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .principal {
+    width: 98vw;
+    height: 98vh;
+  }
+  /* #endregion */
+
+  /* #region SIDEBAR */
+  .sidebar {
+    position: fixed;
+    top: 10px;
+    left: 10px; /* Escondida por padrão */
+    width: 0; /* Ocupa 80% da tela */
+    height: auto;
+    z-index: 3;
+    transition:
+      width 0.3s ease-in-out,
+      opacity 0.3s ease-in-out; /* Animações */
+
+    overflow: hidden;
+    opacity: 0;
+    display: none;
+  }
+
+  #mobile-sidebar-toggle:checked ~ .sidebar {
+    width: 80px; /* Sidebar visível ao ativar menu */
+    opacity: 1; /* Torna visível */
+    display: block;
+  }
+
+  #mobile-sidebar-toggle:checked ~ .sidebar .sidebar__header .sidebar__logo-icon {
+    content: url("./brand/LG-BELGO-CERCAS-SEMI-NEGATICVO-CMYK_B.png");
+    width: 30px;
+    height: 60px;
+    margin-left: 0px;
+    opacity: 0;
+    display: none;
+  }
+
+  #mobile-sidebar-toggle:checked ~ .sidebar .sidebar__header .sidebar__collapse-button {
+    display: none;
+  }
+
+  #mobile-sidebar-toggle-toggle:checked ~ .sidebar .sidebar__nav-item {
+    width: 88px;
+  }
+
+  #mobile-sidebar-toggle:checked ~ .sidebar .sidebar__nav-item .sidebar__nav-title {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+  }
+
+  #mobile-sidebar-toggle:checked ~ .main .mobile-menu-icon {
+    /*display: none; /* Escondido por padrão */
+    top: 20px;
+    left: 20px;
+    width: 40px;
+    height: 47px;
+    content: url("./brand/LG-BELGO-CERCAS-SEMI-NEGATICVO-CMYK_B.png");
+  }
+
+  #mobile-sidebar-toggle:checked ~ .main .mobile-arrow-icon {
+    /*display: none; /* Escondido por padrão */
+    display: block;
+  }
+
+  #collapse-toggle:checked ~ .sidebar .sidebar__header .sidebar__logo-icon {
+    width: 160px;
+    height: 75px;
+    margin-left: 0px;
+    position: relative;
+    top: 40px;
+    content: url("./brand/LG-BELGO-CERCAS-SEMI-NEGATICVO-CMYK.png");
+  }
+
+  #collapse-toggle:checked ~ .main .mobile-menu-icon {
+    /*display: none; /* Escondido por padrão */
+
+    width: 160px;
+    height: 40px;
+    margin-left: 0px;
+    position: relative;
+    top: 20px;
+    content: url("./brand/LG-BELGO-CERCAS-SEMI-NEGATICVO-CMYK.png");
+  }
+
+  #collapse-toggle:checked ~ .main .mobile-arrow-icon {
+    /*display: none; /* Escondido por padrão */
+    left: 190px;
+    content: url("./images/Arrow Left.svg");
+  }
+
+  #collapse-toggle:checked ~ .sidebar {
+    width: 200px; /* Encolher automaticamente no tablet */
+    opacity: 1;
+  }
+
+  #collapse-toggle-toggle:checked ~ .sidebar .sidebar__nav-item {
+    width: auto;
+    opacity: 1;
+  }
+
+  #collapse-toggle:checked ~ .sidebar .sidebar__nav-item .sidebar__nav-title {
+    opacity: 1;
+    width: auto;
+    overflow: hidden;
+  }
+
+  /* Ajusta o header da sidebar em telas pequenas */
+  .sidebar__header {
+    padding: 16px;
+  }
+
+  .sidebar__logo-icon {
+    width: 150px; /* Reduz o logo em telas pequenas */
+  }
+  /* #endregion */
+
+  /* #region MAIN */
+  .mobile-menu {
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+  }
+
+  .mobile-menu-icon {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: 10px;
+    top: 15px;
+    cursor: pointer;
+  }
+
+  .mobile-arrow-icon {
+    position: absolute;
+    width: 20px;
+    height: 27px;
+    left: 70px;
+    top: 32px;
+    cursor: pointer;
+    content: url("./images/Arrow Right.svg");
+    display: none;
+    background-color: #fff;
+    border-radius: 4px;
+  }
+
+  .main {
+    /*width: 100%; /* Ocupa toda a largura */
+    padding: 4px; /* Ajusta padding */
+  }
+
+  .mobile-menu {
+    display: block; /* Ícone de menu visível */
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1000;
+  }
+
+  /* #region PAGE-HEADER */
+
+  .page-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 25px;
+    height: auto;
+    width: 86vw;
+    margin-bottom: 0px;
+  }
+  .page-header__notification,
+  .page-header__profile {
+    margin-bottom: 0;
+  }
+  .page-header__title {
+    display: none;
+  }
+
+  /* #endregion */
+
+  /* #region HEADER */
+
+  .header__crumbs {
+    display: none; /* Esconde breadcrumbs */
+  }
+
+  .header__title {
+    font-size: 20px; /* Reduz o tamanho da fonte */
+    margin: 5px 0; /* Ajusta margens */
+  }
+
+  /* #endregion */
+
+  .body {
+    font-size: 16px; /* Reduz o tamanho padrão do body */
+  }
+
+  /* #endregion */
+}
+/* #endregion */
+
+/* #region MEDIA<480 */
+@media (max-width: 480px) {
+  /* #region GLOBAIS */
+  .html,
+  body {
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .principal {
+    width: 98vw;
+    height: 98vh;
+  }
+  /* #endregion */
+
+  /*#region SIDEBAR*/
+  .sidebar {
+    width: 80px; /* Sidebar ocupa toda a tela em celulares pequenos */
+    transition:
+      width 0.3s ease-in-out,
+      opacity 0.3s ease-in-out; /* Animações */
+  }
+
+  #mobile-sidebar-toggle:checked ~ .sidebar {
+    width: 80px; /* Sidebar visível ao ativar menu */
+    opacity: 1; /* Torna visível */
+  }
+
+  #collapse-toggle:checked ~ .sidebar {
+    width: 200px; /* Encolher automaticamente no tablet */
+    opacity: 1;
+  }
+  /*#endregion*/
+
+  /* #region MAIN */
+  .mobile-menu {
+    display: block; /* Ícone de menu visível */
+    font-size: 20px;
+    top: 5px;
+    left: 5px;
+  }
+
+  .main {
+    height: 100%;
+    padding: 0px;
+    width: 100%; /* Ocupa toda a largura */
+    padding: 0px; /* Ajusta padding */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dinamico {
+    width: 100%;
+    height: 100%;
+  }
+
+  .header__title {
+    font-size: 18px; /* Ainda menor */
+  }
+  .grid__card {
+    font-size: 10px; /* Reduz texto nos cartões */
+  }
+  .searchbox-wrapper {
+    height: 36px; /* Reduz altura do campo de busca */
+  }
+
+  /*#endregion*/
+}
+/* #endregion */

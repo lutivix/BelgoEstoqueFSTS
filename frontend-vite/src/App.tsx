@@ -1,11 +1,13 @@
-import { useState } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import StockGrid from "./components/StockGrid"; // Ajuste o caminho
-import Dashboard from "./components/Dashboard"; // Ajuste o caminho
+import StockGrid from "./Pages/StockGrid"; // Ajuste o caminho
+import Dashboard from "./Pages/Dashboard"; // Ajuste o caminho
+import Reports from "./Pages/Reports"; // Novo
+import Settings from "./Pages/Settings"; // Novo
+import HelpCentre from "./Pages/Help"; // Novo
 
 function App() {
-  const [count, setCount] = useState(0);
+  //const [count, setCount] = useState(0);
 
   return (
     //   <>
@@ -36,6 +38,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/products" element={<StockGrid />} />
+        <Route path="/reports" element={<Reports />} /> {/* Relatórios */}
+        <Route path="/settings" element={<Settings />} /> {/* Configurações */}
+        <Route path="/help" element={<HelpCentre />} /> {/* Help Centre */}
       </Routes>
     </Router>
   );

@@ -1,0 +1,1418 @@
+/* #region GRID PRINCIPAL */
+
+.grid {
+  height: calc(100vh - 190px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 8px;
+  text-align: center;
+  font-size: 14px;
+  color: #adb5bd;
+  width: 100%;
+  max-width: 100%;
+  /* background-color: #0cf118; */
+  /* border-radius: 10px 10px 10px 20px; */
+  /* max-height: calc(100% - 48px); */
+  /* display: grid;
+  grid-template-rows: auto 1fr auto; actions, conteúdo, paginação */
+  box-sizing: border-box; /* Garante que padding/margem não quebre */
+  min-height: 0;
+}
+
+/* #endregion */
+
+/* #region ACTIONS */
+.actions {
+  align-self: stretch;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1;
+  width: 100%;
+  height: 40px;
+  /* margin-bottom: 0; */
+
+  /* background-color: violet; */
+  position: relative; /* Faz o .actions ser o pai pra absolute */
+}
+
+.actions__searchbox-wrapper {
+  width: 300px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  /* border: 1px solid #adb5bd; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 12px;
+  box-sizing: border-box;
+  overflow: hidden;
+  gap: 10px;
+}
+
+.actions__categoria {
+  width: 140px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #949daf;
+  box-sizing: border-box;
+  height: 32px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  gap: 4px;
+  color: #949daf;
+  width: 150px;
+  position: relative;
+}
+
+.actions__searchbox {
+  width: 230px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #adb5bd;
+  box-sizing: border-box;
+  height: 32px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 12px;
+  gap: 8px;
+}
+
+.actions__search-input {
+  flex: 1;
+  height: 100%; /* Ocupa a altura do wrapper */
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: #343a40;
+  font-family: Poppins;
+  padding: 0;
+  margin-left: 8px; /* Espaço entre ícone e texto */
+  outline: none; /* Remove borda de foco padrão */
+  width: 240px;
+}
+
+.actions__search-input::placeholder {
+  color: #959da4;
+}
+
+.actions__search-icon {
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.actions__cat-icon {
+  margin-right: 10px;
+  font-size: 20px;
+  width: 30px;
+  height: 30px;
+}
+
+.actions__select {
+  border-radius: 22px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 1px 0;
+  height: 32px;
+}
+
+.actions__button {
+  border-radius: 8px;
+  border: 1px solid #adb5bd;
+  box-sizing: border-box;
+  height: 32px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+
+  position: relative;
+}
+
+.actions__button {
+  position: relative;
+  overflow: visible;
+}
+
+.actions__categoria {
+  position: relative;
+  overflow: visible;
+}
+
+.actions__custom-tooltip {
+  position: absolute;
+  background-color: #343a40;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+}
+
+.actions__filter-tooltip {
+  top: 48px; /* Ajusta pra ficar abaixo do botão de filtro */
+  left: 80px; /* Posiciona relativo ao wrapper, ajuste conforme necessário */
+}
+
+.actions__add-tooltip {
+  top: 48px; /* Ajusta pra ficar abaixo do botão de adicionar */
+  right: 16px; /* Alinha com o canto direito */
+}
+
+/* Tooltip do Filtro */
+.actions__button .actions__custom-tooltip {
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Tooltip do Adicionar */
+.actions__categoria .actions__custom-tooltip {
+  top: 60px;
+  right: 16px;
+  left: auto; /* Evita conflito com centralização */
+}
+
+.page-placeholder {
+  padding: 16px;
+  text-align: center;
+  color: #6c757d;
+  font-family: Poppins;
+  font-size: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin: 16px;
+}
+
+.page-placeholder h2 {
+  color: #343a40;
+  margin-bottom: 8px;
+}
+
+/* #endregion */
+
+/* #region TABELA */
+
+/* #region GRID MAIOR */
+/* Container do Grid principal */
+.wrapper-grid {
+  /* align-self: stretch; */
+  background-color: #fff;
+  /* background-color: #e71b1b; */
+
+  flex: 1;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 16px;
+  z-index: 0;
+  text-align: left;
+  color: #343a40;
+  width: 100%;
+  min-height: 0;
+
+  border-radius: 16px 16px 0px 0px;
+
+  /*position: relative; /* Necessário para o sticky funcionar corretamente */
+  /* max-height: 442px; */
+  /* max-height: calc(100% - 226px); */
+  overflow-y: auto; /* ativa rolagem quando necessário */
+  max-width: 100%; /* Remove qualquer limite implícito */
+}
+
+/* Customização da scrollbar */
+.wrapper-grid::-webkit-scrollbar {
+  width: 8px; /* Largura da barra */
+  height: 8px; /* Para consistência em scroll horizontal, se houver */
+}
+
+.wrapper-grid::-webkit-scrollbar-thumb {
+  background: #7b7575; /* Cor do thumb */
+  border-radius: 99px;
+}
+
+.wrapper-grid::-webkit-scrollbar-thumb:hover {
+  background: #a14949; /* Cor ao passar o mouse */
+}
+
+.grid__table {
+  flex: 1;
+
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* Força a tabela a respeitar dimensões definidas */
+
+  /* background-color: #3fb8d6; */
+  height: auto;
+}
+
+.grid__table thead {
+  position: sticky; /* Fixa o thead no topo */
+  top: 0; /* Alinha ao topo do container pai */
+  background-color: #fff; /* Garante fundo branco para o cabeçalho */
+  z-index: 2; /* Fica acima do tbody durante a rolagem */
+}
+
+.grid__table th,
+.grid__table td {
+  padding: 0px 16px; /* Reduz o padding vertical de 8px para 4px */
+  height: 36px !important; /* Define altura fixa para as células */
+  line-height: 36px; /* Alinha o texto verticalmente */
+  max-height: 36px; /* Garante que não ultrapasse */
+  border: 1px solid #e9ecef;
+  text-align: center;
+  box-sizing: border-box; /* Garante que padding não aumente a altura */
+  font-family: Poppins;
+  font-size: 12px;
+  font-style: bold;
+  overflow-x: hidden;
+  /*display: block; /* Garante que o conteúdo não force expansão */
+  vertical-align: middle;
+  min-height: 0; /* Remove qualquer altura mínima implícita */
+  white-space: nowrap;
+  text-overflow: ellipsis; /* Adicionado pra cortar texto com "..." */
+  min-height: 36px; /* Adicionado pra reforçar altura mínima */
+}
+
+/* Coluna Estoque Total (5ª coluna) */
+.grid__table th:nth-child(5),
+.grid__table td:nth-child(5) {
+  width: auto; /* Permite crescer se necessário */
+  padding: 0 8px; /* Reduz padding lateral pra aproveitar espaço */
+  width: 200px;
+  min-width: 420px; /* Tamanho mínimo pra caber o conteúdo */
+}
+
+.grid__table th {
+  font-size: 15px;
+  color: #6c757d;
+  height: 38px !important;
+
+  /* Já tem background-color: #fff no seu CSS, mas reforço aqui */
+  background-color: #fff !important;
+  position: sticky;
+  top: 0;
+  z-index: 1; /* Garante que os th fiquem acima das células do tbody */
+}
+
+.grid__table tbody tr {
+  height: 36px;
+}
+
+.grid__table tbody tr:nth-child(odd) {
+  background-color: #f8f9fa;
+}
+.grid__table tfoot {
+  padding: 8px;
+  text-align: right;
+  height: 0px;
+}
+
+.grid__table tbody tr {
+  height: 32px !important;
+  max-height: 32px; /* Reforça a limitação */
+  overflow: hidden;
+  min-height: 0; /* Remove altura mínima do tr */
+}
+
+/* Ajuste específico para o Tooltip e IconButton */
+.grid__table td .tooltip {
+  max-width: 300px; /* Limita o tooltip, mas não afeta a célula */
+  max-height: 80px;
+}
+
+.grid__table td .MuiIconButton-root {
+  padding: 2px; /* Reduz ainda mais o padding */
+  height: 20px; /* Menor que 32px pra caber com margem */
+  padding: 4px; /* Reduz o padding padrão do IconButton */
+  height: 24px; /* Limita a altura do botão */
+  width: 24px; /* Mantém proporcional */
+  min-height: 0; /* Remove altura mínima do tr */
+}
+
+/* Linha expandida */
+.grid__expanded-row {
+  background-color: #f1f3f5; /* Fundo mais claro pra destacar */
+  height: auto; /* Permite altura variável */
+}
+
+.grid__expanded-content {
+  padding: 4px 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #343a40;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.grid__expanded-content span {
+  white-space: nowrap; /* Impede quebra de texto nos valores */
+}
+
+.grid__edit-button.expanded {
+  background-color: #e9ecef; /* Fundo leve quando expandido */
+  border-radius: 4px;
+}
+
+.grid__stock-input {
+  width: 55px;
+  padding: 4px;
+  font-size: 12px;
+  font-family: Poppins;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  text-align: center;
+  margin-left: 4px;
+}
+
+.grid__expanded-content label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  width: 60px;
+}
+
+.grid__save-button {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-family: Poppins;
+  background-color: #949daf;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.grid__save-button:hover {
+  background-color: #6c757d;
+}
+
+.grid__edit-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.grid__edit-button img {
+  width: 16px;
+  height: 16px;
+}
+
+/* #endregion */
+
+/* #region GRID MENOR */
+/*  Grid List para o celular ao invés da tabela para desktop */
+.grid__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  width: 100%; /* Já está assim, mas reforça */
+  max-width: 100%; /* Evita larguras fixas implícitas */
+  box-sizing: border-box; /* Inclui padding na largura */
+}
+
+.grid__card {
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 4px;
+  font-size: 12px;
+  color: #343a40;
+
+  width: 100%; /* Força o cartão a ocupar o espaço disponível */
+  max-width: 100%; /* Remove qualquer limite fixo */
+  box-sizing: border-box; /* Garante que padding não cause transbordo */
+  overflow-x: hidden; /* Evita transbordo horizontal */
+
+  padding: 10px 12px; /* Mais espaço interno, mas sem exagerar */
+  gap: 4px; /* Aumenta o espaço entre linhas pra respirar */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra suave pra destacar */
+  transition: box-shadow 0.2s ease; /* Transição pra hover */
+
+  white-space: nowrap;
+  text-overflow: ellipsis; /* Adicionado pra cortar texto com "..." */
+}
+
+.grid__card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Efeito sutil ao passar o mouse */
+}
+
+/* .grid__card div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Centraliza verticalmente */
+/* width: 100%;
+} */
+
+.grid__card strong {
+  font-weight: 600; /* Mais contraste no rótulo */
+  color: #495057; /* Tom escuro pra destacar */
+  font-family: Poppins; /* Consistência com o resto */
+}
+
+.grid__card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.grid__card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  white-space: nowrap;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden; /* Adiciona overflow pra cortar excessos */
+}
+
+.grid__card-code {
+  font-weight: 600;
+  color: #495057;
+  background-color: #f1f3f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  min-width: 60px; /* Espaço fixo pro código */
+  text-align: center;
+}
+
+.grid__card-name {
+  flex: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #343a40;
+  width: 100%;
+  /* max-width: 100%; */
+  /*max-width: calc(100% - 130px); /* 60px do código + 50px do wrapper + margens */
+  text-wrap: nowrap;
+  padding-right: 8px;
+  overflow: hidden; /* Adiciona overflow pra cortar excessos */
+}
+
+.grid__stock-total-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px; /* Espaço entre ícone e "Total" */
+  justify-content: flex-end; /* Mantém o conjunto "Editar + Total" à direita */
+  min-width: 50px;
+  flex-shrink: 0;
+}
+
+.grid__edit-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.grid__edit-button img {
+  width: 16px;
+  height: 16px;
+}
+
+.grid__card-stocks {
+  flex: 1;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+
+.grid__stock-total {
+  font-size: 11px;
+  color: #6c757d;
+  white-space: nowrap;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.grid__stock-total strong {
+  font-weight: 700;
+  color: #d7060f; /* Vermelho pra destacar */
+}
+
+.grid__stock-input {
+  width: 55px;
+  padding: 2px;
+  font-size: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.grid__stock-tags {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  overflow-x: auto; /* Scroll horizontal se precisar */
+  -webkit-overflow-scrolling: touch; /* Suaviza scroll no mobile */
+  padding-bottom: 2px; /* Evita corte no scroll */
+  width: 100%;
+}
+
+.grid__stock-tag {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 12px;
+  color: #607d8b;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+/* Cores específicas pra cada loja */
+.grid__stock-tag.vit {
+  background-color: #4caf50;
+  background-color: #fff;
+} /* Verde */
+.grid__stock-tag.uni {
+  background-color: #2196f3;
+  background-color: #fff;
+} /* Azul */
+.grid__stock-tag.lin {
+  background-color: #ff9800;
+  background-color: #fff;
+} /* Laranja */
+.grid__stock-tag.sup {
+  background-color: #9c27b0;
+  background-color: #fff;
+} /* Roxo */
+.grid__stock-tag.tel {
+  background-color: #f44336;
+  background-color: #fff;
+} /* Vermelho */
+.grid__stock-tag.est {
+  background-color: #fff;
+} /* Cinza-azulado */
+
+/* Atualizações para semi-card no grid */
+/* Estoque Total no Grid */
+.grid__stock-total-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 100%;
+  width: 100%;
+  min-width: 170px;
+}
+
+.grid__stock-total-value {
+  padding-left: 8px;
+  font-weight: 600;
+  color: #343a40;
+}
+
+.grid__stock-mini-table {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 10px;
+  color: #6c757d;
+}
+
+.grid__stock-mini-table span {
+  display: block;
+  line-height: 1.2;
+}
+
+/* #endregion */
+
+/* #region PAGINATION */
+/* Pagination (não usada diretamente no DataGrid, mas mantida pra referência) */
+.wrapper-pagination {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background-color: #ffffff;
+  border-radius: 0px 0px 16px 16px;
+  height: 48px;
+  flex-shrink: 0; /* Não encolhe */
+
+  position: sticky;
+  align-self: stretch;
+
+  bottom: 0;
+  z-index: 1;
+}
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 16px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 0px 0px 8px 8px;
+  padding: 2px;
+  position: relative;
+}
+
+.pagination-prev {
+  width: 40px;
+  border-radius: 8px;
+  background-color: #e9ecef;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.pagination-item {
+  width: 40px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #949daf;
+  box-sizing: border-box;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: #949daf !important;
+  cursor: pointer;
+}
+
+.pagination-next {
+  width: 40px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  box-sizing: border-box;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.pagination-item--active {
+  background-color: #949daf !important;
+  color: #d7060f !important;
+}
+
+.pagination-prev--disabled,
+.pagination-next--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.wrapper4 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  /*flex: 1; /* Permite que cresça */
+}
+
+.wrapper5 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  text-align: left;
+}
+
+.select {
+  width: 100px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  box-sizing: border-box;
+  height: 40px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 12px;
+  gap: 8px;
+  position: relative; /* Necessário para posicionar o ícone absoluto */
+}
+
+.select-an-item {
+  flex: 1;
+  position: relative;
+  line-height: 132%;
+  appearance: none; /* Remove estilo padrão do select */
+  padding-right: 20px; /* Espaço para o ícone Chevron Down */
+  width: 100%; /* Garante que o select seja clicável em toda a área */
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* Limitar a altura do dropdown usando um hack para navegadores que suportam */
+.select-an-item::-webkit-scrollbar {
+  display: none; /* Remove barra de rolagem feia no Chrome */
+}
+
+.select-an-item {
+  /* Estimar altura para ~5 opções ou 50px */
+  max-height: 120px; /* Aproximadamente 5 opções de ~24px cada */
+  overflow-y: auto; /* Adiciona rolagem se necessário */
+  display: block;
+}
+
+.page {
+  position: relative;
+  line-height: 132%;
+  text-align: center;
+}
+
+/* #endregion */
+
+/* #region SEM CLASSIFICAÇÃO */
+.searchbox-parent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.searchbox-parent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.search {
+  position: relative;
+  line-height: 100%;
+  z-index: 0;
+}
+
+.input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.label {
+  width: 84px;
+  position: relative;
+  letter-spacing: 0.03em;
+  line-height: 24px;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.wrapper3 {
+  width: 100%;
+  height: 100%; /* Garante que o DataGrid use o espaço */
+  max-height: 600px; /* Limita a altura máxima do grid */
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.table .wrapper2 {
+  width: 100%;
+  padding: 0;
+}
+
+.div41 {
+  position: relative;
+  letter-spacing: 0.03em;
+  line-height: 24px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Ícones e Textos */
+
+.select-icon {
+  position: absolute;
+  right: 20px;
+  pointer-events: none;
+}
+
+.text {
+  transition: opacity 0.3s ease;
+}
+
+/* Elementos Não Usados Diretamente pelo DataGrid (mantidos pra referência) */
+.cd-produto {
+  width: 67px;
+  position: relative;
+  line-height: 132%;
+  font-weight: 500;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.header2 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  height: 40.5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  text-align: center;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.cell {
+  align-self: stretch;
+  background-color: #f8f9fa;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  min-height: 56px;
+}
+
+.cell1 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  min-height: 56px;
+}
+
+.cell9 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  min-height: 56px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.sort-icon {
+  width: 16px;
+  position: relative;
+  height: 16px;
+}
+
+.header3 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  height: 40.5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.cell10 {
+  align-self: stretch;
+  background-color: #f8f9fa;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 48px 8px 24px;
+  min-height: 56px;
+}
+
+.cell11 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 48px 8px 24px;
+  min-height: 56px;
+}
+
+.cell19 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 48px 8px 24px;
+  min-height: 56px;
+}
+
+.col1 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 160px;
+}
+
+.cd-famlia {
+  width: 64px;
+  position: relative;
+  line-height: 132%;
+  font-weight: 500;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.qtd-estoque {
+  width: 65px;
+  position: relative;
+  line-height: 132%;
+  font-weight: 500;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.header7 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  height: 40.5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.header8 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  height: 40.5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.cell60 {
+  align-self: stretch;
+  background-color: #f8f9fa;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 24px;
+  min-height: 56px;
+}
+
+.cell61 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 24px;
+  min-height: 56px;
+}
+
+.cell69 {
+  align-self: stretch;
+  border-right: 1px solid #e9ecef;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 24px;
+  min-height: 56px;
+}
+
+.header9 {
+  align-self: stretch;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
+  height: 40.5px;
+}
+
+.button2 {
+  width: 40px;
+  border-radius: 8px;
+  height: 40px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.cell70 {
+  align-self: stretch;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  gap: 6px;
+}
+
+.cell71 {
+  align-self: stretch;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  gap: 6px;
+}
+
+.cell79 {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  gap: 6px;
+}
+
+/* Botão de Toggle (não usado diretamente, mantido pra referência) */
+.toggle-btn {
+  position: absolute;
+  top: 10px;
+  right: -35px;
+  background-color: white;
+  padding: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+.menu-icon {
+  width: 24px;
+  height: auto;
+  content: url("menu-icon.png");
+}
+
+/* #endregion */
+
+/* #endregion */
+
+/* #region MEDIA 768 - 1024 PX */
+@media (max-width: 768px) {
+  .grid {
+    width: 97dvw;
+    height: 85dvh;
+
+    justify-content: center;
+    /* background-color: #a14949; */
+  }
+
+  .grid__table--small th:nth-child(3) ~ th,
+  .grid__table--small td:nth-child(3) ~ td {
+    display: none; /* Esconde colunas extras */
+  }
+
+  .grid__table--small th,
+  .grid__table--small td {
+    padding: 4px; /* Reduz padding em telas pequenas */
+    font-size: 12px; /* Ajusta tamanho da fonte */
+  }
+
+  .wrapper-grid {
+    flex: 1;
+
+    max-height: none;
+    overflow-y: auto;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .grid__table {
+    display: none;
+  }
+  .grid__card {
+    padding: 8px 10px; /* Reduz um pouco */
+
+    width: 100%; /* Força o cartão a ocupar o espaço disponível */
+    box-sizing: border-box; /* Garante que padding não cause transbordo */
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+  }
+
+  .grid__card-name {
+    font-size: 11px;
+    max-width: 200px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+
+    max-width: calc(100% - 130px); /* 60px código + 50px wrapper + 20px buffer */
+    flex: 1;
+  }
+
+  .grid__card-header {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden; /* Adiciona overflow pra cortar excessos */
+  }
+
+  .grid__list {
+    width: 100%; /* Já está assim, mas reforça */
+    max-width: 100%; /* Evita larguras fixas implícitas */
+    box-sizing: border-box; /* Inclui padding na largura */
+  }
+  .actions {
+    /* flex-direction: column; */
+    gap: 8px;
+    align-items: center;
+  }
+  .actions__search-wrapper {
+    width: 100%;
+  }
+  .select-comodities,
+  .button1 {
+    width: 100%;
+    justify-content: center;
+  }
+  .wrapper-pagination {
+    height: auto;
+    padding: 8px;
+  }
+  .pagination {
+    flex-direction: row;
+    gap: 4px;
+    align-items: flex-start;
+  }
+  .wrapper4 {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .wrapper5 {
+    justify-content: center;
+  }
+}
+
+/* #endregion */
+
+/* #region MEDIA <= 480 PX */
+
+@media (max-width: 480px) {
+  .grid {
+    width: 97dvw;
+    height: 85dvh;
+
+    justify-content: center;
+    /* background-color: #a14949; */
+  }
+
+  .actions {
+    /* flex-direction: column; */
+    gap: 4px;
+    align-items: center;
+  }
+
+  .actions__searchbox-wrapper {
+    height: 36px;
+    padding-left: 4px;
+  }
+
+  .actions__categoria {
+    padding-right: 12px;
+  }
+
+  .actions__searchbox {
+    width: 180px;
+  }
+
+  .grid__card strong {
+    font-weight: 500; /* Um pouco mais leve pra não pesar */
+  }
+
+  .grid__card {
+    font-size: 10px;
+    /*padding: 4px; /* Ainda menor em telas pequenas */
+    min-width: none;
+
+    padding: 4px 6px; /* Compacto, mas legível */
+    font-size: 11px;
+  }
+  .grid__card-code {
+    min-width: 50px;
+    padding: 2px 4px;
+    font-size: 10px;
+  }
+  .grid__card-name {
+    font-size: 11px;
+    /* max-width: 200px; */
+    text-overflow: ellipsis;
+  }
+  .card-stocks {
+    gap: 6px;
+  }
+  .grid__stock-total {
+    font-size: 10px;
+  }
+  .grid__stock-tag {
+    font-size: 9px;
+    padding: 2px 4px;
+  }
+  .pagination-prev {
+    width: 36px;
+    height: 36px;
+  }
+
+  .pagination-item {
+    width: 36px;
+    height: 36px;
+  }
+
+  .pagination-next {
+    width: 36px;
+    height: 36px;
+  }
+
+  .select {
+    padding: 0px;
+    padding-left: 8px;
+    width: 45px;
+    height: 36px;
+  }
+  .select-an-item {
+    padding: 0px;
+    width: 45px;
+    height: 36px;
+  }
+
+  .select-icon {
+    position: absolute;
+    right: 5px;
+    pointer-events: none;
+    width: 15px;
+    height: 15px;
+  }
+
+  .actions__custom-tooltip {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  .actions__categoria .actions__custom-tooltip {
+    right: 8px; /* Reduz a margem direita */
+    left: 8px; /* Define um limite mínimo à esquerda */
+    transform: none; /* Remove centralização que pode empurrar pra fora */
+    max-width: calc(100vw - 16px); /* Limita à largura da tela menos margens */
+    white-space: normal; /* Permite quebra de linha se necessário */
+    text-align: right; /* Alinha o texto à direita pra ficar natural */
+  }
+
+  .actions__button .actions__custom-tooltip {
+    left: -18px;
+    right: 8px;
+    transform: none;
+    max-width: calc(100vw - 16px);
+    text-align: center;
+  }
+}
+
+/* #endregion */

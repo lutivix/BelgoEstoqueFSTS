@@ -1,4 +1,63 @@
-html,
+:root {
+  /* Fontes */
+  --fonte-base: 10px;
+
+  /* Cores */
+  --primary-bg: #003b4a;
+  --secondary-bg: #ed1c24;
+  --text-primary: #343a40;
+  --text-secondary: #6c757d;
+  --error-color: #d7060f;
+
+  /* Espaçamento */
+  --space-xs: 0.4rem;
+  --space-sm: 0.8rem;
+  --space-md: 1.6rem;
+  --space-lg: 2.4rem;
+
+  /* Bordas */
+  --radius-sm: 0.4rem;
+  --radius-md: 0.8rem;
+  --radius-lg: 1.6rem;
+
+  /* Sidebar */
+  --navbar-width: 256px;
+  --navbar-width-min: 80px;
+
+  /* Tamanhos */
+  --header-height: 4rem;
+  --row-height: 3.6rem;
+  --input-height: 3.2rem;
+
+  /* Fontes */
+  --fonte-primaria-belgo: Cresta Black;
+  /* --fonte-secundaria-belgo: Poppins;   */
+  --fonte-secundaria-belgo: Cresta Medium;
+  --fonte-terciaria-belgo: Cresta;
+  --fonte-manuscrita-belgo: Bahagia;
+
+  /* Fontes Sizes*/
+  --fonte-h1: 6rem;
+  --fonte-h2: 4rem;
+  --fonte-p: 3.2rem;
+  --fonte-span: 2.8rem;
+  --fonte-span-sm: 2rem;
+  --fonte-label-sl: 1.6rem;
+  --fonte-label-lg: 1.6rem;
+  --fonte-label: 1.4rem;
+  --fonte-text-lg: 1.2rem;
+  --fonte-text: 1rem;
+  --fonte-text-sm: 0.8rem;
+  --fonte-text-xs: 0.6rem;
+
+  font-family: var(--fonte-terciaria-belgo);
+}
+
+html {
+  font-size: var(--fonte-base); /* Isso define 1rem = 10px */
+  font-family: Poppins, sans-serif;
+}
+
 body,
 #root {
   margin: 0;
@@ -8,6 +67,6 @@ body,
   display: flex;
   align-items: center;
   justify-content: center;
-  /* background-color: black; */
-  max-width: 100vw !important; /* Sobrescreve o 1280px */
+  max-width: 100vw !important;
+  overflow-x: hidden;
 }

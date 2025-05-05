@@ -1,13 +1,28 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-      {
-        "label": "npm: build - backend",
-        "type": "npm",
-        "script": "build",
-        "path": "backend/",
-        "group": "build",
-        "problemMatcher": ["$tsc"]
-      }
-    ]
-  }
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build - frontend",
+      "type": "shell",
+      "command": "npm run build",
+      "options": {
+        "cwd": "${workspaceFolder}/frontend-vite"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "build - backend",
+      "type": "shell",
+      "command": "npm run build",
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "build - fullstack",
+      "dependsOn": ["build - frontend", "build - backend"],
+      "dependsOrder": "sequence"
+    }
+  ]
+}

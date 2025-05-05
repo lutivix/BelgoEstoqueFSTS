@@ -1041,4 +1041,132 @@ export class ProductsService {
       throw error;
     }
   }
+
+  async getEstoquePorLoja(
+    familia?: string,
+    dataStr?: string,
+  ): Promise<
+    {
+      name: string;
+      type: string;
+      estoque_total: number;
+      estoque_minimo: number;
+      emFalta: number;
+      porLoja: {
+        vitoria: number;
+        uniao: number;
+        linhares: number;
+        supertela: number;
+        telarame: number;
+        estruturaco: number;
+      };
+    }[]
+  > {
+    const produtos = await this.loadProductsFromDb();
+
+    return produtos
+      .filter((p) => {
+        const familiaOk = !familia || familia.toLowerCase() === (p.type || "").toLowerCase();
+        const dataOk = !dataStr || (p.D && p.D.toISOString().startsWith(dataStr));
+        return familiaOk && dataOk;
+      })
+      .map((p) => {
+        const porLoja = {
+          vitoria: p.estoque_vitoria ?? 0,
+          uniao: p.estoque_uniao ?? 0,
+          linhares: p.estoque_linhares ?? 0,
+          supertela: p.estoque_supertela ?? 0,
+          telarame: p.estoque_telarame ?? 0,
+          estruturaco: p.estoque_estruturaco ?? 0,
+        };
+
+        const estoque_total = Object.values(porLoja).reduce((soma, val) => soma + val, 0);
+        const estoque_minimo = 6 * 40; // 40 por loja
+        const emFalta = Number(((estoque_total / estoque_minimo) * 100).toFixed(2));
+
+        return {
+          name: p.name,
+          type: p.type ?? "", // Aqui está a família
+          estoque_total,
+          estoque_minimo,
+          emFalta, // Percentual
+          porLoja,
+        };
+      })
+      .sort((a, b) => a.estoque_total - b.estoque_total); // Ordena do menor pro maior
+  }
+
+  async getEstoqueDetalhado(
+    dataStr?: string,
+    familia?: string,
+    produto?: string,
+    lojas?: string[],
+  ): Promise<
+    {
+      name: string;
+      type: string;
+      D: string;
+      estoque_total: number;
+      estoque_minimo: number;
+      emFalta: number;
+      porLoja: Record<string, number>;
+    }[]
+  > {
+    const produtos = await this.loadProductsFromDb();
+
+    const todasAsLojas = ["vitoria", "uniao", "linhares", "supertela", "telarame", "estruturaco"];
+
+    const lojasArray = Array.isArray(lojas) ? lojas : lojas ? [lojas] : [];
+    const lojasFiltradas = lojasArray.length ? lojasArray : todasAsLojas;
+
+    // this.logger.logFrontend("🔍 Lojas filtradas: " + lojasFiltradas);
+
+    return produtos
+      .filter((p) => {
+        const dataOk = !dataStr || (p.D && p.D.toISOString().startsWith(dataStr));
+
+        const normalize = (str: string) =>
+          str
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase()
+            .trim();
+
+        const familiaOk = !familia || (p.type && normalize(p.type).includes(normalize(familia)));
+        const produtoOk = !produto || p.name?.toLowerCase().includes(produto.toLowerCase());
+
+        const lojaOk =
+          lojasArray.length === 0 ||
+          lojasFiltradas.some((loja) => (p[`estoque_${loja}`] ?? 0) !== 0);
+
+        return dataOk && familiaOk && produtoOk && lojaOk;
+      })
+
+      .map((p) => {
+        const porLoja = Object.fromEntries(
+          lojasFiltradas.map((loja) => [loja, p[`estoque_${loja}`] ?? 0]),
+        ) as {
+          vitoria: number;
+          uniao: number;
+          linhares: number;
+          supertela: number;
+          telarame: number;
+          estruturaco: number;
+        };
+        const estoque_total = Object.values(porLoja).reduce((soma, val) => soma + val, 0);
+        const estoque_minimo = 6 * 40;
+        const emFalta = Number(((estoque_total / estoque_minimo) * 100).toFixed(2));
+
+        return {
+          name: p.name,
+          type: p.type ?? "Sem Família",
+          D: p.D?.toISOString().split("T")[0] ?? "",
+          estoque_total,
+          estoque_minimo,
+          emFalta,
+          porLoja,
+        };
+      })
+      .sort((a, b) => a.emFalta - b.emFalta);
+  }
 }

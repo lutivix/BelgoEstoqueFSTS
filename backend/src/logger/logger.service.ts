@@ -3,23 +3,27 @@ import { Injectable } from "@nestjs/common";
 import { createLogger, format, transports } from "winston";
 import * as fs from "fs";
 import * as path from "path";
+import * as DailyRotateFile from "winston-daily-rotate-file";
 
 @Injectable()
 export class LoggerService {
-  private logger;
+  private backendLogger;
+  private frontendLogger;
 
   constructor() {
-    const today = new Date()
-      .toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })
-      .split("/")
-      .reverse()
-      .join("");
+    // const today = new Date()
+    //   .toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })
+    //   .split("/")
+    //   .reverse()
+    //   .join("");
     // const logDir = path.join(__dirname, "../../logs");
     const logDir = path.join(process.cwd(), "logs");
     if (!fs.existsSync(logDir)) {
       fs.mkdirSync(logDir);
     }
-    this.logger = createLogger({
+
+    // Logger do backend
+    this.backendLogger = createLogger({
       format: format.combine(
         format.timestamp({ format: "DD/MM/YYYY HH:mm:ss.SSS" }),
         format.printf(
@@ -27,23 +31,54 @@ export class LoggerService {
         ),
       ),
       transports: [
-        new transports.File({
-          filename: `${logDir}/BelgoEstoqueBackend${today}.log`,
+        new DailyRotateFile({
+          filename: `${logDir}/BelgoEstoqueBackend%DATE%.log`,
+          datePattern: "YYYYMMDD",
+          maxFiles: "30d",
         }),
         new transports.Console({ level: "info" }),
       ],
     });
+
+    // Logger do frontend
+    this.frontendLogger = createLogger({
+      format: format.combine(
+        format.timestamp({ format: "DD/MM/YYYY HH:mm:ss.SSS" }),
+        format.printf(
+          ({ timestamp, level, message }) => `${timestamp} [${level.toUpperCase()}] ${message}`,
+        ),
+      ),
+      transports: [
+        new DailyRotateFile({
+          filename: `${logDir}/BelgoEstoqueFrontend%DATE%.log`,
+          datePattern: "YYYYMMDD",
+          maxFiles: "30d",
+        }),
+      ],
+    });
   }
 
-  log(message: string, type: "L" | "P" | "O" = "L") {
-    this.logger.info(`[${type}] ${message}`);
+  log(message: string, type: "L" | "P" | "O" = "L"): void {
+    this.backendLogger.info(`[${type}] ${message}`);
   }
 
-  warn(message: string, type: "L" | "P" | "O" = "L") {
-    this.logger.warn(`[${type}] ${message}`);
+  warn(message: string, type: "L" | "P" | "O" = "L"): void {
+    this.backendLogger.warn(`[${type}] ${message}`);
   }
 
-  error(message: string, stack?: string) {
-    this.logger.error(stack ? `${message}\n${stack}` : message);
+  error(message: string, stack?: string): void {
+    this.backendLogger.error(stack ? `${message}\n${stack}` : message);
+  }
+
+  logFrontend(message: string): void {
+    this.frontendLogger.info(message);
+  }
+
+  warnFrontend(message: string): void {
+    this.frontendLogger.warn(message);
+  }
+
+  errorFrontend(message: string): void {
+    this.frontendLogger.error(message);
   }
 }

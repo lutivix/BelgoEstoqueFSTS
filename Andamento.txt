@@ -6,3 +6,59 @@ Backend rodando já pegando do banco, com botão de teste no frontend também ro
 
 Atualmente já temos unificado o Produto com o Estoque das chamadas OMies.
 
+
+
+DASHBOARD
+
+INICIAL
+	ESTOQUE TOTAL LOJAS
+	ESTOQUE MÍNIMO LOJAS COM PERCENTUAL ACIMA OU ABAIXO (PRECISA DEFINIR O MÍNIMO)
+	ESTOQUE RESERVADO 
+		
+		FILTROS
+			PERÍODO
+			FAMILIA *(EXTRA)
+			LOJA
+			PRODUTO
+		
+	
+	
+	
+RESERVADO
+	CONSOLIDADO DE TODAS AS LOJAS. SERÁ EXIBIDO NÚMERO TOTAL APENAS NO GRID
+	
+	Uma boa parte do que está pedido/reservado nunca será faturado. Para essas reservas, como sugestão, seria criado uma "execução de pedido" com mesmo efeito para abatimento de estoque. Uma entidade "PEDIDO" deve ser criada para execução e resgistro auditável com interferÊncia direta no saldo final de estoque.
+	
+	Provavelmente teremos um grid de pedidos para filtro e análise.
+	
+	clique no 4 indicador de saldo reservado levará automaticamente para os pedidos daquele produto com filtro preencido com o código omie do produto
+	
+	PEDIDOS COM FILTRO (produto loja e codomie)
+	
+	NUMPEDIDO DATA DO PEDIDO LOJA PEDIDO => ITENS PRODUTO COM CODOMIE E QUANTIDADE A SER ABATIDA ESTOQUE
+	
+	
+	
+	
+GRID
+		EDITÁVEL? => NÃO
+		TELARAME ESTRUTURAÇO VITORIA E SUPERTELAS COMPÕES O CD (CENTRO DE DISTRIBUIÇÃO) => 3 LOJAS VISÍVEIS NO GRID (UNIÃO LINHARES E CD)
+		
+		ATUALIZAR DB PARA UNIÃO LINHARES E CD
+		
+CRONOGRAMA E PRIORIZAÇÃO
+	
+	DASHBOARD		02/05
+	GRID (3 LOJAS)	02/05
+	
+	RESERVADO?		02/05
+	
+	
+Mini-contrato com horas mínimas mensais. 
+80 horas	
+
+
+			
+		
+		
+		

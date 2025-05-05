@@ -67,4 +67,58 @@ export class ProductsController {
     await this.productsService.clearDatabase();
     return "Tabelas product e stock limpas";
   }
+
+  // products.controller.ts
+
+  @Get("dashboard/estoque-por-loja")
+  async getEstoquePorLoja(
+    @Query("familia") familia: string,
+    @Query("data") dataStr: string,
+  ): Promise<
+    {
+      name: string;
+      type: string;
+      estoque_total: number;
+      estoque_minimo: number;
+      emFalta: number;
+      porLoja: {
+        vitoria: number;
+        uniao: number;
+        linhares: number;
+        supertela: number;
+        telarame: number;
+        estruturaco: number;
+      };
+    }[]
+  > {
+    return this.productsService.getEstoquePorLoja(familia, dataStr);
+  }
+
+  @Get("dashboard/estoque-detalhado")
+  async getEstoqueDetalhado(
+    @Query("data") dataStr: string,
+    @Query("familia") familia: string,
+    @Query("produto") produto: string,
+    @Query("lojas") lojas?: string[], // <- array de lojas
+  ): Promise<
+    {
+      name: string;
+      type: string;
+      D: string;
+      estoque_total: number;
+      estoque_minimo: number;
+      emFalta: number;
+      porLoja: Record<string, number>;
+    }[]
+  > {
+    return this.productsService.getEstoqueDetalhado(dataStr, familia, produto, lojas);
+  }
+
+  // @Post("frontend-log")
+  // logFrontend(@Body() body: { message: string; level: string; data?: any }) {
+  //   this.LoggerService.log(
+  //     `[FRONTEND] ${body.message} | ${JSON.stringify(body.data)}`,
+  //     body.level as any,
+  //   );
+  // }
 }
