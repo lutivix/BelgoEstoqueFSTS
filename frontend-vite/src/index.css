@@ -1,3 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Mantendo as variáveis CSS customizadas definidas pelo usuário na branch main.
+   Elas podem ser úteis ou gradualmente substituídas pela configuração do Tailwind.
+*/
 :root {
   /* Fontes */
   --fonte-base: 10px;
@@ -53,6 +60,10 @@
   font-family: var(--fonte-terciaria-belgo);
 }
 
+/* Estilos base definidos pelo usuário na branch main.
+   Alguns podem ser redundantes com `@tailwind base`.
+   Revisar e remover/substituir por classes Tailwind se necessário.
+*/
 html {
   font-size: var(--fonte-base); /* Isso define 1rem = 10px */
   font-family: Poppins, sans-serif;
@@ -70,3 +81,10 @@ body,
   max-width: 100vw !important;
   overflow-x: hidden;
 }
+
+/* Estilos de 'code' mantidos (opcional) */
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
