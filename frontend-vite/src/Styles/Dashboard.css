@@ -30,6 +30,10 @@
   min-height: 0;
   max-height: 100%;
   overflow-x: hidden;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
 }
 
 /* #region FILTROS */
@@ -333,7 +337,7 @@
   width: 100%;
   background-color: #f8f9fa;
   border-radius: var(--space-md);
-  border: 1px dashed #ccc;
+
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -341,6 +345,9 @@
   color: #999;
   font-style: italic;
   gap: var(--space-lg);
+
+  /* border: 1px dashed #ccc; */
+  /* background-color: orange; */
 }
 
 /* Cartões */
@@ -349,7 +356,7 @@
   margin: 0.25rem;
   gap: var(--space-xm); */
 
-  height: 6vh;
+  height: 5.5rem;
   /* width: 260px; */
   width: 32%;
   /* padding: 0.3rem; */
@@ -430,6 +437,8 @@
   flex-direction: row;
   gap: var(--space-md);
   width: 100%;
+
+  /* background-color: #60c35a; */
 }
 
 /* Gráfico mínimo: 30% */
