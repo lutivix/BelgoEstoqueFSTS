@@ -1,5 +1,5 @@
 // src/components/Dashboard.tsx
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import Layout from "../components/Layout";
 import { log } from "../utils/logger";
 //import { EstoqueMinimoPieChart } from "./EstoqueMinimoPieChart"; // (vamos criar depois)
@@ -24,15 +24,85 @@ interface EstoqueDetalhado {
   };
 }
 
+const FilterPopup = ({
+  label,
+  value,
+  onChange,
+  placeholder,
+  type = "text",
+  children,
+  isOpen,
+  setIsOpen,
+  buttonText,
+}: any) => {
+  const popupRef = useRef(null);
+  const buttonRef = useRef(null);
+  let leaveTimeoutRef = useRef<number | null>(null);
+
+  const handleMouseEnter = () => {
+    if (leaveTimeoutRef.current) {
+      clearTimeout(leaveTimeoutRef.current);
+      leaveTimeoutRef.current = null;
+    }
+    setIsOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    leaveTimeoutRef.current = window.setTimeout(() => {
+      setIsOpen(false);
+    }, 300);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (leaveTimeoutRef.current) {
+        clearTimeout(leaveTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <div
+      className="filter-popup-relative"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <button ref={buttonRef} className="filter-popup-button">
+        {buttonText}
+      </button>
+      {isOpen && (
+        <div ref={popupRef} className="filter-popup-box">
+          <label className="filter-popup-label">{label}:</label>
+          {children ? (
+            children
+          ) : (
+            <input
+              type={type}
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              placeholder={placeholder}
+              className="filter-popup-input"
+            />
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Dashboard = () => {
   const [data, setData] = useState<EstoqueDetalhado[]>([]);
   const [loading, setLoading] = useState(true);
-
   const [filtroProduto, setFiltroProduto] = useState("");
   const [filtroFamilia, setFiltroFamilia] = useState("");
   const [filtroData, setFiltroData] = useState("");
   const [filtroLoja, setFiltroLoja] = useState<string[]>([]);
   const [showLojas, setShowLojas] = useState<boolean>(false);
+
+  const [isProdutoOpen, setIsProdutoOpen] = useState(false);
+  const [isFamiliaOpen, setIsFamiliaOpen] = useState(false);
+  const [isDataOpen, setIsDataOpen] = useState(false);
+  const [isLojaOpen, setIsLojaOpen] = useState(false);
 
   const getEstoqueTotalFiltrado = (item: EstoqueDetalhado): number => {
     const lojas = filtroLoja.length > 0 ? filtroLoja : Object.keys(item.porLoja);
@@ -80,6 +150,11 @@ const Dashboard = () => {
 
     e?.preventDefault();
     fetchEstoque(); // 🔁 isso precisa estar aqui
+
+    setIsProdutoOpen(false);
+    setIsFamiliaOpen(false);
+    setIsDataOpen(false);
+    setIsLojaOpen(false);
   };
 
   const handleLimparFiltros = () => {
@@ -120,6 +195,16 @@ const Dashboard = () => {
     setTimeout(() => handleSubmit(), 0); // gambitech confiável 😅
   };
 
+  const showActionButtons =
+    filtroProduto !== "" ||
+    filtroFamilia !== "" ||
+    filtroData !== "" ||
+    filtroLoja.length > 0 ||
+    isProdutoOpen ||
+    isFamiliaOpen ||
+    isDataOpen ||
+    isLojaOpen;
+
   return (
     <Layout>
       <div className="dashboard">
@@ -127,117 +212,126 @@ const Dashboard = () => {
           {/* <h2 className="dashboard__title">Estoque Detalhado</h2> */}
 
           {/* 📌Filtros */}
-          <form onSubmit={handleSubmit} className="dashboard__filters">
-            <div className="dashboard__filters-row">
-              <div className="filter-group">
-                <label>Produto:</label>
-                <input
-                  type="text"
-                  value={filtroProduto}
-                  onChange={(e) => setFiltroProduto(e.target.value)}
-                  placeholder="Ex: Telas Soldadas"
-                />
-              </div>
-
-              <div className="filter-group">
-                <label>Família:</label>
-                <input
-                  type="text"
-                  value={filtroFamilia}
-                  onChange={(e) => setFiltroFamilia(e.target.value)}
-                  placeholder="Ex: Telas Soldadas"
-                />
-              </div>
-
-              <div className="filter-group">
-                <label>Data:</label>
-                <input
-                  type="date"
-                  value={filtroData}
-                  onChange={(e) => setFiltroData(e.target.value)}
-                />
-              </div>
-
-              <div className="filter-group-button">
-                <label>Lojas:</label>
-                <div className="dropdown-wrapper">
-                  <button
-                    type="button"
-                    className="dashboard__button"
-                    onClick={() => setShowLojas(!showLojas)}
-                  >
-                    {showLojas ? "Ocultar" : "Selecionar"}
-                  </button>
-
-                  {showLojas && (
-                    <div className="dashboard__checkbox-group floating">
-                      {["vitoria", "uniao", "linhares", "supertela", "telarame", "estruturaco"].map(
-                        (loja) => (
-                          <label key={loja} className="checkbox-wrapper">
-                            <input
-                              type="checkbox"
-                              value={loja}
-                              checked={filtroLoja.includes(loja)}
-                              onChange={(e) => {
-                                const checked = e.target.checked;
-                                if (checked) {
-                                  setFiltroLoja([...filtroLoja, loja]);
-                                } else {
-                                  setFiltroLoja(filtroLoja.filter((l) => l !== loja));
-                                }
-                              }}
-                            />
-                            <span className="custom-checkbox" />
-                            {loja.charAt(0).toUpperCase() + loja.slice(1)}
-                          </label>
-                        ),
-                      )}
-                    </div>
+          <div className="filter-section-container">
+            <div className="filter-controls-wrapper">
+              <FilterPopup
+                label="Produto"
+                value={filtroProduto}
+                onChange={setFiltroProduto}
+                placeholder="Ex: Telas Soldadas"
+                isOpen={isProdutoOpen}
+                setIsOpen={setIsProdutoOpen}
+                buttonText={`Produto ${filtroProduto ? "✓" : ""}`}
+              />
+              <FilterPopup
+                label="Família"
+                value={filtroFamilia}
+                onChange={setFiltroFamilia}
+                placeholder="Ex: Telas Soldadas"
+                isOpen={isFamiliaOpen}
+                setIsOpen={setIsFamiliaOpen}
+                buttonText={`Família ${filtroFamilia ? "✓" : ""}`}
+              />
+              <FilterPopup
+                label="Período"
+                value={filtroData}
+                onChange={setFiltroData}
+                type="date"
+                placeholder=""
+                isOpen={isDataOpen}
+                setIsOpen={setIsDataOpen}
+                buttonText={`Período ${filtroData ? "✓" : ""}`}
+              />
+              <FilterPopup
+                label="Lojas"
+                value={filtroLoja.join(", ")}
+                onChange={() => {}}
+                placeholder=""
+                isOpen={isLojaOpen}
+                setIsOpen={setIsLojaOpen}
+                buttonText={`Lojas ${filtroLoja.length > 0 ? `(${filtroLoja.length}) ✓` : ""}`}
+              >
+                <div className="filter-popup-checkbox-container">
+                  {["vitoria", "uniao", "linhares", "supertela", "telarame", "estruturaco"].map(
+                    (loja) => (
+                      <label key={loja} className="filter-popup-checkbox-label">
+                        <input
+                          type="checkbox"
+                          value={loja}
+                          checked={filtroLoja.includes(loja)}
+                          onChange={(e) => {
+                            const checked = e.target.checked;
+                            if (checked) {
+                              setFiltroLoja([...filtroLoja, loja]);
+                            } else {
+                              setFiltroLoja(filtroLoja.filter((l) => l !== loja));
+                            }
+                          }}
+                          className="filter-popup-checkbox-input"
+                        />
+                        <span>{loja.charAt(0).toUpperCase() + loja.slice(1)}</span>
+                      </label>
+                    ),
                   )}
                 </div>
-              </div>
+              </FilterPopup>
 
-              <div className="filter-group filter-group-buttons">
-                {/* <label>Ações:</label> */}
-                <button className="dashboard__button" type="submit">
-                  Aplicar
-                </button>
-                <button className="dashboard__button" onClick={handleLimparFiltros}>
-                  Limpar
-                </button>
-              </div>
+              {true && (
+                <div className="filter-action-buttons-container">
+                  <button type="button" onClick={handleSubmit} className="filter-button-aplicar">
+                    Aplicar
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleLimparFiltros}
+                    className="filter-button-limpar"
+                  >
+                    Limpar
+                  </button>
+                </div>
+              )}
             </div>
-            {/* Só para o caso de precisar colocar 2 linhas nos celulares */}
-            {/* <div className="dashboard__filters-row"></div> */}
-          </form>
-
-          <div className="dashboard__active-filters">
-            {filtroProduto && (
-              <div className="chip">
-                {filtroProduto}
-                <span onClick={handleRemoverProduto}>×</span>
-              </div>
-            )}
-            {filtroFamilia && (
-              <div className="chip">
-                {filtroFamilia}
-                <span onClick={handleRemoverFamilia}>×</span>
-              </div>
-            )}
-            {filtroData && (
-              <div className="chip">
-                {new Date(filtroData).toLocaleDateString("pt-BR")}
-                <span onClick={handleRemoverData}>×</span>
-              </div>
-            )}
-            {filtroLoja.map((loja) => (
-              <div className="chip" key={loja}>
-                {loja}
-                {/* <span onClick={() => handleRemoverLoja(loja)}>❌</span> */}
-                <span onClick={() => handleRemoverLoja(loja)}>x</span>
-              </div>
-            ))}
           </div>
+          {(filtroProduto || filtroFamilia || filtroData || filtroLoja.length > 0) && (
+            <div className="active-filters-container">
+              <span className="active-filters-label">Filtros ativos:</span>
+              {filtroProduto && (
+                <div className="filter-chip">
+                  {filtroProduto}
+                  <button onClick={handleRemoverProduto} className="filter-chip-remove-button">
+                    &times;
+                  </button>
+                </div>
+              )}
+              {filtroFamilia && (
+                <div className="filter-chip">
+                  {filtroFamilia}
+                  <button onClick={handleRemoverFamilia} className="filter-chip-remove-button">
+                    &times;
+                  </button>
+                </div>
+              )}
+              {filtroData && (
+                <div className="filter-chip">
+                  {new Date(filtroData + "T00:00:00").toLocaleDateString("pt-BR")}
+                  <button onClick={handleRemoverData} className="filter-chip-remove-button">
+                    &times;
+                  </button>
+                </div>
+              )}
+              {filtroLoja.map((loja) => (
+                <div className="filter-chip" key={loja}>
+                  {loja.charAt(0).toUpperCase() + loja.slice(1)}
+                  <button
+                    onClick={() => handleRemoverLoja(loja)}
+                    className="filter-chip-remove-button"
+                  >
+                    &times;
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* 📌 Espaço reservado para KPIs/cards */}
           <div className="dashboard__cards-placeholder">
