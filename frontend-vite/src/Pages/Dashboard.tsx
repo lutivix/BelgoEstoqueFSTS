@@ -112,7 +112,7 @@ const Dashboard = () => {
     );
   };
 
-  const backendUrl = "http://192.168.7.14:3000/api/products/dashboard/estoque-detalhado";
+  const backendUrl = "http://192.168.7.15:3000/api/products/dashboard/estoque-detalhado";
 
   const fetchEstoque = async () => {
     setLoading(true);
