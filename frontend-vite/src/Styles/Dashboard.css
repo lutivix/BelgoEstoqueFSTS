@@ -1,6 +1,10 @@
 /* estilos.css */
 @import url("../index.css");
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* #region DASHBOARD */
 
 .dashboard {
@@ -35,14 +39,16 @@
 
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--space-md);
 
   background-color: #f3f4f6; /* Equivalent to bg-gray-100 */
   margin: 0.75rem;
   /* background-color: blue; */
 }
 
-/* #region FILTROS */
+/* #region FILTROS E CHIPS + */
+
+/* #region FILTROS ORIGINAIS*/
 
 .dashboard__filters {
   display: flex;
@@ -50,7 +56,7 @@
   align-items: flex-start;
   justify-content: flex-start;
   /* flex-wrap: wrap; */
-  gap: var(--space-xs);
+  gap: var(--space-sm);
 
   margin-bottom: 1.5rem;
   background-color: #f8f9fa;
@@ -74,7 +80,7 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: var(--space-sm);
+  gap: var(--space-md);
   min-width: 6rem;
 }
 
@@ -175,6 +181,10 @@
   padding-left: 4px;
 }
 
+/* #endregion */
+
+/* #region CHIPS */
+/* Chips */
 .chip {
   display: flex;
   align-items: center;
@@ -194,8 +204,9 @@
   cursor: pointer;
   color: #60c35a;
 }
+/* #endregion */
 
-/* #region Do Manus */
+/* #region FILTROS Do Manus */
 
 /* Filter Section */
 .filter-section-container {
@@ -225,7 +236,7 @@
   align-items: center; /* Added to help align with action buttons if heights differ */
 }
 
-/* FilterPopup Component - Button */
+/* FilterPopup Component - Button  Botão médio */
 .filter-popup-button {
   padding: 0.375rem 0.75rem;
   border-width: 1px;
@@ -249,6 +260,74 @@
 }
 
 .filter-popup-button:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width)
+    var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width))
+    var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-offset-width: 2px;
+  --tw-ring-color: #6366f1;
+}
+
+/* botão médio */
+.filter-popup-button--md {
+  padding: 0.5rem 1rem; /* Aumenta o padding */
+  border-width: 1px;
+  border-color: #d1d5db;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  font-size: 0.875rem; /* Aumenta o tamanho da fonte */
+  line-height: 1.25rem; /* Ajusta a altura da linha */
+  font-weight: 500;
+  color: #374151;
+  background-color: #ffffff;
+  white-space: nowrap;
+  /* Altura calculada: line-height + padding-y*2 + border-y*2 */
+  height: calc(1.25rem + 0.5rem * 2 + 2px);
+  box-sizing: border-box;
+}
+
+.filter-popup-button--md:hover {
+  background-color: #f9fafb;
+}
+
+.filter-popup-button--md:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width)
+    var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width))
+    var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-offset-width: 2px;
+  --tw-ring-color: #6366f1;
+}
+
+/* botão grande */
+.filter-popup-button--lg {
+  padding: 0.625rem 1.25rem; /* Aumenta mais o padding */
+  border-width: 1px;
+  border-color: #d1d5db;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  font-size: 1rem; /* Aumenta mais o tamanho da fonte */
+  line-height: 1.5rem; /* Ajusta mais a altura da linha */
+  font-weight: 500;
+  color: #374151;
+  background-color: #ffffff;
+  white-space: nowrap;
+  /* Altura calculada: line-height + padding-y*2 + border-y*2 */
+  height: calc(1.5rem + 0.625rem * 2 + 2px);
+  box-sizing: border-box;
+}
+
+.filter-popup-button--lg:hover {
+  background-color: #f9fafb;
+}
+
+.filter-popup-button--lg:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width)
@@ -376,6 +455,62 @@
     var(--tw-shadow, 0 0 #0000);
 }
 
+.filter-button-aplicar--md {
+  padding: 0.5rem 1rem; /* Aumenta o padding */
+  background-color: #2563eb;
+  color: #ffffff;
+  font-size: 0.875rem; /* Aumenta o tamanho da fonte */
+  line-height: 1.25rem; /* Ajusta a altura da linha */
+  font-weight: 500;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  white-space: nowrap;
+  height: calc(1.25rem + 0.5rem * 2); /* line-height + padding-y*2 */
+  box-sizing: border-box;
+}
+
+.filter-button-aplicar--md:hover {
+  background-color: #1d4ed8;
+}
+
+.filter-button-aplicar--md:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-offset-width: 2px;
+  --tw-ring-color: #3b82f6;
+  box-shadow:
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+.filter-button-aplicar--lg {
+  padding: 0.625rem 1.25rem; /* Aumenta mais o padding */
+  background-color: #2563eb;
+  color: #ffffff;
+  font-size: 1rem; /* Aumenta mais o tamanho da fonte */
+  line-height: 1.5rem; /* Ajusta mais a altura da linha */
+  font-weight: 500;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  white-space: nowrap;
+  height: calc(1.5rem + 0.625rem * 2); /* line-height + padding-y*2 */
+  box-sizing: border-box;
+}
+
+.filter-button-aplicar--lg:hover {
+  background-color: #1d4ed8;
+}
+
+.filter-button-aplicar--lg:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-offset-width: 2px;
+  --tw-ring-color: #3b82f6;
+  box-shadow:
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
 /* Limpar Button */
 .filter-button-limpar {
   padding: 0.375rem 0.75rem;
@@ -396,6 +531,62 @@
 }
 
 .filter-button-limpar:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-offset-width: 2px;
+  --tw-ring-color: #6b7280;
+  box-shadow:
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+.filter-button-limpar--md {
+  padding: 0.5rem 1rem; /* Aumenta o padding */
+  background-color: #e5e7eb;
+  color: #374151;
+  font-size: 0.875rem; /* Aumenta o tamanho da fonte */
+  line-height: 1.25rem; /* Ajusta a altura da linha */
+  font-weight: 500;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  white-space: nowrap;
+  height: calc(1.25rem + 0.5rem * 2); /* line-height + padding-y*2 */
+  box-sizing: border-box;
+}
+
+.filter-button-limpar--md:hover {
+  background-color: #d1d5db;
+}
+
+.filter-button-limpar--md:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-offset-width: 2px;
+  --tw-ring-color: #6b7280;
+  box-shadow:
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
+}
+
+.filter-button-limpar--lg {
+  padding: 0.625rem 1.25rem; /* Aumenta mais o padding */
+  background-color: #e5e7eb;
+  color: #374151;
+  font-size: 1rem; /* Aumenta mais o tamanho da fonte */
+  line-height: 1.5rem; /* Ajusta mais a altura da linha */
+  font-weight: 500;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  white-space: nowrap;
+  height: calc(1.5rem + 0.625rem * 2); /* line-height + padding-y*2 */
+  box-sizing: border-box;
+}
+
+.filter-button-limpar--lg:hover {
+  background-color: #d1d5db;
+}
+
+.filter-button-limpar--lg:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
   --tw-ring-offset-width: 2px;
@@ -426,8 +617,9 @@
 .filter-chip {
   display: flex;
   align-items: center;
-  background-color: #dbeafe;
+  background-color: #dbfeea;
   color: #1e40af;
+  color: #2b9529;
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
@@ -436,15 +628,18 @@
   padding-top: 0.125rem;
   padding-bottom: 0.125rem;
   border-radius: 9999px;
+  @apply bg-blue-100 text-blue-700;
 }
 
 .filter-chip-remove-button {
   margin-left: 0.25rem;
   color: #2563eb;
+  color: #60c35a;
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
+  @apply text-blue-900;
 }
 
 .filter-chip-remove-button:hover {
@@ -608,7 +803,7 @@
   justify-content: flex-start;
   color: #999;
   font-style: italic;
-  gap: var(--space-lg);
+  gap: var(--space-md);
 
   /* border: 1px dashed #ccc; */
   /* background-color: orange; */
@@ -622,7 +817,7 @@
 
   height: 5.5rem;
   /* width: 260px; */
-  width: 32%;
+  width: 33%;
   /* padding: 0.3rem; */
   padding: var(--space-xs);
   background: "white";

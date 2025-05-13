@@ -67,7 +67,7 @@ const FilterPopup = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <button ref={buttonRef} className="filter-popup-button">
+      <button ref={buttonRef} className="filter-popup-button filter-popup-button--md">
         {buttonText}
       </button>
       {isOpen && (
@@ -112,6 +112,8 @@ const Dashboard = () => {
     );
   };
 
+  const backendUrl = "http://192.168.7.14:3000/api/products/dashboard/estoque-detalhado";
+
   const fetchEstoque = async () => {
     setLoading(true);
     try {
@@ -123,9 +125,7 @@ const Dashboard = () => {
         filtroLoja.forEach((loja) => queryParams.append("lojas", loja));
       }
 
-      const response = await fetch(
-        `http://localhost:3000/api/products/dashboard/estoque-detalhado?${queryParams}`,
-      );
+      const response = await fetch(`${backendUrl}?${queryParams}`);
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -278,13 +278,17 @@ const Dashboard = () => {
 
               {true && (
                 <div className="filter-action-buttons-container">
-                  <button type="button" onClick={handleSubmit} className="filter-button-aplicar">
+                  <button
+                    type="button"
+                    onClick={handleSubmit}
+                    className="filter-button-aplicar filter-button-aplicar--md"
+                  >
                     Aplicar
                   </button>
                   <button
                     type="button"
                     onClick={handleLimparFiltros}
-                    className="filter-button-limpar"
+                    className="filter-button-limpar filter-button-limpar--md"
                   >
                     Limpar
                   </button>

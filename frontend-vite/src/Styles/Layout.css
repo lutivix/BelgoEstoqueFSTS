@@ -1037,6 +1037,10 @@ p {
     height: 36px; /* Reduz altura do campo de busca */
   }
 
+  .footer {
+    display: none;
+  }
+
   /*#endregion*/
 }
 /* #endregion */
