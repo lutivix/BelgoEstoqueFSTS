@@ -46,6 +46,22 @@
   /* background-color: blue; */
 }
 
+/* Customização da scrollbar */
+.dashboard__wrapper::-webkit-scrollbar {
+  width: 8px; /* Largura da barra */
+  height: 4px; /* Para consistência em scroll horizontal, se houver */
+}
+
+.dashboard__wrapper::-webkit-scrollbar-thumb {
+  /*background: #7b7575; /* Cor do thumb */
+  background: #d9dbdd;
+  border-radius: 50px;
+}
+
+.dashboard__wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--blue-500); /* Cor ao passar o mouse */
+}
+
 /* #region FILTROS E CHIPS + */
 
 /* #region FILTROS ORIGINAIS*/

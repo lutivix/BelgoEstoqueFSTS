@@ -12,6 +12,17 @@
   --text-primary: #343a40;
   --text-secondary: #6c757d;
   --error-color: #d7060f;
+  /*Blue*/
+
+  --blue-100: #bfced2;
+  --blue-200: #91abb1;
+  --blue-300: #61858f;
+  --blue-400: #30606c;
+  --blue-500: #003b4a;
+  --blue-600: #002f3b;
+  --blue-700: #00232c; /* Used in Primary*/
+  --blue-800: #00181e; /* Used in Primary Hover*/
+  --blue-900: #f7f7f7; /* Used in Primary Selected*/
 
   /* Espaçamento */
   --space-xs: 0.4rem;
