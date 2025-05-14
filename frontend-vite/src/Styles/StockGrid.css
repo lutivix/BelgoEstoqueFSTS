@@ -1,7 +1,7 @@
 /* #region GRID PRINCIPAL */
 
 .grid {
-  height: calc(100vh - 190px);
+  height: calc(100vh - 150px);
   display: flex;
   flex-direction: column;
   align-items: flex-start;

@@ -34,10 +34,11 @@ const StockGrid = () => {
   //const itemsPerPage = 15; // Fixo em 10, ou ajuste conforme necessário
   const [itemsPerPage, setItemsPerPage] = useState(15); // Estado dinâmico
   const itemsPerPageOptions = [10, 15, 25, 50, 100]; // Opções disponíveis
-  const maxPagesToShow = 3; // Mostra apenas 3 números por vez
 
   // Detecta tela pequena com window.matchMedia
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
+
+  const maxPagesToShow = isSmallScreen ? 2 : 3; // Mostra apenas 3 números por vez
 
   //Abrindo visualização de estoque
   const [expandedRow, setExpandedRow] = useState<string | null>(null); // Tipagem explícita
@@ -66,7 +67,7 @@ const StockGrid = () => {
     setExpandedRow(null); // Fecha a linha após salvar
   };
 
-  const backendUrl = "http://192.168.7.15:3000/api/products/db";
+  const backendUrl = "http://nitro5:3000/api/products/db";
 
   useEffect(() => {
     const handleResize = () => setIsSmallScreen(window.innerWidth <= 768);

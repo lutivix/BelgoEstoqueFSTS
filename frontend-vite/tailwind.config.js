@@ -1,5 +1,6 @@
 /** @type {import("tailwindcss").Config} */
 export default {
+  prefix: "tw-", // <--- adiciona "tw-" em todas as classes utilitárias
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
@@ -53,15 +54,15 @@ export default {
         },
         // Adding Atom Colors directly (example for Blue)
         blue: {
-          100: "#E0F2FE",
-          200: "#BAE6FD",
-          300: "#7DD3FC",
-          400: "#38BDF8",
-          500: "#0EA5E9",
-          600: "#0284C7",
-          700: "#0B479D", // Used in Primary
-          800: "#083A7E", // Used in Primary Hover
-          900: "#062C5E", // Used in Primary Selected
+          100: "#BFCED2",
+          200: "#91ABB1",
+          300: "#61858F",
+          400: "#30606C",
+          500: "#003B4A",
+          600: "#002F3B",
+          700: "#00232C", // Used in Primary
+          800: "#00181E", // Used in Primary Hover
+          900: "#F7F7F7", // Used in Primary Selected
         },
         red: {
           // Added Red Atoms

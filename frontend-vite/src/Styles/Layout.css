@@ -89,6 +89,8 @@ body {
   text-align: left;
   font-size: var(--fonte-label);
   color: #fff;
+
+  overflow: hidden;
 }
 
 /* #endregion */
@@ -354,7 +356,7 @@ body {
   flex: 1;
   padding: 1vh;
 
-  height: 96vh;
+  height: 99vh;
 
   display: flex;
   flex-direction: column;
@@ -371,7 +373,7 @@ body {
 
 /* #region PAGE-HEADER */
 .page-header {
-  height: 60px;
+  height: 42px;
   flex-shrink: 0;
   align-self: stretch;
 
@@ -387,11 +389,11 @@ body {
 
 .page-header__title {
   width: calc(100% - 200px);
-  align-self: flex-end;
+  align-self: flex-start;
   font-size: var(--fonte-p);
-  line-height: 64px;
+  line-height: 40px;
   /* max-width: 200px; */
-  max-height: 64px;
+  max-height: 40px;
   text-overflow: ellipsis;
   white-space: nowrap;
 
@@ -413,6 +415,7 @@ body {
   animation: marquee 20s linear infinite; /* Animação do letreiro */
   /*padding-right: 20px; /* Espaço pra evitar lacunas */
   will-change: transform;
+  top: 0px;
 }
 
 /* Define a animação do letreiro */
@@ -560,7 +563,7 @@ body {
 /* #region BODY */
 .body {
   /* box-sizing: border-box; */
-  gap: 8px;
+  /* gap: 0.5rem; */
   font-size: 46px;
   color: #000000;
   /* background-color: #e61ee6; */
@@ -578,24 +581,32 @@ body {
 /* #region HEADER */
 .header {
   width: 100%;
-  height: 70px;
+  height: 50px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
+  top: 0px;
+  /* align-items: flex-start;
+  justify-content: flex-start; */
   /* padding: 2px; */
   /* height: 32px; */
   /* background-color: orange; */
+  padding: 0.3rem;
+  margin-left: 0.5rem;
+  /* background-color: orange; */
+  gap: 0.5rem;
 }
 
 .header__title {
-  position: relative;
-  line-height: 100%;
+  display: flex;
+  /* position: relative; */
+  line-height: 70%;
   font-weight: 600;
-  font-size: 30px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  font-size: 2.7rem;
+  /* margin-top: 10px;
+  margin-bottom: 10px; */
   font-family: var(--fonte-secundaria-belgo);
+  margin-bottom: 0.5rem;
+  /* background-color: red; */
 }
 
 .header__crumbs {
@@ -604,8 +615,9 @@ body {
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
-  font-size: 14px;
+  font-size: 1.3rem;
   color: #6c757d; /* Cor padrão dos itens não ativos */
+  /* background-color: blueviolet; */
 }
 
 .header__crumbs-item {
@@ -728,11 +740,11 @@ p {
   right: 1vw;
   color: var(--primary-bg);
   padding: 15px;
-  bottom: 1.7vh;
+  bottom: 1.4vh;
   z-index: 9;
   text-wrap: nowrap;
   gap: 10px;
-  font-size: var(--fonte-texto-menor);
+  font-size: var(--fonte-texto-sm);
 }
 
 .footer__img {
@@ -751,6 +763,10 @@ p {
   gap: 1px;
   font-size: 8px;
   /* color: #6c757d; */
+}
+
+.dashboard p {
+  margin: 2rem;
 }
 
 /* #endregion */
@@ -956,14 +972,18 @@ p {
   }
 
   .header__title {
-    font-size: 20px; /* Reduz o tamanho da fonte */
-    margin: 5px 0; /* Ajusta margens */
+    font-size: 2rem; /* Reduz o tamanho da fonte */
+    /*margin: 5px 0; /* Ajusta margens */
   }
 
   /* #endregion */
 
   .body {
     font-size: 16px; /* Reduz o tamanho padrão do body */
+  }
+
+  .footer {
+    display: none;
   }
 
   /* #endregion */
@@ -1028,7 +1048,7 @@ p {
   }
 
   .header__title {
-    font-size: 18px; /* Ainda menor */
+    font-size: 1.8rem; /* Ainda menor */
   }
   .grid__card {
     font-size: 10px; /* Reduz texto nos cartões */

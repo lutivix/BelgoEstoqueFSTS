@@ -112,7 +112,7 @@ const Dashboard = () => {
     );
   };
 
-  const backendUrl = "http://192.168.7.15:3000/api/products/dashboard/estoque-detalhado";
+  const backendUrl = "http://nitro5:3000/api/products/dashboard/estoque-detalhado";
 
   const fetchEstoque = async () => {
     setLoading(true);
@@ -353,9 +353,16 @@ const Dashboard = () => {
             <div className="cartoes-info">
               <div>Demanda por Segmento</div>
               <div className="cartoes-info__demandas">
-                <div>AGRO: 30%</div>
-                <div>CONSTRUÇÃO: 30%</div>
-                <div>RESIDENCIAL: 30%</div>
+                <div className="info-card-demanda-segmento-item">
+                  <span>Agro</span>
+                  <span>30 %</span>
+                </div>
+                <div className="info-card-demanda-segmento-item">
+                  <span>Construção:</span> <span>30 %</span>
+                </div>
+                <div className="info-card-demanda-segmento-item">
+                  <span>Residencial:</span> <span>30 %</span>
+                </div>
               </div>
             </div>
             <div className="cartoes-info">

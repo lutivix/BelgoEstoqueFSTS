@@ -11,13 +11,13 @@
 .dashboard__chart-title {
   font-size: var(--fonte-label-lg);
   font-weight: 600;
-  color: #252f4a;
+  color: var(--bg-primary);
   margin-bottom: 0.25rem;
 }
 
 .dashboard__chart-subtitle {
   font-size: var(--fonte-text-lg);
-  color: #99a1b7;
+  color: var(--text-primary);
   margin-bottom: 1rem;
 }
 
@@ -88,7 +88,7 @@
   text-align: center;
 }
 
-@media (max-width: 680px) {
+@media (max-width: 768px) {
   .dashboard__chart-title {
     font-size: var(--fonte-label);
     margin-bottom: 0.25rem;
@@ -96,12 +96,30 @@
 
   .dashboard__chart-subtitle {
     font-size: var(--fonte-texto-lg);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .dashboard__chart-legend {
+    gap: 0.2rem;
+    margin-top: 0.1rem;
+    width: 100%;
+    font-size: var(--fonte-texto-sm);
+  }
+
+  .dashboard__chart-center-label {
+    top: 120px;
+  }
+
+  .legend-column {
+    /* width: 100%; */
+    gap: 0;
+    padding: 0;
   }
 
   .legend-item {
     align-items: center;
     justify-content: flex-start;
+    padding: 2 2;
     gap: 0.2rem;
   }
 

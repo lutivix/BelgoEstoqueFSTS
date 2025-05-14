@@ -10,6 +10,7 @@ import {
   Legend,
 } from "recharts";
 import "../Styles/EstoqueTotalChart.css";
+import { useMediaQuery } from "react-responsive";
 
 interface EstoqueDetalhado {
   name: string;
@@ -55,6 +56,7 @@ const formatLargeNumber = (num: number): string => {
 };
 
 const EstoqueTotalChart = ({ data }: Props) => {
+  const isMobile = useMediaQuery({ maxWidth: 540 });
   // Agrupar estoque total por loja
   const estoquePorLoja = lojas.map((loja: Loja) => {
     const total = data.reduce((soma, p) => soma + (p.porLoja?.[loja] ?? 0), 0);
@@ -66,10 +68,13 @@ const EstoqueTotalChart = ({ data }: Props) => {
       {/* <div className="dashboard__chart-title">Estoque Total por Loja</div> */}
       <h4 className="dashboard__chart-title">Estoque Total</h4>
       <div className="dashboard__chart-subtitle">Distribuição de estoque por Loja</div>
-      <ResponsiveContainer width="100%" minHeight={300}>
-        <BarChart data={estoquePorLoja} margin={{ top: 10, right: 20, left: 0, bottom: 20 }}>
+      {/* <ResponsiveContainer width="100%" minHeight={300}> */}
+      <ResponsiveContainer width={isMobile ? 300 : "100%"} minHeight={170}>
+        <BarChart data={estoquePorLoja} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="loja" />
+          {/* <XAxis dataKey="loja" /> */}
+          <XAxis dataKey="loja" angle={-30} textAnchor="end" interval={0} height={50} />
+
           <YAxis />
           <Tooltip />
           <Legend />
@@ -78,7 +83,7 @@ const EstoqueTotalChart = ({ data }: Props) => {
             name="Total por loja"
             fill="#003b4a"
             radius={[6, 6, 0, 0]} // Arredondado só no topo
-            barSize={40}
+            barSize={window.innerWidth < 640 ? 15 : 25} // exemplo de ajuste para mobile
           />
         </BarChart>
       </ResponsiveContainer>

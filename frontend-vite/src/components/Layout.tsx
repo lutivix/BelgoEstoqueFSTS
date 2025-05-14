@@ -253,9 +253,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           </label>
         </div>
         <div className="page-header">
-          <div className="page-header__title">
-            <span>CONTEÚDO OPCIONAL AQUI?...</span>
-          </div>
+          <div className="page-header__title">{/* <span>CONTEÚDO OPCIONAL AQUI?...</span> */}</div>
           <div className="page-header__notification">
             <img
               className="page-header__bell-icon"
@@ -305,7 +303,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         </div>
         <div className="body">
           <div className="header">
-            <p className="header__title">{breadcrumbMap[location.pathname] || "Página"}</p>
+            <div className="header__title">{breadcrumbMap[location.pathname] || "Página"}</div>
             {!isSmallScreen && (
               <div className="header__crumbs">
                 {getBreadcrumbs().map((crumb, index) => (
