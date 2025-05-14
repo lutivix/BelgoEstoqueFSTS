@@ -17,12 +17,16 @@
   font-size: var(--fonte-text);
   background-color: #f3f4f6; /* Equivalent to bg-gray-100 */
   /* background-color: gold; */
+
+  gap: var(--space-md);
+  /* margin-top: var(--space-md); */
+  padding: var(--space-sm);
 }
 
 .dashboard__wrapper {
   flex: 1;
   overflow: auto;
-  padding-right: 1rem;
+  /* padding-right: 1rem; */
 
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -38,7 +42,7 @@
   gap: var(--space-sm);
 
   background-color: #f3f4f6; /* Equivalent to bg-gray-100 */
-  margin: 0.75rem;
+  /* margin: 0.75rem; */
   /* background-color: blue; */
 }
 
@@ -211,7 +215,7 @@
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Equivalent to shadow */
-  max-width: none; /* Ensure no max-width is limiting the container */
+  /*max-width: none; /* Ensure no max-width is limiting the container */
   width: 100%;
   box-sizing: border-box;
   height: 3rem;
@@ -790,14 +794,14 @@
 /* #region CARDS */
 /* Espaço para os KPIs ou cards */
 .dashboard__cards-placeholder {
-  height: 5.5rem;
+  height: 6.2rem;
   width: 100%;
   background-color: #f8f9fa;
   border-radius: var(--space-md);
 
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   color: #999;
   /* font-style: italic; */
@@ -805,6 +809,7 @@
 
   /* border: 1px dashed #ccc; */
   /* background-color: orange; */
+  /* padding: 0 1rem 0 1rem; */
 }
 
 /* Cartões */
@@ -918,7 +923,7 @@
   width: 30%;
   min-width: 21rem;
   background: #fff;
-  padding: 1rem;
+  /* padding: 1rem; */
   border-radius: 1rem;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 
@@ -941,7 +946,7 @@
   font-size: 1rem;
   /* font-style: italic; */
   text-align: center;
-  padding: 2rem;
+  /* padding: 2rem; */
 
   display: flex;
   flex-direction: row;
@@ -959,6 +964,10 @@
 @media (max-width: 768px) {
   html {
     font-size: 8px;
+  }
+
+  .dashboard {
+    gap: var(--space-sm);
   }
 
   .dashboard__charts {

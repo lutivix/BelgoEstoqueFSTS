@@ -208,172 +208,171 @@ const Dashboard = () => {
   return (
     <Layout>
       <div className="dashboard">
+        {/* 📌Filtros */}
+        <div className="filter-section-container">
+          <div className="filter-controls-wrapper">
+            <FilterPopup
+              label="Produto"
+              value={filtroProduto}
+              onChange={setFiltroProduto}
+              placeholder="Ex: Telas Soldadas"
+              isOpen={isProdutoOpen}
+              setIsOpen={setIsProdutoOpen}
+              buttonText={`Produto ${filtroProduto ? "✓" : ""}`}
+            />
+            <FilterPopup
+              label="Família"
+              value={filtroFamilia}
+              onChange={setFiltroFamilia}
+              placeholder="Ex: Telas Soldadas"
+              isOpen={isFamiliaOpen}
+              setIsOpen={setIsFamiliaOpen}
+              buttonText={`Família ${filtroFamilia ? "✓" : ""}`}
+            />
+            <FilterPopup
+              label="Período"
+              value={filtroData}
+              onChange={setFiltroData}
+              type="date"
+              placeholder=""
+              isOpen={isDataOpen}
+              setIsOpen={setIsDataOpen}
+              buttonText={`Período ${filtroData ? "✓" : ""}`}
+            />
+            <FilterPopup
+              label="Lojas"
+              value={filtroLoja.join(", ")}
+              onChange={() => {}}
+              placeholder=""
+              isOpen={isLojaOpen}
+              setIsOpen={setIsLojaOpen}
+              buttonText={`Lojas ${filtroLoja.length > 0 ? `(${filtroLoja.length}) ✓` : ""}`}
+            >
+              <div className="filter-popup-checkbox-container">
+                {["vitoria", "uniao", "linhares", "supertela", "telarame", "estruturaco"].map(
+                  (loja) => (
+                    <label key={loja} className="filter-popup-checkbox-label">
+                      <input
+                        type="checkbox"
+                        value={loja}
+                        checked={filtroLoja.includes(loja)}
+                        onChange={(e) => {
+                          const checked = e.target.checked;
+                          if (checked) {
+                            setFiltroLoja([...filtroLoja, loja]);
+                          } else {
+                            setFiltroLoja(filtroLoja.filter((l) => l !== loja));
+                          }
+                        }}
+                        className="filter-popup-checkbox-input"
+                      />
+                      <span>{loja.charAt(0).toUpperCase() + loja.slice(1)}</span>
+                    </label>
+                  ),
+                )}
+              </div>
+            </FilterPopup>
+
+            {true && (
+              <div className="filter-action-buttons-container">
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  className="filter-button-aplicar filter-button-aplicar--md"
+                >
+                  Aplicar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleLimparFiltros}
+                  className="filter-button-limpar filter-button-limpar--md"
+                >
+                  Limpar
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+        {(filtroProduto || filtroFamilia || filtroData || filtroLoja.length > 0) && (
+          <div className="active-filters-container">
+            <span className="active-filters-label">Filtros ativos:</span>
+            {filtroProduto && (
+              <div className="filter-chip">
+                {filtroProduto}
+                <button onClick={handleRemoverProduto} className="filter-chip-remove-button">
+                  &times;
+                </button>
+              </div>
+            )}
+            {filtroFamilia && (
+              <div className="filter-chip">
+                {filtroFamilia}
+                <button onClick={handleRemoverFamilia} className="filter-chip-remove-button">
+                  &times;
+                </button>
+              </div>
+            )}
+            {filtroData && (
+              <div className="filter-chip">
+                {new Date(filtroData + "T00:00:00").toLocaleDateString("pt-BR")}
+                <button onClick={handleRemoverData} className="filter-chip-remove-button">
+                  &times;
+                </button>
+              </div>
+            )}
+            {filtroLoja.map((loja) => (
+              <div className="filter-chip" key={loja}>
+                {loja.charAt(0).toUpperCase() + loja.slice(1)}
+                <button
+                  onClick={() => handleRemoverLoja(loja)}
+                  className="filter-chip-remove-button"
+                >
+                  &times;
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* 📌 Espaço reservado para KPIs/cards */}
+        <div className="dashboard__cards-placeholder">
+          {/* Aqui você vai encaixar os cards futuros */}
+
+          <div className="cartoes-info">
+            <div>Estoque total de Matéria Prima</div>
+            <div className="cartoes-info__subcol">
+              <div className="cartoes-info__title">1500</div>
+              <div>vs Último Semestre</div>
+            </div>
+
+            {/* <div>Teste 2</div> */}
+          </div>
+          <div className="cartoes-info">
+            <div>Demanda por Segmento</div>
+            <div className="cartoes-info__demandas">
+              <div className="info-card-demanda-segmento-item">
+                <span>Agro</span>
+                <span>30 %</span>
+              </div>
+              <div className="info-card-demanda-segmento-item">
+                <span>Construção:</span> <span>30 %</span>
+              </div>
+              <div className="info-card-demanda-segmento-item">
+                <span>Residencial:</span> <span>30 %</span>
+              </div>
+            </div>
+          </div>
+          <div className="cartoes-info">
+            <div>Baixa Rotação</div>
+            <div className="cartoes-info__subcol">
+              <div className="cartoes-info__title">Telas</div>
+              <div>Parado a 60 dias</div>
+            </div>
+          </div>
+        </div>
+
         <div className="dashboard__wrapper">
           {/* <h2 className="dashboard__title">Estoque Detalhado</h2> */}
-
-          {/* 📌Filtros */}
-          <div className="filter-section-container">
-            <div className="filter-controls-wrapper">
-              <FilterPopup
-                label="Produto"
-                value={filtroProduto}
-                onChange={setFiltroProduto}
-                placeholder="Ex: Telas Soldadas"
-                isOpen={isProdutoOpen}
-                setIsOpen={setIsProdutoOpen}
-                buttonText={`Produto ${filtroProduto ? "✓" : ""}`}
-              />
-              <FilterPopup
-                label="Família"
-                value={filtroFamilia}
-                onChange={setFiltroFamilia}
-                placeholder="Ex: Telas Soldadas"
-                isOpen={isFamiliaOpen}
-                setIsOpen={setIsFamiliaOpen}
-                buttonText={`Família ${filtroFamilia ? "✓" : ""}`}
-              />
-              <FilterPopup
-                label="Período"
-                value={filtroData}
-                onChange={setFiltroData}
-                type="date"
-                placeholder=""
-                isOpen={isDataOpen}
-                setIsOpen={setIsDataOpen}
-                buttonText={`Período ${filtroData ? "✓" : ""}`}
-              />
-              <FilterPopup
-                label="Lojas"
-                value={filtroLoja.join(", ")}
-                onChange={() => {}}
-                placeholder=""
-                isOpen={isLojaOpen}
-                setIsOpen={setIsLojaOpen}
-                buttonText={`Lojas ${filtroLoja.length > 0 ? `(${filtroLoja.length}) ✓` : ""}`}
-              >
-                <div className="filter-popup-checkbox-container">
-                  {["vitoria", "uniao", "linhares", "supertela", "telarame", "estruturaco"].map(
-                    (loja) => (
-                      <label key={loja} className="filter-popup-checkbox-label">
-                        <input
-                          type="checkbox"
-                          value={loja}
-                          checked={filtroLoja.includes(loja)}
-                          onChange={(e) => {
-                            const checked = e.target.checked;
-                            if (checked) {
-                              setFiltroLoja([...filtroLoja, loja]);
-                            } else {
-                              setFiltroLoja(filtroLoja.filter((l) => l !== loja));
-                            }
-                          }}
-                          className="filter-popup-checkbox-input"
-                        />
-                        <span>{loja.charAt(0).toUpperCase() + loja.slice(1)}</span>
-                      </label>
-                    ),
-                  )}
-                </div>
-              </FilterPopup>
-
-              {true && (
-                <div className="filter-action-buttons-container">
-                  <button
-                    type="button"
-                    onClick={handleSubmit}
-                    className="filter-button-aplicar filter-button-aplicar--md"
-                  >
-                    Aplicar
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleLimparFiltros}
-                    className="filter-button-limpar filter-button-limpar--md"
-                  >
-                    Limpar
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-          {(filtroProduto || filtroFamilia || filtroData || filtroLoja.length > 0) && (
-            <div className="active-filters-container">
-              <span className="active-filters-label">Filtros ativos:</span>
-              {filtroProduto && (
-                <div className="filter-chip">
-                  {filtroProduto}
-                  <button onClick={handleRemoverProduto} className="filter-chip-remove-button">
-                    &times;
-                  </button>
-                </div>
-              )}
-              {filtroFamilia && (
-                <div className="filter-chip">
-                  {filtroFamilia}
-                  <button onClick={handleRemoverFamilia} className="filter-chip-remove-button">
-                    &times;
-                  </button>
-                </div>
-              )}
-              {filtroData && (
-                <div className="filter-chip">
-                  {new Date(filtroData + "T00:00:00").toLocaleDateString("pt-BR")}
-                  <button onClick={handleRemoverData} className="filter-chip-remove-button">
-                    &times;
-                  </button>
-                </div>
-              )}
-              {filtroLoja.map((loja) => (
-                <div className="filter-chip" key={loja}>
-                  {loja.charAt(0).toUpperCase() + loja.slice(1)}
-                  <button
-                    onClick={() => handleRemoverLoja(loja)}
-                    className="filter-chip-remove-button"
-                  >
-                    &times;
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* 📌 Espaço reservado para KPIs/cards */}
-          <div className="dashboard__cards-placeholder">
-            {/* Aqui você vai encaixar os cards futuros */}
-
-            <div className="cartoes-info">
-              <div>Estoque total de Matéria Prima</div>
-              <div className="cartoes-info__subcol">
-                <div className="cartoes-info__title">1500</div>
-                <div>vs Último Semestre</div>
-              </div>
-
-              {/* <div>Teste 2</div> */}
-            </div>
-            <div className="cartoes-info">
-              <div>Demanda por Segmento</div>
-              <div className="cartoes-info__demandas">
-                <div className="info-card-demanda-segmento-item">
-                  <span>Agro</span>
-                  <span>30 %</span>
-                </div>
-                <div className="info-card-demanda-segmento-item">
-                  <span>Construção:</span> <span>30 %</span>
-                </div>
-                <div className="info-card-demanda-segmento-item">
-                  <span>Residencial:</span> <span>30 %</span>
-                </div>
-              </div>
-            </div>
-            <div className="cartoes-info">
-              <div>Baixa Rotação</div>
-              <div className="cartoes-info__subcol">
-                <div className="cartoes-info__title">Telas</div>
-                <div>Parado a 60 dias</div>
-              </div>
-            </div>
-          </div>
-
           {loading ? (
             <p>Carregando dados...</p>
           ) : (
