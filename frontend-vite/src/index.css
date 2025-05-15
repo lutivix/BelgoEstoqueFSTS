@@ -13,7 +13,6 @@
   --text-secondary: #6c757d;
   --error-color: #d7060f;
   /*Blue*/
-
   --blue-100: #bfced2;
   --blue-200: #91abb1;
   --blue-300: #61858f;
@@ -23,6 +22,16 @@
   --blue-700: #00232c; /* Used in Primary*/
   --blue-800: #00181e; /* Used in Primary Hover*/
   --blue-900: #f7f7f7; /* Used in Primary Selected*/
+  /*Green*/
+  --green-100: #eafbd4;
+  --green-200: #d2f8aa;
+  --green-300: #adea7b;
+  --green-400: #87d557;
+  --green-500: #56ba28;
+  --green-600: #3d9f1d;
+  --green-700: #298514;
+  --green-800: #176b0c;
+  --green-900: #0b5907;
 
   /* Espaçamento */
   --space-xs: 0.4rem;

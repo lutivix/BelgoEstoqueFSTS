@@ -11,7 +11,7 @@
 .dashboard__chart-title {
   font-size: var(--fonte-label-lg);
   font-weight: 600;
-  color: var(--bg-primary);
+  color: var(--blue-100);
   margin-bottom: 0.25rem;
 }
 

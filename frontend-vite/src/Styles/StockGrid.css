@@ -641,6 +641,10 @@
   color: #343a40;
 }
 
+.grid__stock-total-value strong {
+  color: red;
+}
+
 .grid__stock-mini-table {
   display: inline-flex;
   flex-direction: column;

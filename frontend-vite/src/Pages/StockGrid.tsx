@@ -67,7 +67,7 @@ const StockGrid = () => {
     setExpandedRow(null); // Fecha a linha após salvar
   };
 
-  const backendUrl = "http://nitro5:3000/api/products/db";
+  const backendUrl = "http://192.168.7.16:3000/api/products/db";
 
   useEffect(() => {
     const handleResize = () => setIsSmallScreen(window.innerWidth <= 768);
@@ -307,7 +307,7 @@ const StockGrid = () => {
                             <span>E:{product.estoque_estruturaco ?? "-"}</span>
                           </div> */}
                           <span className="grid__stock-total-value">
-                            Tot: {product.estoque_total}
+                            Tot: <strong>{product.estoque_total}</strong>
                           </span>
                           <button
                             className="grid__edit-button"

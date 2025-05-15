@@ -1,5 +1,5 @@
 /* estilos.css */
-/* @import url("../index.css"); */
+@import url("../index.css");
 
 /* #region DASHBOARD */
 
@@ -234,8 +234,10 @@
   /*max-width: none; /* Ensure no max-width is limiting the container */
   width: 100%;
   box-sizing: border-box;
-  height: 3rem;
+  height: 4rem;
   min-width: 365px;
+
+  /* background-color: burlywood; */
 }
 
 .filter-controls-wrapper {
@@ -243,7 +245,9 @@
   flex-wrap: wrap;
   align-items: center; /* Vertically align all items in the wrapper */
   gap: 0.75rem;
-  margin: 0.3rem;
+  margin: 0.8rem;
+  /* background-color: greenyellow; */
+  /* margin-top: 0.8rem; */
 }
 
 /* FilterPopup Component - Outer div */
@@ -447,7 +451,7 @@
 /* Aplicar Button */
 .filter-button-aplicar {
   padding: 0.375rem 0.75rem;
-  background-color: #2563eb;
+  background-color: var(--blue-200);
   color: #ffffff;
   font-size: 0.75rem;
   line-height: 1rem;
@@ -460,7 +464,7 @@
 }
 
 .filter-button-aplicar:hover {
-  background-color: #1d4ed8;
+  background-color: var(--blue-500);
 }
 
 .filter-button-aplicar:focus {
@@ -475,7 +479,7 @@
 
 .filter-button-aplicar--md {
   padding: 0.5rem 1rem; /* Aumenta o padding */
-  background-color: #2563eb;
+  background-color: var(--blue-500);
   color: #ffffff;
   font-size: 0.875rem; /* Aumenta o tamanho da fonte */
   line-height: 1.25rem; /* Ajusta a altura da linha */
@@ -488,7 +492,7 @@
 }
 
 .filter-button-aplicar--md:hover {
-  background-color: #1d4ed8;
+  background-color: var(--blue-200);
 }
 
 .filter-button-aplicar--md:focus {
@@ -817,14 +821,14 @@
 /* #region CARDS */
 /* Espaço para os KPIs ou cards */
 .dashboard__cards-placeholder {
-  height: 6.2rem;
+  height: 8rem;
   width: 100%;
   background-color: #f8f9fa;
   border-radius: var(--space-md);
 
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
   color: #999;
   /* font-style: italic; */
@@ -841,7 +845,7 @@
   margin: 0.25rem;
   gap: var(--space-xm); */
 
-  height: 5.5rem;
+  height: 8rem;
   /* width: 260px; */
   width: 100%;
   /* padding: 0.3rem; */
@@ -857,25 +861,36 @@
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
-  color: var(--text-primary);
+  color: var(--text-secondary);
 
   display: flex;
   flex-direction: column;
-  justify-content: "center";
-  align-items: "center";
+  justify-content: center;
+  align-items: center;
 
   font-size: var(--fonte-text-lg);
+  box-sizing: border-box;
+  min-width: 14.5rem;
+}
+
+.cartoes-info__demandas {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-size: var(--fonte-text-sm);
+  gap: var(--space-xs);
+  width: 100%;
+  /* background-color: orange; */
 }
 
 .info-card-demanda-segmento-item {
   display: flex;
-  justify-content: space-between;
-  font-size: var(--fonte-text-xs);
+  /* justify-content: space-between; */
+  font-size: var(--fonte-text);
   line-height: var(--fonte-text);
   color: #374151;
   width: 100%;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
 }
 
 .cartoes-info__subcol {
@@ -883,23 +898,42 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: var(--space-xs);
+  gap: var(--space-sm);
   font-size: var(--fonte-text);
-}
-
-.cartoes-info__demandas {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  font-size: var(--fonte-text-sm);
+  /* background-color: plum; */
   width: 100%;
 }
 
+.cartoes-info__subrow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 10rem;
+  gap: var(--space-xs);
+  font-size: var(--fonte-text);
+  /* background-color: plum; */
+}
+
 .cartoes-info__title {
-  font-size: var(--fonte-label);
+  font-size: var(--fonte-text);
   font-weight: 500;
-  color: #2b9529;
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+  color: var(--text-primary);
+  /* color: var(--blue-400); */
+  /* background-color: orange; */
+}
+
+.cartoes-info__destaque {
+  font-size: var(--fonte-span);
+  font-weight: 800;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  /* color: #2b9529; */
+  color: var(--text-primary);
 }
 
 .cartoes-info__hline {
@@ -923,9 +957,9 @@
   /* background-color: var(--primary-bg); */
 }
 
-.cartoes-info div {
+/* .cartoes-info div {
   align-self: center;
-}
+} */
 
 /*#endregion*/
 
@@ -997,6 +1031,7 @@
   .dashboard__charts {
     flex-direction: column;
     gap: var(--space-sm);
+    min-height: 50rem;
   }
 
   .dashboard__chart-minimo {
