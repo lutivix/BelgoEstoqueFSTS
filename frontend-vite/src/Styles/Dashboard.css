@@ -235,6 +235,7 @@
   width: 100%;
   box-sizing: border-box;
   height: 3rem;
+  min-width: 365px;
 }
 
 .filter-controls-wrapper {
@@ -638,7 +639,7 @@
   background-color: #dbfeea;
   color: #1e40af;
   color: #2b9529;
-  font-size: 0.9rem;
+  font-size: var(--fonte-text);
   line-height: 1.25rem;
   font-weight: 500;
   padding-left: 0.625rem;
@@ -664,10 +665,16 @@
   color: #1e40af;
 }
 
+.filter-popup-label,
+.filter-popup-input,
+.filter-popup-checkbox-label {
+  font-size: var(--fonte-text); /* 1rem = 10px */
+}
+
 /* #endregion Fim do Manus */
 
 /* Responsividade */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .dashboard__filters {
     flex-direction: column;
     align-items: stretch;
@@ -930,6 +937,7 @@
   flex-direction: row;
   gap: var(--space-md);
   width: 100%;
+  min-height: 34rem;
 
   /* background-color: #60c35a; */
 }

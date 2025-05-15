@@ -34,52 +34,75 @@ const FilterPopup = ({
   isOpen,
   setIsOpen,
   buttonText,
+  onApply,
 }: any) => {
-  const popupRef = useRef(null);
-  const buttonRef = useRef(null);
-  let leaveTimeoutRef = useRef<number | null>(null);
-
-  const handleMouseEnter = () => {
-    if (leaveTimeoutRef.current) {
-      clearTimeout(leaveTimeoutRef.current);
-      leaveTimeoutRef.current = null;
-    }
-    setIsOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    leaveTimeoutRef.current = window.setTimeout(() => {
-      setIsOpen(false);
-    }, 300);
-  };
+  const popupRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    return () => {
-      if (leaveTimeoutRef.current) {
-        clearTimeout(leaveTimeoutRef.current);
-      }
-    };
-  }, []);
+    if (isOpen && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isOpen]);
+
+  const handleApplyIfValid = () => {
+    const valorValido = value && value.trim() !== "";
+    setIsOpen(false);
+
+    if (valorValido || value === "") {
+      onApply?.();
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleApplyIfValid();
+    }
+    if (e.key === "Escape") {
+      setIsOpen(false);
+    }
+  };
+
+  const handleBlur = () => {
+    handleApplyIfValid();
+  };
 
   return (
-    <div
-      className="filter-popup-relative"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <button ref={buttonRef} className="filter-popup-button filter-popup-button--md">
+    <div className="filter-popup-relative">
+      <button
+        className="filter-popup-button filter-popup-button--md"
+        onClick={() => setIsOpen(!isOpen)}
+      >
         {buttonText}
       </button>
+
       {isOpen && (
         <div ref={popupRef} className="filter-popup-box">
           <label className="filter-popup-label">{label}:</label>
           {children ? (
-            children
+            <div
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Escape") {
+                  setIsOpen(false);
+                }
+              }}
+              onBlur={(e) => {
+                if (!popupRef.current?.contains(e.relatedTarget)) {
+                  setIsOpen(false);
+                }
+              }}
+            >
+              {children}
+            </div>
           ) : (
             <input
+              ref={inputRef}
               type={type}
               value={value}
               onChange={(e) => onChange(e.target.value)}
+              onKeyDown={handleKeyDown}
+              onBlur={handleBlur}
               placeholder={placeholder}
               className="filter-popup-input"
             />
@@ -114,16 +137,28 @@ const Dashboard = () => {
 
   const backendUrl = "http://nitro5:3000/api/products/dashboard/estoque-detalhado";
 
-  const fetchEstoque = async () => {
+  const fetchEstoque = async (
+    produto = filtroProduto,
+    familia = filtroFamilia,
+    data = filtroData,
+    lojas = filtroLoja,
+  ) => {
     setLoading(true);
     try {
       const queryParams = new URLSearchParams();
-      if (filtroFamilia) queryParams.append("familia", filtroFamilia);
-      if (filtroData) queryParams.append("data", filtroData);
-      if (filtroProduto) queryParams.append("produto", filtroProduto);
-      if (filtroLoja.length) {
-        filtroLoja.forEach((loja) => queryParams.append("lojas", loja));
+      if (familia) queryParams.append("familia", familia);
+      if (data) queryParams.append("data", data);
+      if (produto) queryParams.append("produto", produto);
+      if (lojas.length) {
+        lojas.forEach((loja) => queryParams.append("lojas", loja));
       }
+
+      log("Buscando estoque com filtros", "info", "Q", {
+        produto,
+        familia,
+        data,
+        lojas,
+      });
 
       const response = await fetch(`${backendUrl}?${queryParams}`);
       const json = await response.json();
@@ -132,8 +167,8 @@ const Dashboard = () => {
       log("Erro ao buscar estoque", "error", "O", error);
     } finally {
       setLoading(false);
+      log("Dashboard carregado", "info", "L");
     }
-    log("Dashboard carregado", "info", "L");
   };
 
   useEffect(() => {
@@ -141,6 +176,8 @@ const Dashboard = () => {
   }, []); // Primeiro carregamento (sem filtros)
 
   const handleSubmit = (e?: React.FormEvent) => {
+    e?.preventDefault();
+
     log("Aplicando filtros", "info", "P", {
       filtroData,
       filtroFamilia,
@@ -148,8 +185,7 @@ const Dashboard = () => {
       filtroProduto,
     });
 
-    e?.preventDefault();
-    fetchEstoque(); // 🔁 isso precisa estar aqui
+    fetchEstoque(filtroProduto, filtroFamilia, filtroData, filtroLoja);
 
     setIsProdutoOpen(false);
     setIsFamiliaOpen(false);
@@ -158,11 +194,26 @@ const Dashboard = () => {
   };
 
   const handleLimparFiltros = () => {
-    setFiltroData("");
-    setFiltroFamilia("");
-    setFiltroProduto("");
-    setFiltroLoja([]);
-    fetchEstoque(); // opcional, se não tiver `useEffect` com deps
+    const produto = "";
+    const familia = "";
+    const data = "";
+    const lojas: string[] = [];
+
+    setFiltroProduto(produto);
+    setFiltroFamilia(familia);
+    setFiltroData(data);
+    setFiltroLoja(lojas);
+
+    log("Limpando todos os filtros", "info", "P");
+
+    setTimeout(() => {
+      fetchEstoque(produto, familia, data, lojas);
+    }, 0);
+
+    setIsProdutoOpen(false);
+    setIsFamiliaOpen(false);
+    setIsDataOpen(false);
+    setIsLojaOpen(false);
   };
 
   // derivar para gráfico mínimo
@@ -175,24 +226,32 @@ const Dashboard = () => {
 
   const handleRemoverProduto = () => {
     setFiltroProduto("");
-    handleSubmit(); // dispara nova consulta
+    setTimeout(() => {
+      fetchEstoque("", filtroFamilia, filtroData, filtroLoja);
+    }, 0);
   };
 
   const handleRemoverFamilia = () => {
     setFiltroFamilia("");
-    handleSubmit(); // dispara nova consulta
+    setTimeout(() => {
+      fetchEstoque(filtroProduto, "", filtroData, filtroLoja);
+    }, 0);
   };
 
   const handleRemoverData = () => {
     setFiltroData("");
-    handleSubmit(); // dispara nova consulta
+    setTimeout(() => {
+      fetchEstoque(filtroProduto, filtroFamilia, "", filtroLoja);
+    }, 0);
   };
 
   const handleRemoverLoja = (loja: string) => {
     const novaLista = filtroLoja.filter((l) => l !== loja);
     setFiltroLoja(novaLista);
     // Aguarda o estado atualizar logicamente, aplicando com nova lista
-    setTimeout(() => handleSubmit(), 0); // gambitech confiável 😅
+    setTimeout(() => {
+      fetchEstoque(filtroProduto, filtroFamilia, filtroData, []);
+    }, 0);
   };
 
   const showActionButtons =
@@ -219,6 +278,7 @@ const Dashboard = () => {
               isOpen={isProdutoOpen}
               setIsOpen={setIsProdutoOpen}
               buttonText={`Produto ${filtroProduto ? "✓" : ""}`}
+              onApply={() => fetchEstoque(filtroProduto, filtroFamilia, filtroData, filtroLoja)}
             />
             <FilterPopup
               label="Família"
@@ -228,6 +288,7 @@ const Dashboard = () => {
               isOpen={isFamiliaOpen}
               setIsOpen={setIsFamiliaOpen}
               buttonText={`Família ${filtroFamilia ? "✓" : ""}`}
+              onApply={() => fetchEstoque(filtroProduto, filtroFamilia, filtroData, filtroLoja)}
             />
             <FilterPopup
               label="Período"
@@ -238,6 +299,7 @@ const Dashboard = () => {
               isOpen={isDataOpen}
               setIsOpen={setIsDataOpen}
               buttonText={`Período ${filtroData ? "✓" : ""}`}
+              onApply={() => fetchEstoque(filtroProduto, filtroFamilia, filtroData, filtroLoja)}
             />
             <FilterPopup
               label="Lojas"
@@ -247,6 +309,7 @@ const Dashboard = () => {
               isOpen={isLojaOpen}
               setIsOpen={setIsLojaOpen}
               buttonText={`Lojas ${filtroLoja.length > 0 ? `(${filtroLoja.length}) ✓` : ""}`}
+              onApply={() => fetchEstoque(filtroProduto, filtroFamilia, filtroData, filtroLoja)}
             >
               <div className="filter-popup-checkbox-container">
                 {["vitoria", "uniao", "linhares", "supertela", "telarame", "estruturaco"].map(
@@ -258,11 +321,14 @@ const Dashboard = () => {
                         checked={filtroLoja.includes(loja)}
                         onChange={(e) => {
                           const checked = e.target.checked;
-                          if (checked) {
-                            setFiltroLoja([...filtroLoja, loja]);
-                          } else {
-                            setFiltroLoja(filtroLoja.filter((l) => l !== loja));
-                          }
+                          const novaLista = checked
+                            ? [...filtroLoja, loja]
+                            : filtroLoja.filter((l) => l !== loja);
+
+                          setFiltroLoja(novaLista);
+                          setTimeout(() => {
+                            fetchEstoque(filtroProduto, filtroFamilia, filtroData, novaLista);
+                          }, 0);
                         }}
                         className="filter-popup-checkbox-input"
                       />
@@ -432,7 +498,7 @@ const Dashboard = () => {
 
             //   {/* <p>{`Texto absurdamente grande sem espaços nem quebras: `.repeat(100)}</p> */}
             // </div>
-            <div>
+            <div style={{ height: "100%" }}>
               {/* 📊 Gráficos */}
               <div className="dashboard__charts">
                 {/* 🥧 Gráfico de Estoque Mínimo */}
