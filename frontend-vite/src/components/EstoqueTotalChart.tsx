@@ -8,9 +8,12 @@ import {
   ResponsiveContainer,
   CartesianGrid,
   Legend,
+  Cell,
 } from "recharts";
 import "../Styles/EstoqueTotalChart.css";
 import { useMediaQuery } from "react-responsive";
+
+import { useNavigate } from "react-router-dom";
 
 interface EstoqueDetalhado {
   name: string;
@@ -45,14 +48,10 @@ const coresLoja: Record<string, string> = {
   estruturaco: "#198754",
 };
 
-const formatLargeNumber = (num: number): string => {
-  if (num >= 1000000) {
-    return (num / 1000000).toFixed(1).replace(".0", "") + "M";
-  }
-  if (num >= 1000) {
-    return (num / 1000).toFixed(1).replace(".0", "") + "K";
-  }
-  return num.toString();
+const formatarNumero = (valor: number) => {
+  if (valor >= 1_000_000) return (valor / 1_000_000).toFixed(2) + "M";
+  if (valor >= 1_000) return (valor / 1_000).toFixed(2) + "K";
+  return valor.toFixed(2);
 };
 
 const EstoqueTotalChart = ({ data }: Props) => {
@@ -63,11 +62,13 @@ const EstoqueTotalChart = ({ data }: Props) => {
     return { loja, total };
   });
 
+  const navigate = useNavigate();
+
   return (
     <div className="dashboard__chart-content">
       {/* <div className="dashboard__chart-title">Estoque Total por Loja</div> */}
       <h4 className="dashboard__chart-title">Estoque Total</h4>
-      <div className="dashboard__chart-subtitle">Distribuição de estoque por Loja</div>
+      <div className="dashboard__chart-subtitle">Distribuição de estoque por Loja K/M</div>
       {/* <ResponsiveContainer width="100%" minHeight={300}> */}
       <ResponsiveContainer width={isMobile ? 300 : "100%"} minHeight={160}>
         <BarChart data={estoquePorLoja} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
@@ -75,16 +76,30 @@ const EstoqueTotalChart = ({ data }: Props) => {
           {/* <XAxis dataKey="loja" /> */}
           <XAxis dataKey="loja" angle={-30} textAnchor="end" interval={0} height={50} />
 
-          <YAxis />
+          <YAxis tickFormatter={formatarNumero} />
+          <Tooltip formatter={(value) => formatarNumero(Number(value))} />
           <Tooltip />
           <Legend />
           <Bar
             dataKey="total"
-            name="Total por loja"
+            name="Total"
             fill="#003b4a"
             radius={[6, 6, 0, 0]} // Arredondado só no topo
             barSize={window.innerWidth < 640 ? 15 : 25} // exemplo de ajuste para mobile
-          />
+          >
+            {data.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                onClick={() => {
+                  const loja = entry?.name?.toLowerCase();
+                  if (loja) {
+                    console.log(`Foi para /products?loja=${encodeURIComponent(loja)}`);
+                    navigate(`/products?loja=${encodeURIComponent(loja)}`);
+                  }
+                }}
+              />
+            ))}
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </div>

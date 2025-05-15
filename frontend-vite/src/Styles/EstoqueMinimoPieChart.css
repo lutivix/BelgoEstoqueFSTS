@@ -23,8 +23,8 @@
 
 .dashboard__chart-center-label {
   position: absolute;
-  top: 127px;
-  font-size: var(--fonte-base);
+  top: 12.7rem;
+  font-size: var(--fonte-text);
   font-weight: bold;
   color: #343a40;
 }
@@ -34,10 +34,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 4px;
+  gap: var(--space-xs);
   margin-top: 0.2rem;
   width: 100%;
-  font-size: var(--fonte-menor);
+  font-size: var(--fonte-text-sm);
 }
 
 .legend-column {
@@ -49,23 +49,21 @@
 .legend-item {
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
-  gap: 10px;
-  font-size: var(--fonte-texto-sm);
+  gap: var(--space-sm);
+  font-size: var(--fonte-text-sm);
   color: #495057;
-  /* background-color: #f8f9fa; */
-  padding: 4px 8px;
-  border-radius: 6px;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
 }
 
 .legend-value {
-  margin-left: 50px;
+  margin-left: 5rem;
 }
 
 .color-icon {
-  width: 10px;
-  height: 10px;
-  border-radius: 8px;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.8rem;
 }
 
 .dashboard__chart-legend-item {
@@ -75,9 +73,9 @@
 }
 
 .color-box {
-  width: 14px;
-  height: 14px;
-  border-radius: 3px;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 0.3rem;
   display: inline-block;
 }
 

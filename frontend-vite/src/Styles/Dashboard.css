@@ -845,7 +845,7 @@
   margin: 0.25rem;
   gap: var(--space-xm); */
 
-  height: 8rem;
+  height: 8.5rem;
   /* width: 260px; */
   width: 100%;
   /* padding: 0.3rem; */
@@ -978,7 +978,7 @@
 
 /* Gráfico mínimo: 30% */
 .dashboard__chart-minimo {
-  width: 30%;
+  width: 35%;
   min-width: 21rem;
   background: #fff;
   /* padding: 1rem; */
@@ -989,6 +989,7 @@
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 1rem;
 }
 
 /* Gráfico total: 70% */
@@ -1041,7 +1042,7 @@
 
   .dashboard__chart-total {
     width: 100%;
-    height: 20rem;
+    height: 30rem;
   }
 
   .dashboard__cards-placeholder {
