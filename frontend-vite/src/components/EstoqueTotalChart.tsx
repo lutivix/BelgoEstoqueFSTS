@@ -33,7 +33,10 @@ interface EstoqueDetalhado {
 }
 
 type Props = {
-  data: EstoqueDetalhado[];
+  data: {
+    name: string;
+    estoque_total: number;
+  }[];
 };
 
 const lojas = ["vitoria", "uniao", "linhares", "supertela", "telarame", "estruturaco"] as const;
@@ -57,10 +60,7 @@ const formatarNumero = (valor: number) => {
 const EstoqueTotalChart = ({ data }: Props) => {
   const isMobile = useMediaQuery({ maxWidth: 540 });
   // Agrupar estoque total por loja
-  const estoquePorLoja = lojas.map((loja: Loja) => {
-    const total = data.reduce((soma, p) => soma + (p.porLoja?.[loja] ?? 0), 0);
-    return { loja, total };
-  });
+  const estoquePorLoja = data;
 
   const navigate = useNavigate();
 
@@ -74,14 +74,14 @@ const EstoqueTotalChart = ({ data }: Props) => {
         <BarChart data={estoquePorLoja} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
           <CartesianGrid strokeDasharray="3 3" />
           {/* <XAxis dataKey="loja" /> */}
-          <XAxis dataKey="loja" angle={-30} textAnchor="end" interval={0} height={50} />
+          <XAxis dataKey="name" angle={-30} textAnchor="end" interval={0} height={50} />
 
           <YAxis tickFormatter={formatarNumero} />
           <Tooltip formatter={(value) => formatarNumero(Number(value))} />
           <Tooltip />
           <Legend />
           <Bar
-            dataKey="total"
+            dataKey="estoque_total"
             name="Total"
             fill="#003b4a"
             radius={[6, 6, 0, 0]} // Arredondado só no topo

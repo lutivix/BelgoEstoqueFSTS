@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { OmieProductFromDb } from "../types/omie-product-from-db";
 import "../Styles/StockGrid.css";
@@ -34,6 +35,10 @@ const StockGrid = () => {
   //const itemsPerPage = 15; // Fixo em 10, ou ajuste conforme necessário
   const [itemsPerPage, setItemsPerPage] = useState(15); // Estado dinâmico
   const itemsPerPageOptions = [10, 15, 25, 50, 100]; // Opções disponíveis
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const lojaAtiva = queryParams.get("loja")?.toLowerCase(); // ex: 'linhares'
 
   // Detecta tela pequena com window.matchMedia
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
@@ -102,14 +107,21 @@ const StockGrid = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = products.filter((product) =>
-      [product.codigo_omie, product.name, product.type, product.primeira_loja]
+    const lojaKey = lojaAtiva ? `estoque_${lojaAtiva}` : null;
+
+    const filtered = products.filter((product) => {
+      const textoInclui = [product.codigo_omie, product.name, product.type, product.primeira_loja]
         .join(" ")
         .toLowerCase()
-        .includes(searchTerm.toLowerCase()),
-    );
+        .includes(searchTerm.toLowerCase());
+
+      const lojaValida = lojaKey ? (product as any)[lojaKey] > 0 : true;
+
+      return textoInclui && lojaValida;
+    });
+
     setFilteredProducts(filtered);
-  }, [searchTerm, products]);
+  }, [searchTerm, products, lojaAtiva]);
 
   const paginatedProducts = useMemo(() => {
     const start = (page - 1) * itemsPerPage;

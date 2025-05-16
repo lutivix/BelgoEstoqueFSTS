@@ -224,6 +224,17 @@ const Dashboard = () => {
     }));
   }, [data]);
 
+  const dataPorLoja = useMemo(() => {
+    const lojas = ["vitoria", "uniao", "linhares", "supertela", "telarame", "estruturaco"];
+
+    return lojas.map((loja) => {
+      const estoqueTotal = data.reduce((soma, produto) => {
+        return soma + (produto.porLoja[loja as keyof typeof produto.porLoja] ?? 0);
+      }, 0);
+      return { name: loja, estoque_total: estoqueTotal };
+    });
+  }, [data]);
+
   const handleRemoverProduto = () => {
     setFiltroProduto("");
     setTimeout(() => {
@@ -546,7 +557,7 @@ const Dashboard = () => {
                 {/* 📦 Gráfico de Estoque Total (placeholder por enquanto) */}
                 <div className="dashboard__chart-total">
                   {/* <div className="dashboard__chart-placeholder">Gráfico Total (em breve)</div> */}
-                  <EstoqueTotalChart data={data} />
+                  <EstoqueTotalChart data={dataPorLoja} />
                 </div>
 
                 {/* 🥧 Gráfico de Estoque Mínimo */}
